@@ -1,3 +1,5 @@
+import { Search } from "lucide-react";
+
 interface SearchInputProps {
     value?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -7,21 +9,43 @@ interface SearchInputProps {
     disabled?: boolean;
 }
 
-export default function SearchInput({
+const SearchInput = ({
     value,
     onChange,
-    placeholder,
+    placeholder = "검색",
     name,
     disabled = false
-}: SearchInputProps) {
+
+}: SearchInputProps) => {
     return (
-        <input
-            name={name}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            disabled={disabled}
-            className="h-9 border w-full border-zinc-800 bg-zinc-900 px-3 text-sm text-zinc-100 outline-none transition-colors placeholder:text-zinc-600 focus:border-cyan-500 disabled:cursor-not-allowed disabled:opacity-50"
-        />
+        <div className="relative flex-1">
+            <Search
+                size={16}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            />
+            <input
+                name={name}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                disabled={disabled}
+                className="
+                    h-10
+                    w-full
+                    rounded-lg
+                    border
+                    border-slate-200
+                    bg-white
+                    pl-10
+                    pr-3
+                    text-sm
+                    outline-none
+                    transition
+                    focus:border-blue-500
+                "
+            />
+        </div>
     );
-}
+};
+
+export default SearchInput;

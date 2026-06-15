@@ -4,25 +4,49 @@ type Props = {
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
+import { Calendar } from "lucide-react";
+
 const SystemDateInput = ({
     label,
     value,
-    onChange
+    onChange,
 }: Props) => {
     return (
-        <div className="flex flex-col gap-1">
-            {label && (
-                <label className="text-[9px] font-medium tracking-wider text-zinc-500 uppercase">
-                    {label}
-                </label>
-            )}
+        <div className="space-y-1">
+            <label className="block text-xs font-medium text-slate-600">
+                {label}
+            </label>
 
-            <input
-                type="date"
-                value={value}
+            <div className="relative">
+                <Calendar
+                    size={16}
+                    className="
+                        absolute
+                        left-3
+                        top-1/2
+                        -translate-y-1/2
+                        text-slate-400
+                    "
+                />
+
+                <input
+                    type="date"
+                    value={value}
                 onChange={onChange}
-                className="h-9 border border-zinc-800 bg-zinc-900 px-3 text-sm text-zinc-100 outline-none focus:border-cyan-500"
-            />
+                    className="
+                        h-10
+                        w-full
+                        rounded-lg
+                        border
+                        border-slate-200
+                        pl-10
+                        pr-3
+                        text-sm
+                        outline-none
+                        focus:border-blue-500
+                    "
+                />
+            </div>
         </div>
     );
 };

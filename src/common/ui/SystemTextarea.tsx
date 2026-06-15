@@ -3,28 +3,39 @@ type Props = {
     value?: string;
     placeholder?: string;
     onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    rows: number;
 };
 
 const SystemTextarea = ({
     label,
     value,
+    onChange,
     placeholder,
-    onChange
+    rows = 4,
 }: Props) => {
     return (
-        <div className="flex flex-col gap-1">
-            {label && (
-                <label className="text-[9px] font-medium tracking-wider text-zinc-500 uppercase">
-                    {label}
-                </label>
-            )}
+        <div className="space-y-1">
+            <label className="block text-xs font-medium text-slate-600">
+                {label}
+            </label>
 
             <textarea
+                rows={rows}
                 value={value}
-                onChange={onChange}
                 placeholder={placeholder}
-                rows={5}
-                className="resize-none border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-cyan-500"
+                onChange={onChange}
+                className="
+                    w-full
+                    resize-none
+                    rounded-lg
+                    border
+                    border-slate-200
+                    p-3
+                    text-sm
+                    outline-none
+                    transition
+                    focus:border-blue-500
+                "
             />
         </div>
     );

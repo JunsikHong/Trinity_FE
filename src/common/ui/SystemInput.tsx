@@ -7,30 +7,43 @@ interface SystemInputProps {
     disabled?: boolean;
 }
 
-export default function SystemInput({
+const SystemInput = ({
+    label,
     value,
     onChange,
-    placeholder,
-    label,
     name,
-    disabled = false
-}: SystemInputProps) {
+    placeholder,
+    disabled = false,
+}: SystemInputProps) => {
     return (
-        <div className="flex flex-col gap-1">
-            {label && (
-                <label className="text-[9px] font-medium tracking-wider text-zinc-500 uppercase">
-                    {label}
-                </label>
-            )}
+        <div className="space-y-1">
+            <label className="block text-xs font-medium text-slate-600">
+                {label}
+            </label>
 
             <input
+                type="text"
+                disabled={disabled}
                 name={name}
                 value={value}
-                onChange={onChange}
                 placeholder={placeholder}
-                disabled={disabled}
-                className="h-9 border border-zinc-800 bg-zinc-900 px-3 text-sm text-zinc-100 outline-none transition-colors placeholder:text-zinc-600 focus:border-cyan-500 disabled:cursor-not-allowed disabled:opacity-50"
+                onChange={onChange}
+                className="
+                    h-10
+                    w-full
+                    rounded-lg
+                    border
+                    border-slate-200
+                    px-3
+                    text-sm
+                    outline-none
+                    transition
+                    focus:border-blue-500
+                    disabled:bg-slate-100
+                "
             />
         </div>
     );
-}
+};
+
+export default SystemInput;
