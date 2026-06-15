@@ -1,40 +1,16 @@
 import { Plus } from "lucide-react";
-
 import SearchSection from "@/pages/home/list/components/SearchSection";
 import ListSection from "@/pages/home/list/components/ListSection";
-
 
 const ListPage = () => {
 
     return (
-        <aside
-            className="
-                flex
-                h-full
-                w-[340px]
-                flex-col
-                border-r
-                bg-white
-                relative
-            "
-        >
+        <aside className="flex h-full flex-col border-r bg-white relative">
             <SearchSection />
             <ListSection />
             <div className="absolute bottom-6 right-3">
                 <button
-                    className="
-                flex
-                h-10
-                items-center
-                gap-2
-                rounded-lg
-                bg-blue-600
-                px-4
-                text-sm
-                font-medium
-                text-white
-                hover:bg-blue-700
-            "
+                    className="flex h-10 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700"
                 >
                     <Plus size={16} />
                     새 수리이력

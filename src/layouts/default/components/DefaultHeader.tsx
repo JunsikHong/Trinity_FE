@@ -1,4 +1,4 @@
-import { Bell, CircleHelp, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const DefaultHeader = () => {
     return (
@@ -10,7 +10,7 @@ const DefaultHeader = () => {
                     </div>
 
                     <span className="text-lg font-semibold">
-                        Aircraft Repair Log
+                        A-ONE
                     </span>
                 </div>
                 <button className="flex items-center gap-2 text-sm font-medium text-slate-700">
@@ -25,7 +25,7 @@ const DefaultHeader = () => {
 
                 </div>
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-sm font-semibold">
-                    AD
+                    H
                 </div>
             </div>
         </header>

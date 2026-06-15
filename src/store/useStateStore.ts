@@ -2,24 +2,19 @@ import { create } from 'zustand';
 
 interface StateStore {
     isOpenDetail: boolean;
-    detailList: number[];
     isOpenWrite: boolean;
-    selectedId: number | null;
+    selectedId: string | null;
 
-    openDetail: (id: number) => void;
+    openDetail: (id: string) => void;
     closeDetail: () => void;
-    openWrite: () => void;
+    openWrite: (id: string) => void;
     closeWrite: () => void;
-    putDetailList: (id: number) => void;
-    deleteDetailList: (id: number) => void;
 }
 
 const useStateStore = create<StateStore>((set) => ({
     isOpenDetail: false,
     isOpenWrite: false,
     selectedId: null,
-
-    detailList: [],
 
     openDetail: (id) =>
         set({
@@ -33,25 +28,16 @@ const useStateStore = create<StateStore>((set) => ({
             selectedId: null,
         }),
 
-    openWrite: () =>
+    openWrite: (id) =>
         set({
             isOpenWrite: true,
+            selectedId: id,
         }),
 
     closeWrite: () =>
         set({
             isOpenWrite: false,
         }),
-
-    putDetailList: (id) =>
-        set((state) => ({
-            detailList: [...state.detailList, id],
-        })),
-
-    deleteDetailList: (id) =>
-        set((state) => ({
-            detailList: state.detailList.filter((item) => item !== id),
-        })),   
 }));
 
 export default useStateStore;

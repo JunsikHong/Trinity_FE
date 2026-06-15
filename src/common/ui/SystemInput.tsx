@@ -20,7 +20,6 @@ const SystemInput = ({
             <label className="block text-xs font-medium text-slate-600">
                 {label}
             </label>
-
             <input
                 type="text"
                 disabled={disabled}
@@ -28,20 +27,7 @@ const SystemInput = ({
                 value={value}
                 placeholder={placeholder}
                 onChange={onChange}
-                className="
-                    h-10
-                    w-full
-                    rounded-lg
-                    border
-                    border-slate-200
-                    px-3
-                    text-sm
-                    outline-none
-                    transition
-                    focus:border-blue-500
-                    disabled:bg-slate-100
-                "
-            />
+                className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none transition focus:border-blue-500 disabled:bg-slate-100"/>
         </div>
     );
 };

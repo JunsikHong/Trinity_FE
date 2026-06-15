@@ -1,27 +1,27 @@
 import { X } from "lucide-react";
-import WriteSection from "@/pages/home/write/components/WriteSection";
-import ButtonSection from "@/pages/home/write/components/ButtonSection";
+import ViewSection from "@/pages/home/view/components/ViewSection";
+import ButtonSection from "@/pages/home/view/components/ButtonSection";
 import useStateStore from '@/store/useStateStore';
 
-const WritePage = () => {
-    const { closeWrite } = useStateStore();
+const ViewPage = () => {
+    const { closeDetail } = useStateStore();
     
     return (
         <aside className="flex h-full flex-col border-l bg-white">
             <div className="flex items-center justify-between border-b px-4 py-3">
                 <h2 className="font-semibold text-sm">
-                    수리이력 등록/수정
+                    수리이력 상세
                 </h2>
-                <button onClick={closeWrite}>
+                <button onClick={closeDetail}>
                     <X size={18} />
                 </button>
             </div>
             <div className="flex-1 overflow-y-auto">
-                <WriteSection/>
+                <ViewSection />
                 <ButtonSection />
             </div>
         </aside>
     );
 };
 
-export default WritePage;
+export default ViewPage;

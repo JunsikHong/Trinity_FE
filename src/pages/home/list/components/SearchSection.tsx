@@ -2,7 +2,6 @@ import SearchInput from "@/common/ui/SearchInput";
 import { Funnel } from "lucide-react";
 import { useState } from "react";
 
-
 const SearchSection = () => {
     const [keyword, setKeyword] = useState("");
     return (
@@ -18,20 +17,7 @@ const SearchSection = () => {
                     placeholder="설명, 위치 검색"
                 />
                 <button
-                    className="
-                flex
-                h-10
-                items-center
-                gap-2
-                rounded-lg
-                border
-                border-slate-200
-                bg-white
-                px-4
-                text-sm
-                font-medium
-                hover:bg-slate-50
-            "
+                    className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium hover:bg-slate-50"
                 >
                     <Funnel size={16} />
                     (24건)

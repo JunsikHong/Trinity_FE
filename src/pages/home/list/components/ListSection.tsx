@@ -1,7 +1,5 @@
-import {
-    Calendar,
-    MapPin,
-} from "lucide-react";
+import { MapPin } from "lucide-react";
+import useStateStore from '@/store/useStateStore';
 
 const MOCK_DATA = [
     {
@@ -71,22 +69,16 @@ const MOCK_DATA = [
 ];
 
 const ListSection = () => {
+    const { selectedId, openDetail } = useStateStore();
     return (
-        <div className="flex-1 overflow-y-auto relative">
-            {MOCK_DATA.map((item, index) => (
+        <div className="flex-1 overflow-y-auto relative p-3">
+            {MOCK_DATA.map((item) => (
                 <button
                     key={item.id}
-                    className={`
-                        flex
-                        w-full
-                        gap-3
-                        border-b
-                        p-3
-                        text-left
-                        transition
-                        hover:bg-slate-50
+                    onClick={() => openDetail(item.id)}
+                    className={`flex w-full gap-3 border p-3 mb-1 text-left transition rounded-md hover:bg-slate-50
                         ${
-                            index === 0
+                            item.id === selectedId
                                 ? "bg-blue-50 ring-1 ring-blue-500"
                                 : ""
                         }
@@ -95,17 +87,10 @@ const ListSection = () => {
                     <img
                         src={item.thumbnail}
                         alt={item.id}
-                        className="
-                            h-16
-                            w-20
-                            shrink-0
-                            rounded-md
-                            border
-                            object-cover
-                        "
+                        className="h-16 w-20 shrink-0 rounded-md border object-cover"
                     />
                     <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-start justify-between">
                             <span className="text-sm font-semibold">
                                 {item.id}
                             </span>
@@ -113,10 +98,10 @@ const ListSection = () => {
                                 {item.date}
                             </span>
                         </div>
-                        <p className="mt-1 line-clamp-1 text-sm text-slate-700">
+                        <p className="line-clamp-1 text-xs text-slate-500">
                             {item.title}
                         </p>
-                        <div className="mt-2 flex items-center gap-1 text-xs text-slate-500">
+                        <div className="mt-3 flex items-center gap-1 text-xs text-slate-500">
                             <MapPin size={12} />
                             {item.location}
                         </div>
