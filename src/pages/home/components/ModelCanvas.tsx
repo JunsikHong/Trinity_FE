@@ -97,7 +97,9 @@ const ModelCanvas = () => {
           <Suspense fallback={null}>
             <B737Model />
           </Suspense>
-          <OrbitControls />
+          <OrbitControls
+            enablePan={false}
+          />
         </Canvas>
       </div>
       <div className="border-t border-slate-700 bg-slate-950 px-4 py-2">
