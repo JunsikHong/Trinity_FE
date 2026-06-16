@@ -33,7 +33,6 @@ const B737Model = () => {
                     <group 
                         key={index}
                         position={[marker.x, marker.y, marker.z]}>
-                        {/* 중심 마커 */}
                         <mesh>
                             <sphereGeometry args={[0.08, 24, 24]} />
                             <meshStandardMaterial
@@ -42,8 +41,6 @@ const B737Model = () => {
                                 emissiveIntensity={3}
                             />
                         </mesh>
-
-                        {/* 바닥 링 */}
                         <mesh rotation={[-Math.PI / 2, 0, 0]}>
                             <ringGeometry args={[0.04, 0.06, 32]} />
                             <meshBasicMaterial
@@ -52,7 +49,6 @@ const B737Model = () => {
                                 opacity={0.8}
                             />
                         </mesh>
-
                         <Line
                             points={[
                                 [0, 0, 0],
@@ -61,8 +57,6 @@ const B737Model = () => {
                             color="#22d3ee"
                             lineWidth={2}
                         />
-
-                        {/* 정보 패널 */}
                         <Html
                             position={[0, 0.15, 0]}
                             distanceFactor={8}
