@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import AdminRouter from "@/routes/components/AdminRouter";
-import PrivateRouter from "@/routes/components/PrivateRouter";
-import PublicRouter from "@/routes/components/PublicRouter";
+import { PrivateRouter } from "@/routes/components/PrivateRouter";
+import { PublicRouter } from "@/routes/components/PublicRouter";
+import { USER_ROLES } from '@/types/auth';
 
 import DefaultLayout from "@/layouts/default/DefaultLayout";
 import SimpleLayout from "@/layouts/simple/SimpleLayout";
@@ -17,56 +17,56 @@ import NotFoundPage from "@/pages/common/notfound/page";
 export const Router = createBrowserRouter([
     {
         element: <PublicRouter />,
-        children : [
+        children: [
             {
                 element: <SimpleLayout />,
                 children: [
                     {
-                        path: "/login",
-                        element: <LoginPage />
-                    }
-                ]
+                        path: '/login',
+                        element: <LoginPage />,
+                    },
+                ],
             },
-        ]
+        ],
     },
     {
         element: <PrivateRouter />,
-        children : [
+        children: [
             {
                 element: <DefaultLayout />,
                 children: [
                     {
-                        path: "/",
-                        element: <HomePage />
+                        path: '/',
+                        element: <HomePage />,
                     },
                     {
-                        path: "/dashboard",
-                        element: <DashboardPage />
+                        path: '/dashboard',
+                        element: <DashboardPage />,
                     },
                     {
-                        path: "/my",
-                        element: <MyPage />
-                    }
-                ]
+                        path: '/my',
+                        element: <MyPage />,
+                    },
+                ],
             },
-        ]
+        ],
     },
     {
-        element: <AdminRouter />,
-        children : [
+        element: <PrivateRouter allowedRoles={[USER_ROLES.ADMIN]} />,
+        children: [
             {
                 element: <DefaultLayout />,
                 children: [
                     {
-                        path: "/signup",
-                        element: <SignupPage />
+                        path: '/signup',
+                        element: <SignupPage />,
                     },
-                ]
+                ],
             },
-        ]
+        ],
     },
     {
-        path: "*",
-        element: <NotFoundPage />
-    }
-])
+        path: '*',
+        element: <NotFoundPage />,
+    },
+]);

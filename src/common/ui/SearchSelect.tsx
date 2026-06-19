@@ -10,6 +10,7 @@ interface SearchSelectProps {
     label?: string;
     name?: string;
     disabled?: boolean;
+    className?: string;
 }
 
 export default function SearchSelect({
@@ -18,6 +19,7 @@ export default function SearchSelect({
     options,
     name,
     disabled = false,
+    className = "",
 }: SearchSelectProps) {
     return (
         <select
@@ -25,7 +27,7 @@ export default function SearchSelect({
             value={value}
             onChange={(e) => onChange?.(e.target.value)}
             disabled={disabled}
-            className="
+            className={`
                 rounded-md
                 h-9
                 min-w-[95px]
@@ -40,7 +42,8 @@ export default function SearchSelect({
                 disabled:cursor-not-allowed
                 disabled:bg-slate-100
                 disabled:text-slate-400
-            "
+                ${className}
+            `}
         >
             {options.map((option) => (
                 <option

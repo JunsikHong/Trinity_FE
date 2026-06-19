@@ -1,4 +1,5 @@
 interface SystemInputProps {
+    type?: string;
     value?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
@@ -8,6 +9,7 @@ interface SystemInputProps {
 }
 
 const SystemInput = ({
+    type = "text",
     label,
     value,
     onChange,
@@ -21,7 +23,7 @@ const SystemInput = ({
                 {label}
             </label>
             <input
-                type="text"
+                type={type}
                 disabled={disabled}
                 name={name}
                 value={value}
