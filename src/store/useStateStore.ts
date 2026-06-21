@@ -3,11 +3,11 @@ import { create } from 'zustand';
 interface StateStore {
     isOpenDetail: boolean;
     isOpenWrite: boolean;
-    selectedId: string | null;
+    selectedId: number | null;
 
-    openDetail: (id: string) => void;
+    openDetail: (id: number) => void;
     closeDetail: () => void;
-    openWrite: (id: string) => void;
+    openWrite: (id: number) => void;
     closeWrite: () => void;
 }
 

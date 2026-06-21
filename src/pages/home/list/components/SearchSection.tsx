@@ -5,7 +5,11 @@ import { useState } from "react";
 import { useAirplane } from "@/hooks/useAirplane";
 import { useAirplaneStore } from "@/store/airplaneStore";
 
-const SearchSection = () => {
+interface SearchSectionProps {
+    maintenanceListCount: number;
+}
+
+const SearchSection = ({ maintenanceListCount } : SearchSectionProps) => {
     const [keyword, setKeyword] = useState("");
     const { data: airplanes = [] } = useAirplane();
     const { selectedAirplaneId, setSelectedAirplane } = useAirplaneStore();
@@ -54,7 +58,7 @@ const SearchSection = () => {
                     className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium hover:bg-slate-50"
                 >
                     <Funnel size={16} />
-                    (24건)
+                    ({maintenanceListCount}건)
                 </button>
             </div>
         </div>

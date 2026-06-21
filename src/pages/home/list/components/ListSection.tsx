@@ -1,82 +1,54 @@
 import { MapPin } from "lucide-react";
-import useStateStore from '@/store/useStateStore';
+import useStateStore from "@/store/useStateStore";
+import type { MaintenanceResponse } from "@/hooks/useMaintenance";
 
-const MOCK_DATA = [
-    {
-        id: "R-2024-00024",
-        title: "Skin panel dent repair",
-        date: "2024-05-20",
-        location: "CH 45.0 / STA 320.0",
-        color: "bg-red-500",
-        thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=CH",
-    },
-    {
-        id: "R-2024-00023",
-        title: "Rivet replacement",
-        date: "2024-05-18",
-        location: "CH 32.0 / WL 210.0",
-        color: "bg-amber-500",
-        thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=WL",
-    },
-    {
-        id: "R-2024-00022",
-        title: "Crack repair",
-        date: "2024-05-15",
-        location: "STA 560.0 / BL 145.0",
-        color: "bg-green-500",
-        thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=BL",
-    },
-    {
-        id: "R-2024-00021",
-        title: "Stringer repair",
-        date: "2024-05-10",
-        location: "CH 18.0 / STA 120.0",
-        color: "bg-blue-500",
-        thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=STR",
-    },
-    {
-        id: "R-2024-00020",
-        title: "Corrosion treatment",
-        date: "2024-05-08",
-        location: "WL 180.0 / BL 220.0",
-        color: "bg-emerald-500",
-        thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=COR",
-    },
-    {
-        id: "R-2024-00019",
-        title: "Skin replacement",
-        date: "2024-05-05",
-        location: "CH 55.0 / STA 610.0",
-        color: "bg-pink-500",
-        thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=SKN",
-    },
-    {
-        id: "R-2024-00018",
-        title: "Door frame repair",
-        date: "2024-05-02",
-        location: "STA 280.0",
-        color: "bg-violet-500",
-        thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=DR",
-    },
-    {
-        id: "R-2024-00017",
-        title: "Wing fairing repair",
-        date: "2024-04-28",
-        location: "WL 75.0",
-        color: "bg-cyan-500",
-        thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=WG",
-    },
-];
+interface ListSectionProps {
+    maintenanceList: MaintenanceResponse[];
+    isLoading: boolean;
+}
 
-const ListSection = () => {
+const ListSection = ({ maintenanceList, isLoading } : ListSectionProps) => {
     const { selectedId, openDetail } = useStateStore();
+    const getLocationText = (item: any) => {
+        const locations = [];
+
+        if (item.chapter != null)
+            locations.push(`CH ${item.chapter}`);
+        if (item.station != null)
+            locations.push(`STA ${item.station}`);
+        if (item.waterLine != null)
+            locations.push(`WL ${item.waterLine}`);
+        if (item.buttockLine != null)
+            locations.push(`BL ${item.buttockLine}`);
+        if (item.stringer != null)
+            locations.push(`STR ${item.stringer}`);
+        if (item.frame != null)
+            locations.push(`FR ${item.frame}`);
+        if (item.rib != null)
+            locations.push(`RIB ${item.rib}`);
+        if (item.wingStation != null)
+            locations.push(`WS ${item.wingStation}`);
+        if (item.bodyStation != null)
+            locations.push(`BS ${item.bodyStation}`);
+
+        return locations.join(" / ");
+    };
+
+    if (isLoading) {
+        return (
+            <div className="flex-1 p-4 text-sm text-slate-500">
+                정비 이력을 불러오는 중...
+            </div>
+        );
+    }
+
     return (
-        <div className="flex-1 overflow-y-auto relative p-3">
-            {MOCK_DATA.map((item) => (
+        <div className="relative flex-1 overflow-y-auto p-3">
+            {maintenanceList.map((item) => (
                 <button
                     key={item.id}
                     onClick={() => openDetail(item.id)}
-                    className={`flex w-full gap-3 border p-3 mb-1 text-left transition rounded-md hover:bg-slate-50
+                    className={`mb-1 flex w-full gap-3 rounded-md border p-3 text-left transition hover:bg-slate-50
                         ${
                             item.id === selectedId
                                 ? "bg-blue-50 ring-1 ring-blue-500"
@@ -84,30 +56,40 @@ const ListSection = () => {
                         }
                     `}
                 >
-                    <img
-                        src={item.thumbnail}
-                        alt={item.id}
-                        className="h-16 w-20 shrink-0 rounded-md border object-cover"
-                    />
+                    <div className="flex h-16 w-20 shrink-0 items-center justify-center rounded-md border bg-slate-100">
+                        <MapPin size={24} />
+                    </div>
+
                     <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between">
                             <span className="text-sm font-semibold">
-                                {item.id}
+                                #{item.id}
                             </span>
+
                             <span className="text-xs text-slate-400">
-                                {item.date}
+                                {new Date(
+                                    item.createdAt
+                                ).toLocaleDateString()}
                             </span>
                         </div>
+
                         <p className="line-clamp-1 text-xs text-slate-500">
-                            {item.title}
+                            {item.description || "설명 없음"}
                         </p>
+
                         <div className="mt-3 flex items-center gap-1 text-xs text-slate-500">
                             <MapPin size={12} />
-                            {item.location}
+                            {getLocationText(item)}
                         </div>
                     </div>
                 </button>
             ))}
+
+            {!maintenanceList.length && (
+                <div className="py-10 text-center text-sm text-slate-500">
+                    등록된 정비 이력이 없습니다.
+                </div>
+            )}
         </div>
     );
 };

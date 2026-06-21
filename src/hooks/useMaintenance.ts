@@ -4,20 +4,30 @@ import { useAirplaneStore } from "@/store/airplaneStore";
 
 export interface MaintenanceResponse {
     id: number;
-    userId: string;
-    airplaneId: string;
-    chapter: string;
-    station: string;
-    waterLine: string;
-    buttockLine: string;
-    stringer: string;
-    frame: string;
-    rib: string;
-    wingStation: string;
-    bodyStation: string;
-    description: string;
+
+    airplaneId: number;
+    userId: number;
+
+    chapter: number | null;
+    station: number | null;
+    waterLine: number | null;
+    buttockLine: number | null;
+    stringer: number | null;
+    frame: number | null;
+    rib: number | null;
+    wingStation: number | null;
+    bodyStation: number | null;
+
+    description: string | null;
+
     createdAt: string;
     updatedAt: string;
+}
+
+interface ApiResponse<T> {
+    success: boolean;
+    message: string;
+    data: T;
 }
 
 export const useMaintenance = () => {
@@ -28,14 +38,16 @@ export const useMaintenance = () => {
     return useQuery({
         queryKey: ["maintenanceList", selectedAirplaneId],
 
-        enabled: !!selectedAirplaneId,
+        enabled: selectedAirplaneId != null,
 
         queryFn: async () => {
-            const { data } = await axiosInstance.get<{
-                data: MaintenanceResponse[];
-            }>(
-                `/maintenance-reports?airplaneId=${selectedAirplaneId}`
-            );
+            const { data } = await axiosInstance.get<
+                ApiResponse<MaintenanceResponse[]>
+            >("/maintenance-report", {
+                params: {
+                    airplaneId: selectedAirplaneId,
+                },
+            });
 
             return data.data;
         },
