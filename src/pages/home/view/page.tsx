@@ -11,7 +11,7 @@ const ViewPage = () => {
         <>
             <div className="flex-1 overflow-y-auto">
                 <ViewSection maintenanceDetail={maintenanceDetail} isLoading={isLoading}/>
-                <ButtonSection/>
+                <ButtonSection />
             </div>
         </>
     );

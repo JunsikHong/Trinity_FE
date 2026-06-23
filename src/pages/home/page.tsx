@@ -16,6 +16,8 @@ const HomePage = () => {
                 defaultSize="20%"
                 minSize="350px"
                 maxSize="50%"
+                collapsible
+                collapsedSize={0}
             >
                 <LogSection />
             </Panel>
@@ -23,7 +25,7 @@ const HomePage = () => {
             <Panel>
                 <Group orientation="vertical" className="h-full">
                     <Panel
-                        defaultSize="60%"
+                        defaultSize="100%"
                         minSize="0%"
                         maxSize="100%"
                     >
@@ -33,9 +35,11 @@ const HomePage = () => {
                     </Panel>
                     <SeperatorSection2/>
                     <Panel
-                        defaultSize="40%"
-                        minSize="0%"
+                        defaultSize="350px"
+                        minSize="350px"
                         maxSize="100%"
+                        collapsible
+                        collapsedSize={0}
                     >
                         <div className="h-full bg-white">
                             <ModelStructure />
@@ -48,6 +52,8 @@ const HomePage = () => {
                 defaultSize="20%"
                 minSize="350px"
                 maxSize="50%"
+                collapsible
+                collapsedSize={0}
             >
                 <AsideSection/>
             </Panel>

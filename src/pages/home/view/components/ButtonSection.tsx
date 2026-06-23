@@ -1,20 +1,16 @@
 import { Trash2, Edit2 } from "lucide-react";
-import useStateStore from '@/store/useStateStore';
+
+import useStateStore from "@/store/stateStore";
 
 const ButtonSection = () => {
-    const { closeDetail, openWrite } = useStateStore();
+    const { openWrite } = useStateStore();
 
     const handleEdit = () => {
-        console.log("수정 버튼 클릭");
-        closeDetail();
-        openWrite("R-2024-00017");
+        openWrite();
     };
 
     const handleDelete = () => {
-        if (confirm("정말 삭제하시겠습니까?")) {
-            console.log("삭제 버튼 클릭");
-            closeDetail();
-        }
+        
     };
 
     return (

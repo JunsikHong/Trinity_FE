@@ -3,35 +3,32 @@ import { create } from 'zustand';
 interface StateStore {
     isOpenDetail: boolean;
     isOpenWrite: boolean;
-    selectedId: number | null;
 
-    openDetail: (id: number) => void;
+    openDetail: () => void;
     closeDetail: () => void;
-    openWrite: (id: number) => void;
+    openWrite: () => void;
     closeWrite: () => void;
 }
 
 const useStateStore = create<StateStore>((set) => ({
     isOpenDetail: false,
     isOpenWrite: false,
-    selectedId: null,
 
-    openDetail: (id) =>
+    openDetail: () =>
         set({
             isOpenDetail: true,
-            selectedId: id,
+            isOpenWrite: false
         }),
 
     closeDetail: () =>
         set({
             isOpenDetail: false,
-            selectedId: null,
         }),
 
-    openWrite: (id) =>
+    openWrite: () =>
         set({
             isOpenWrite: true,
-            selectedId: id,
+            isOpenDetail: false
         }),
 
     closeWrite: () =>
