@@ -5,7 +5,7 @@ interface DetailSectionProps {
     isLoading: boolean;
 }
 
-const ViewSection = ({ maintenanceDetail , isLoading } : DetailSectionProps) => {
+const ViewSection = ({ maintenanceDetail, isLoading }: DetailSectionProps) => {
 
     if (isLoading) {
         return (
@@ -23,30 +23,60 @@ const ViewSection = ({ maintenanceDetail , isLoading } : DetailSectionProps) => 
                     <p className="text-sm font-medium text-slate-900">{maintenanceDetail?.id}</p>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
-                    <div>
-                        <p className="text-xs text-slate-600 mb-1">Chapter</p>
-                        <p className="text-sm text-slate-900">{maintenanceDetail?.chapter}</p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-slate-600 mb-1">STA</p>
-                        <p className="text-sm text-slate-900">{maintenanceDetail?.station}</p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-slate-600 mb-1">Stringer</p>
-                        <p className="text-sm text-slate-900">{maintenanceDetail?.stringer}</p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-slate-600 mb-1">Water Line</p>
-                        <p className="text-sm text-slate-900">{maintenanceDetail?.waterLine}</p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-slate-600 mb-1">Buttock Line</p>
-                        <p className="text-sm text-slate-900">{maintenanceDetail?.buttockLine}</p>
-                    </div>
-                    <div>
-                        <p className="text-xs text-slate-600 mb-1">Wing Line</p>
-                        <p className="text-sm text-slate-900">{maintenanceDetail?.wingStation}</p>
-                    </div>
+                    {maintenanceDetail?.chapter && (
+                        <div>
+                            <p className="text-xs text-slate-600 mb-1">Chapter</p>
+                            <p className="text-sm text-slate-900">{maintenanceDetail?.chapter}</p>
+                        </div>
+                    )}
+                    {maintenanceDetail?.station && (
+                        <div>
+                            <p className="text-xs text-slate-600 mb-1">Station</p>
+                            <p className="text-sm text-slate-900">{maintenanceDetail?.station}</p>
+                        </div>
+                    )}
+                    {maintenanceDetail?.waterLine && (
+                        <div>
+                            <p className="text-xs text-slate-600 mb-1">Water Line</p>
+                            <p className="text-sm text-slate-900">{maintenanceDetail?.waterLine}</p>
+                        </div>
+                    )}
+                    {maintenanceDetail?.buttockLine && (
+                        <div>
+                            <p className="text-xs text-slate-600 mb-1">Buttock Line</p>
+                            <p className="text-sm text-slate-900">{maintenanceDetail?.buttockLine}</p>
+                        </div>
+                    )}
+                    {maintenanceDetail?.stringer && (
+                        <div>
+                            <p className="text-xs text-slate-600 mb-1">Stringer</p>
+                            <p className="text-sm text-slate-900">{maintenanceDetail?.stringer}</p>
+                        </div>
+                    )}
+                    {maintenanceDetail?.frame && (
+                        <div>
+                            <p className="text-xs text-slate-600 mb-1">Frame</p>
+                            <p className="text-sm text-slate-900">{maintenanceDetail?.frame}</p>
+                        </div>
+                    )}
+                    {maintenanceDetail?.rib && (
+                        <div>
+                            <p className="text-xs text-slate-600 mb-1">Rib</p>
+                            <p className="text-sm text-slate-900">{maintenanceDetail?.rib}</p>
+                        </div>
+                    )}
+                    {maintenanceDetail?.wingStation && (
+                        <div>
+                            <p className="text-xs text-slate-600 mb-1">Wing Station</p>
+                            <p className="text-sm text-slate-900">{maintenanceDetail?.wingStation}</p>
+                        </div>
+                    )}
+                    {maintenanceDetail?.bodyStation && (
+                        <div>
+                            <p className="text-xs text-slate-600 mb-1">Body Station</p>
+                            <p className="text-sm text-slate-900">{maintenanceDetail?.bodyStation}</p>
+                        </div>
+                    )}
                 </div>
                 <div>
                     <p className="text-xs text-slate-600 mb-1">수리일자</p>

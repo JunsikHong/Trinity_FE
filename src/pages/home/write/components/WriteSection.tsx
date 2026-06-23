@@ -1,43 +1,73 @@
 import SystemDateInput from "@/common/ui/SystemDateInput";
 import SystemInput from "@/common/ui/SystemInput";
 import SystemTextarea from "@/common/ui/SystemTextarea";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus } from 'lucide-react';
+import type { MaintenanceDetailResponse } from "@/hooks/useMaintenanceDetail";
 
-const WriteSection = () => {
-    interface FormData {
-        repairNo: string;
-        repairDate: string;
-        chapter: string;
-        sta: string;
-        stringer: string;
-        waterLine: string;
-        buttockLine: string;
-        wingLine: string;
-        description: string;
-    }
+interface WriteSectionProps {
+    maintenanceDetail: MaintenanceDetailResponse | undefined;
+    isLoading: boolean;
+}
 
-    const [formData, setFormData] = useState({
-        repairNo: "R-2024-00024",
-        repairDate: "2024-05-20",
-        chapter: "45.0",
-        sta: "320.0",
-        stringer: "S-12",
-        waterLine: "WL 215.0",
-        buttockLine: "BL 180.0",
-        wingLine: "WL 0.0",
-        description: "Skin panel dent repair",
+interface FormData {
+    chapter: number | null;
+    station: number | null;
+    waterLine: number | null;
+    buttockLine: number | null;
+    stringer: number | null;
+    frame: number | null;
+    rib: number | null;
+    wingStation: number | null;
+    bodyStation: number | null;
+    description: string | null;
+    createdAt: string;
+}
+
+const WriteSection = ({ maintenanceDetail, isLoading }: WriteSectionProps) => {
+
+
+    const [formData, setFormData] = useState<FormData>({
+        chapter: null,
+        station: null,
+        waterLine: null,
+        buttockLine: null,
+        stringer: null,
+        frame: null,
+        rib: null,
+        wingStation: null,
+        bodyStation: null,
+        description: "",
+        createdAt: ""
     });
 
-    const handleChange = (
-        field: keyof FormData,
-        value: string
+    const handleChange = <K extends keyof FormData>(
+        field: K,
+        value: FormData[K]
     ) => {
         setFormData((prev) => ({
             ...prev,
             [field]: value,
         }));
     };
+
+    useEffect(() => {
+        if (!maintenanceDetail?.id) return;
+
+        setFormData({
+            chapter: maintenanceDetail.chapter ?? null,
+            station: maintenanceDetail.station ?? null,
+            waterLine: maintenanceDetail.waterLine ?? null,
+            buttockLine: maintenanceDetail.buttockLine ?? null,
+            stringer: maintenanceDetail.stringer ?? null,
+            frame: maintenanceDetail.frame ?? null,
+            rib: maintenanceDetail.rib ?? null,
+            wingStation: maintenanceDetail.wingStation ?? null,
+            bodyStation: maintenanceDetail.bodyStation ?? null,
+            description: maintenanceDetail.description ?? "",
+            createdAt: maintenanceDetail.createdAt ?? ""
+        });
+    }, [maintenanceDetail]);
 
     return (
         <>
@@ -51,17 +81,10 @@ const WriteSection = () => {
                         }
                     />
                     <SystemInput
-                        label="STA"
-                        value={formData.sta}
+                        label="Station"
+                        value={formData.station}
                         onChange={(e) =>
-                            handleChange("sta", e.target.value)
-                        }
-                    />
-                    <SystemInput
-                        label="Stringer"
-                        value={formData.stringer}
-                        onChange={(e) =>
-                            handleChange("stringer", e.target.value)
+                            handleChange("station", e.target.value)
                         }
                     />
                     <SystemInput
@@ -79,18 +102,46 @@ const WriteSection = () => {
                         }
                     />
                     <SystemInput
-                        label="Wing Line"
-                        value={formData.wingLine}
+                        label="Stringer"
+                        value={formData.stringer}
                         onChange={(e) =>
-                            handleChange("wingLine", e.target.value)
+                            handleChange("stringer", e.target.value)
+                        }
+                    />
+                    <SystemInput
+                        label="Frame"
+                        value={formData.frame}
+                        onChange={(e) =>
+                            handleChange("frame", e.target.value)
+                        }
+                    />
+                    <SystemInput
+                        label="Rib"
+                        value={formData.rib}
+                        onChange={(e) =>
+                            handleChange("rib", e.target.value)
+                        }
+                    />
+                    <SystemInput
+                        label="Wing Station"
+                        value={formData.wingStation}
+                        onChange={(e) =>
+                            handleChange("wingStation", e.target.value)
+                        }
+                    />
+                    <SystemInput
+                        label="Body Station"
+                        value={formData.bodyStation}
+                        onChange={(e) =>
+                            handleChange("bodyStation", e.target.value)
                         }
                     />
                 </div>
                 <SystemDateInput
                     label="수리일자"
-                    value={formData.repairDate}
+                    value={formData.createdAt}
                     onChange={(e) =>
-                        handleChange("repairDate", e.target.value)
+                        handleChange("createdAt", e.target.value)
                     }
                 />
                 <SystemTextarea
@@ -108,7 +159,7 @@ const WriteSection = () => {
                     <button
                         className="flex h-8 items-center gap-1 rounded-md border text-slate-600 border-slate-200 bg-white px-2 font-medium hover:bg-slate-50 text-xs"
                     >
-                        <Plus size={16}/> 사진 추가
+                        <Plus size={16} /> 사진 추가
                     </button>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
