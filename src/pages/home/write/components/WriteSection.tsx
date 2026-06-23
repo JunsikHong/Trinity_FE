@@ -7,7 +7,6 @@ import type { MaintenanceDetailResponse } from "@/hooks/useMaintenanceDetail";
 
 interface WriteSectionProps {
     maintenanceDetail: MaintenanceDetailResponse | undefined;
-    isLoading: boolean;
 }
 
 interface FormData {
@@ -24,7 +23,7 @@ interface FormData {
     createdAt: string;
 }
 
-const WriteSection = ({ maintenanceDetail, isLoading }: WriteSectionProps) => {
+const WriteSection = ({ maintenanceDetail }: WriteSectionProps) => {
 
 
     const [formData, setFormData] = useState<FormData>({
@@ -76,80 +75,80 @@ const WriteSection = ({ maintenanceDetail, isLoading }: WriteSectionProps) => {
                     <SystemInput
                         label="Chapter"
                         value={formData.chapter}
-                        onChange={(e) =>
-                            handleChange("chapter", e.target.value)
+                        onChange={() =>
+                            handleChange("chapter", formData.chapter)
                         }
                     />
                     <SystemInput
                         label="Station"
                         value={formData.station}
-                        onChange={(e) =>
-                            handleChange("station", e.target.value)
+                        onChange={() =>
+                            handleChange("station", formData.station)
                         }
                     />
                     <SystemInput
                         label="Water Line"
                         value={formData.waterLine}
-                        onChange={(e) =>
-                            handleChange("waterLine", e.target.value)
+                        onChange={() =>
+                            handleChange("waterLine", formData.waterLine)
                         }
                     />
                     <SystemInput
                         label="Buttock Line"
                         value={formData.buttockLine}
-                        onChange={(e) =>
-                            handleChange("buttockLine", e.target.value)
+                        onChange={() =>
+                            handleChange("buttockLine", formData.buttockLine)
                         }
                     />
                     <SystemInput
                         label="Stringer"
                         value={formData.stringer}
-                        onChange={(e) =>
-                            handleChange("stringer", e.target.value)
+                        onChange={() =>
+                            handleChange("stringer", formData.stringer)
                         }
                     />
                     <SystemInput
                         label="Frame"
                         value={formData.frame}
-                        onChange={(e) =>
-                            handleChange("frame", e.target.value)
+                        onChange={() =>
+                            handleChange("frame", formData.frame)
                         }
                     />
                     <SystemInput
                         label="Rib"
                         value={formData.rib}
-                        onChange={(e) =>
-                            handleChange("rib", e.target.value)
+                        onChange={() =>
+                            handleChange("rib", formData.rib)
                         }
                     />
                     <SystemInput
                         label="Wing Station"
                         value={formData.wingStation}
-                        onChange={(e) =>
-                            handleChange("wingStation", e.target.value)
+                        onChange={() =>
+                            handleChange("wingStation", formData.wingStation)
                         }
                     />
                     <SystemInput
                         label="Body Station"
                         value={formData.bodyStation}
-                        onChange={(e) =>
-                            handleChange("bodyStation", e.target.value)
+                        onChange={() =>
+                            handleChange("bodyStation", formData.bodyStation)
                         }
                     />
                 </div>
                 <SystemDateInput
                     label="수리일자"
                     value={formData.createdAt}
-                    onChange={(e) =>
-                        handleChange("createdAt", e.target.value)
+                    onChange={() =>
+                        handleChange("createdAt", formData.createdAt)
                     }
                 />
                 <SystemTextarea
                     label="설명"
                     rows={5}
                     value={formData.description}
-                    onChange={(e) =>
-                        handleChange("description", e.target.value)
+                    onChange={() =>
+                        handleChange("description", formData.description)
                     }
                 />
             </div>

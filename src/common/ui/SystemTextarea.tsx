@@ -1,6 +1,6 @@
 type Props = {
     label?: string;
-    value?: string;
+    value?: string | null;
     placeholder?: string;
     onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     rows: number;
