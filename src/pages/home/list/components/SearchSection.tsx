@@ -38,11 +38,6 @@ const SearchSection = ({ maintenanceListCount } : SearchSectionProps) => {
 
     return (
         <div className="space-y-3 border-b py-4 px-3">
-            <div className="flex items-center justify-between">
-                <h2 className="font-semibold text-sm ml-1">
-                    수리이력 목록
-                </h2>
-            </div>
             <SearchSelect
                 value={selectedAirplaneId ?? ""}
                 options={options}
@@ -52,6 +47,7 @@ const SearchSection = ({ maintenanceListCount } : SearchSectionProps) => {
             <div className="flex gap-2">
                 <SearchInput
                     value={keyword}
+                    onChange={setKeyword}
                     placeholder="설명, 위치 검색"
                 />
                 <button

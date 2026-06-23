@@ -1,26 +1,19 @@
-import { X } from "lucide-react";
 import ViewSection from "@/pages/home/view/components/ViewSection";
 import ButtonSection from "@/pages/home/view/components/ButtonSection";
-import useStateStore from '@/store/useStateStore';
+import { useMaintenanceDetail } from "@/hooks/useMaintenanceDetail";
+import { useMaintenanceStore } from "@/store/maintenanceStore";
 
 const ViewPage = () => {
-    const { closeDetail } = useStateStore();
+    const { selectedMaintenanceId } = useMaintenanceStore();
+    const { data: maintenanceDetail, isLoading } = useMaintenanceDetail(selectedMaintenanceId);
     
     return (
-        <aside className="flex h-full flex-col border-l bg-white">
-            <div className="flex items-center justify-between border-b px-4 py-3">
-                <h2 className="font-semibold text-sm">
-                    수리이력 상세
-                </h2>
-                <button onClick={closeDetail}>
-                    <X size={18} />
-                </button>
-            </div>
+        <>
             <div className="flex-1 overflow-y-auto">
-                <ViewSection />
-                <ButtonSection />
+                <ViewSection maintenanceDetail={maintenanceDetail} isLoading={isLoading}/>
+                <ButtonSection/>
             </div>
-        </aside>
+        </>
     );
 };
 

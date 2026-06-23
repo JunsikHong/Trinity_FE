@@ -1,5 +1,5 @@
 import { MapPin } from "lucide-react";
-import useStateStore from "@/store/useStateStore";
+import { useMaintenanceStore } from "@/store/maintenanceStore";
 import type { MaintenanceResponse } from "@/hooks/useMaintenance";
 
 interface ListSectionProps {
@@ -8,7 +8,7 @@ interface ListSectionProps {
 }
 
 const ListSection = ({ maintenanceList, isLoading } : ListSectionProps) => {
-    const { selectedId, openDetail } = useStateStore();
+    const { selectedMaintenanceId, setSelectedMaintenance, clearSelectedMaintenance } = useMaintenanceStore();
     const getLocationText = (item: any) => {
         const locations = [];
 
@@ -47,10 +47,16 @@ const ListSection = ({ maintenanceList, isLoading } : ListSectionProps) => {
             {maintenanceList.map((item) => (
                 <button
                     key={item.id}
-                    onClick={() => openDetail(item.id)}
+                    onClick={() => {
+                        if(item.id === selectedMaintenanceId) {
+                            clearSelectedMaintenance();
+                        } else {
+                            setSelectedMaintenance(item.id)
+                        }
+                    }}
                     className={`mb-1 flex w-full gap-3 rounded-md border p-3 text-left transition hover:bg-slate-50
                         ${
-                            item.id === selectedId
+                            item.id === selectedMaintenanceId
                                 ? "bg-blue-50 ring-1 ring-blue-500"
                                 : ""
                         }
