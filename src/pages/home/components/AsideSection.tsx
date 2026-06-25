@@ -9,7 +9,7 @@ const AsideSection = () => {
     return (
         <aside className="flex h-full flex-col border-r bg-white relative">
             {(isOpenDetail && selectedMaintenanceId) && <ViewPage/>}
-            {isOpenWrite && <WritePage/>}
+            {(isOpenWrite && !selectedMaintenanceId) && <WritePage/>}
         </aside>
     );
 }

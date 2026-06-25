@@ -8,20 +8,30 @@ import SeperatorSection from "@/pages/home/components/SeperatorSection";
 import SeperatorSection2 from "@/pages/home/components/SeperatorSection2";
 import AsideSection from "@/pages/home/components/AsideSection";
 
+import { useAirplaneStore } from "@/store/airplaneStore";
+import useStateStore from "@/store/stateStore";
+
 const HomePage = () => {
+
+    const { selectedAirplaneId } = useAirplaneStore();
+    const { isOpenDetail, isOpenWrite } = useStateStore();
 
     return (
         <Group orientation="horizontal" className="h-full w-full">
-            <Panel
-                defaultSize="20%"
-                minSize="350px"
-                maxSize="50%"
-                collapsible
-                collapsedSize={0}
-            >
-                <LogSection />
-            </Panel>
-            <SeperatorSection />
+            {selectedAirplaneId && (
+                <>
+                    <Panel
+                        defaultSize="20%"
+                        minSize="350px"
+                        maxSize="50%"
+                        collapsible
+                        collapsedSize={0}
+                    >
+                        <LogSection />
+                    </Panel>
+                    <SeperatorSection />
+                </>
+            )}
             <Panel>
                 <Group orientation="vertical" className="h-full">
                     <Panel
@@ -33,7 +43,7 @@ const HomePage = () => {
                             <ModelCanvas />
                         </div>
                     </Panel>
-                    <SeperatorSection2/>
+                    <SeperatorSection2 />
                     <Panel
                         defaultSize="350px"
                         minSize="350px"
@@ -47,16 +57,20 @@ const HomePage = () => {
                     </Panel>
                 </Group>
             </Panel>
-            <SeperatorSection />
-            <Panel
-                defaultSize="20%"
-                minSize="350px"
-                maxSize="50%"
-                collapsible
-                collapsedSize={0}
-            >
-                <AsideSection/>
-            </Panel>
+            {(selectedAirplaneId && (isOpenDetail || isOpenWrite)) && (
+                <>
+                    <SeperatorSection />
+                    <Panel
+                        defaultSize="20%"
+                        minSize="350px"
+                        maxSize="50%"
+                        collapsible
+                        collapsedSize={0}
+                    >
+                        <AsideSection />
+                    </Panel>
+                </>
+            )}
         </Group>
     );
 };

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { useMaintenanceStore } from "./maintenanceStore";
 
 interface AirplaneState {
     selectedAirplaneId: number | null;
@@ -13,8 +14,14 @@ export const useAirplaneStore = create<AirplaneState>()(
             selectedAirplaneId: null,
 
             setSelectedAirplane: (airplane) =>
-                set({
-                    selectedAirplaneId: airplane,
+                set((state) => {
+                    if (state.selectedAirplaneId !== airplane) {
+                        useMaintenanceStore.getState().clearSelectedMaintenance();
+                    }
+
+                    return {
+                        selectedAirplaneId: airplane,
+                    };
                 }),
 
             clearSelectedAirplane: () =>

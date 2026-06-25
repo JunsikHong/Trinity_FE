@@ -1,9 +1,6 @@
 import SearchInput from "@/common/ui/SearchInput";
-import SearchSelect from "@/common/ui/SearchSelect";
 import { Funnel } from "lucide-react";
 import { useState } from "react";
-import { useAirplane } from "@/hooks/useAirplane";
-import { useAirplaneStore } from "@/store/airplaneStore";
 
 interface SearchSectionProps {
     maintenanceListCount: number;
@@ -11,39 +8,9 @@ interface SearchSectionProps {
 
 const SearchSection = ({ maintenanceListCount } : SearchSectionProps) => {
     const [keyword, setKeyword] = useState("");
-    const { data: airplanes = [] } = useAirplane();
-    const { selectedAirplaneId, setSelectedAirplane } = useAirplaneStore();
-    const options = [
-        { value: "", label: "항공기 선택" },
-        ...airplanes.map((airplane) => ({
-            value: airplane.id,
-            label: airplane.registrationNumber + " (" + airplane.airplaneTypeName + ")",
-        })),
-    ];
-
-    const handleAirplaneChange = (value: string) => {
-        if (!value) {
-            setSelectedAirplane(null);
-            return;
-        }
-
-        const airplane = airplanes.find(
-            (item) => item.id === Number(value)
-        );
-
-        if (!airplane) return;
-
-        setSelectedAirplane(airplane.id);
-    };
 
     return (
         <div className="space-y-3 border-b py-4 px-3">
-            <SearchSelect
-                value={selectedAirplaneId ?? ""}
-                options={options}
-                onChange={handleAirplaneChange}
-                className="w-full"
-            />
             <div className="flex gap-2">
                 <SearchInput
                     value={keyword}

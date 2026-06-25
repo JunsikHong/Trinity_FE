@@ -2,15 +2,14 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Grid, GizmoHelper, GizmoViewport } from '@react-three/drei';
 import { Suspense } from 'react';
 import B737Model from '@/models/B737Model';
-import {
-  MousePointer2,
-  Hand,
-  ZoomIn,
-  ZoomOut,
-  X
-} from 'lucide-react';
+import { MousePointer2, Hand, ZoomIn, ZoomOut, X } from 'lucide-react';
+import { useAirplaneStore } from "@/store/airplaneStore";
+import { useMaintenanceStore } from "@/store/maintenanceStore";
 
 const ModelCanvas = () => {
+  const { selectedAirplaneId } = useAirplaneStore();
+  const { selectedMaintenanceId } = useMaintenanceStore();
+
   return (
     <div className="flex h-full flex-col bg-black">
       <div className="relative flex-1">
@@ -40,37 +39,39 @@ const ModelCanvas = () => {
             <ZoomOut size={18} />
           </button>
         </div>
-        <div className='absolute top-3 left-16 flex flex-col bg-slate-800 z-10 px-2 py-2 rounded-md'>
-          <div className='flex items-center gap-3 justify-between mb-3 text-slate-500'>
-            <p className='text-xs font-bold'>
-              위치정보
-              <span className='text-xs'>(선택기준)</span>
-            </p>
-            <X size={14}/>
+        {selectedMaintenanceId && (
+          <div className='absolute top-3 left-16 flex flex-col bg-slate-800 z-10 px-2 py-2 rounded-md'>
+            <div className='flex items-center gap-3 justify-between mb-3 text-slate-500'>
+              <p className='text-xs font-bold'>
+                위치정보
+                <span className='text-xs'>(선택기준)</span>
+              </p>
+              <X size={14} />
+            </div>
+            <div className='flex flex-col gap-1 text-xs text-slate-300'>
+              <div className='flex justify-between'>
+                <p>Chapter</p>
+                <p>45.0</p>
+              </div>
+              <div className='flex justify-between'>
+                <p>STA</p>
+                <p>560.0</p>
+              </div>
+              <div className='flex justify-between'>
+                <p>Stringer</p>
+                <p>s-156</p>
+              </div>
+              <div className='flex justify-between'>
+                <p>Water line</p>
+                <p>180.0</p>
+              </div>
+              <div className='flex justify-between'>
+                <p>Wing Line</p>
+                <p>30.0</p>
+              </div>
+            </div>
           </div>
-          <div className='flex flex-col gap-1 text-xs text-slate-300'>
-            <div className='flex justify-between'>
-              <p>Chapter</p>
-              <p>45.0</p>
-            </div>
-            <div className='flex justify-between'>
-              <p>STA</p>
-              <p>560.0</p>
-            </div>
-            <div className='flex justify-between'>
-              <p>Stringer</p>
-              <p>s-156</p>
-            </div>
-            <div className='flex justify-between'>
-              <p>Water line</p>
-              <p>180.0</p>
-            </div>
-            <div className='flex justify-between'>
-              <p>Wing Line</p>
-              <p>30.0</p>
-            </div>
-          </div>
-        </div>
+        )}
         <Canvas
           camera={{
             position: [10, 5, 10],
@@ -95,7 +96,9 @@ const ModelCanvas = () => {
             intensity={2}
           />
           <Suspense fallback={null}>
-            <B737Model />
+            {selectedAirplaneId && (
+              <B737Model />
+            )}
           </Suspense>
           <OrbitControls
             enablePan={false}
