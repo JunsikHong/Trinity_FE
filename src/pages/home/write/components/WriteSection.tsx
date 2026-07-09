@@ -3,10 +3,10 @@ import SystemInput from "@/common/ui/SystemInput";
 import SystemTextarea from "@/common/ui/SystemTextarea";
 import { useState, useEffect } from "react";
 import { Plus } from 'lucide-react';
-import type { MaintenanceDetailResponse } from "@/hooks/useMaintenanceDetail";
+import type { RepairDetailResponse } from "@/common/type/repair";
 
 interface WriteSectionProps {
-    maintenanceDetail: MaintenanceDetailResponse | undefined;
+    repairDetail: RepairDetailResponse | undefined;
 }
 
 interface FormData {
@@ -23,7 +23,7 @@ interface FormData {
     createdAt: string;
 }
 
-const WriteSection = ({ maintenanceDetail }: WriteSectionProps) => {
+const WriteSection = ({ repairDetail }: WriteSectionProps) => {
 
 
     const [formData, setFormData] = useState<FormData>({

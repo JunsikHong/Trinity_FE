@@ -1,16 +1,11 @@
 import { Trash2, Edit2 } from "lucide-react";
 
-import useStateStore from "@/store/stateStore";
-
 const ButtonSection = () => {
-    const { openWrite } = useStateStore();
 
     const handleEdit = () => {
-        openWrite();
     };
 
     const handleDelete = () => {
-        
     };
 
     return (

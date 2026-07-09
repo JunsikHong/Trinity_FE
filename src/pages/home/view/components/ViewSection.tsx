@@ -1,12 +1,14 @@
-import type { MaintenanceDetailResponse } from "@/hooks/useMaintenanceDetail";
+import type { RepairDetailResponse } from "@/common/type/repair";
 
 interface DetailSectionProps {
-    maintenanceDetail: MaintenanceDetailResponse | undefined;
+    repairDetail: RepairDetailResponse | undefined;
     isLoading: boolean;
 }
 
-const ViewSection = ({ maintenanceDetail, isLoading }: DetailSectionProps) => {
-
+const ViewSection = ({
+    repairDetail,
+    isLoading,
+}: DetailSectionProps) => {
     if (isLoading) {
         return (
             <div className="flex-1 p-4 text-sm text-slate-500">
@@ -15,110 +17,118 @@ const ViewSection = ({ maintenanceDetail, isLoading }: DetailSectionProps) => {
         );
     }
 
+    if (!repairDetail) {
+        return (
+            <div className="flex-1 p-4 text-sm text-slate-500">
+                정비 이력을 선택해주세요.
+            </div>
+        );
+    }
+
     return (
         <>
-            <div className="space-y-4 m-2 p-3 border rounded-md border-slate-200">
+            <div className="m-2 space-y-4 rounded-md border border-slate-200 p-3">
                 <div>
-                    <p className="text-xs text-slate-600 mb-1">수리번호</p>
-                    <p className="text-sm font-medium text-slate-900">{maintenanceDetail?.id}</p>
+                    <p className="mb-1 text-xs text-slate-600">수리번호</p>
+                    <p className="text-sm font-medium text-slate-900">
+                        #{repairDetail.id}
+                    </p>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
-                    {maintenanceDetail?.chapter && (
-                        <div>
-                            <p className="text-xs text-slate-600 mb-1">Chapter</p>
-                            <p className="text-sm text-slate-900">{maintenanceDetail?.chapter}</p>
-                        </div>
-                    )}
-                    {maintenanceDetail?.station && (
-                        <div>
-                            <p className="text-xs text-slate-600 mb-1">Station</p>
-                            <p className="text-sm text-slate-900">{maintenanceDetail?.station}</p>
-                        </div>
-                    )}
-                    {maintenanceDetail?.waterLine && (
-                        <div>
-                            <p className="text-xs text-slate-600 mb-1">Water Line</p>
-                            <p className="text-sm text-slate-900">{maintenanceDetail?.waterLine}</p>
-                        </div>
-                    )}
-                    {maintenanceDetail?.buttockLine && (
-                        <div>
-                            <p className="text-xs text-slate-600 mb-1">Buttock Line</p>
-                            <p className="text-sm text-slate-900">{maintenanceDetail?.buttockLine}</p>
-                        </div>
-                    )}
-                    {maintenanceDetail?.stringer && (
-                        <div>
-                            <p className="text-xs text-slate-600 mb-1">Stringer</p>
-                            <p className="text-sm text-slate-900">{maintenanceDetail?.stringer}</p>
-                        </div>
-                    )}
-                    {maintenanceDetail?.frame && (
-                        <div>
-                            <p className="text-xs text-slate-600 mb-1">Frame</p>
-                            <p className="text-sm text-slate-900">{maintenanceDetail?.frame}</p>
-                        </div>
-                    )}
-                    {maintenanceDetail?.rib && (
-                        <div>
-                            <p className="text-xs text-slate-600 mb-1">Rib</p>
-                            <p className="text-sm text-slate-900">{maintenanceDetail?.rib}</p>
-                        </div>
-                    )}
-                    {maintenanceDetail?.wingStation && (
-                        <div>
-                            <p className="text-xs text-slate-600 mb-1">Wing Station</p>
-                            <p className="text-sm text-slate-900">{maintenanceDetail?.wingStation}</p>
-                        </div>
-                    )}
-                    {maintenanceDetail?.bodyStation && (
-                        <div>
-                            <p className="text-xs text-slate-600 mb-1">Body Station</p>
-                            <p className="text-sm text-slate-900">{maintenanceDetail?.bodyStation}</p>
-                        </div>
-                    )}
-                </div>
+
                 <div>
-                    <p className="text-xs text-slate-600 mb-1">수리일자</p>
-                    <p className="text-sm text-slate-900">{maintenanceDetail?.createdAt}</p>
+                    <p className="mb-2 text-xs text-slate-600">수리 위치</p>
+
+                    <div className="space-y-2">
+                        {repairDetail.locations.map((location) => (
+                            <div
+                                key={location.locationId}
+                                className="rounded-md border border-slate-200 bg-slate-50 p-3"
+                            >
+                                <p className="text-sm font-medium text-slate-900">
+                                    CH {location.chapterNumber}{" "}
+                                    {location.chapterName}
+                                </p>
+
+                                <p className="mt-1 text-sm text-slate-700">
+                                    {location.locationName}
+                                    {location.value
+                                        ? ` : ${location.value}`
+                                        : ""}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
+
                 <div>
-                    <p className="text-xs text-slate-600 mb-1">설명</p>
-                    <p className="text-sm text-slate-900 whitespace-pre-wrap">{maintenanceDetail?.description}</p>
+                    <p className="mb-1 text-xs text-slate-600">수리일자</p>
+                    <p className="text-sm text-slate-900">
+                        {repairDetail.repairAt
+                            ? new Date(
+                                  repairDetail.repairAt
+                              ).toLocaleString()
+                            : "-"}
+                    </p>
+                </div>
+
+                <div>
+                    <p className="mb-1 text-xs text-slate-600">설명</p>
+                    <p className="whitespace-pre-wrap text-sm text-slate-900">
+                        {repairDetail.description || "설명이 없습니다."}
+                    </p>
                 </div>
             </div>
 
-            <div className="space-y-4 m-2 p-3 border rounded-md border-slate-200">
+            <div className="m-2 space-y-4 rounded-md border border-slate-200 p-3">
                 <div>
-                    <h3 className="text-sm text-slate-600 mb-3">첨부 사진</h3>
-                    {maintenanceDetail?.files && maintenanceDetail.files.length > 0 ? (
+                    <h3 className="mb-3 text-sm text-slate-600">
+                        첨부 사진
+                    </h3>
+
+                    {repairDetail.files.length > 0 ? (
                         <div className="grid grid-cols-2 gap-2">
-                            {maintenanceDetail.files.map((file) => (
+                            {repairDetail.files.map((file) => (
                                 <img
                                     key={file.id}
                                     src={file.filePath}
                                     alt={file.originalName}
-                                    className="w-full h-24 rounded-lg object-cover border border-slate-200"
+                                    className="h-24 w-full rounded-lg border border-slate-200 object-cover"
                                 />
                             ))}
                         </div>
                     ) : (
-                        <div className="border border-slate-300 h-16 rounded-lg flex items-center justify-center text-sm text-slate-400">
+                        <div className="flex h-16 items-center justify-center rounded-lg border border-slate-300 text-sm text-slate-400">
                             첨부된 사진이 없습니다.
                         </div>
                     )}
                 </div>
             </div>
 
-            <div className="flex px-3 py-1 gap-3 items-center">
-                <div className="flex justify-center items-center gap-2">
-                    <p className="text-xs text-slate-400 p-1 border border-slate-300 rounded-md">생성자</p>
-                    <p className="text-xs text-slate-500">{maintenanceDetail?.userId}</p>
+            <div className="flex items-center gap-3 px-3 py-1">
+                <div className="flex items-center gap-2">
+                    <p className="rounded-md border border-slate-300 p-1 text-xs text-slate-400">
+                        생성일
+                    </p>
+
+                    <p className="text-xs text-slate-500">
+                        {new Date(
+                            repairDetail.createdAt
+                        ).toLocaleString()}
+                    </p>
                 </div>
-                <div className="border border-slate-200 h-4"></div>
-                <div className="flex justify-center items-center gap-2">
-                    <p className="text-xs text-slate-400 p-1 border border-slate-300 rounded-md">생성일</p>
-                    <p className="text-xs text-slate-500">{maintenanceDetail?.createdAt}</p>
+
+                <div className="h-4 border border-slate-200"></div>
+
+                <div className="flex items-center gap-2">
+                    <p className="rounded-md border border-slate-300 p-1 text-xs text-slate-400">
+                        수정일
+                    </p>
+
+                    <p className="text-xs text-slate-500">
+                        {new Date(
+                            repairDetail.updatedAt
+                        ).toLocaleString()}
+                    </p>
                 </div>
             </div>
         </>

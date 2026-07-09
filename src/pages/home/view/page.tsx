@@ -1,16 +1,16 @@
 import ViewSection from "@/pages/home/view/components/ViewSection";
 import ButtonSection from "@/pages/home/view/components/ButtonSection";
-import { useMaintenanceDetail } from "@/hooks/useMaintenanceDetail";
-import { useMaintenanceStore } from "@/store/maintenanceStore";
+import { useRepairDetail } from "@/hooks/repair/useRepairDetail";
+import { useRepairStore } from "@/store/repairStore";
 
 const ViewPage = () => {
-    const { selectedMaintenanceId } = useMaintenanceStore();
-    const { data: maintenanceDetail, isLoading } = useMaintenanceDetail(selectedMaintenanceId);
+    const { selectedRepairId } = useRepairStore();
+    const { data: repairDetail, isLoading } = useRepairDetail(selectedRepairId);
     
     return (
         <>
             <div className="flex-1 overflow-y-auto">
-                <ViewSection maintenanceDetail={maintenanceDetail} isLoading={isLoading}/>
+                <ViewSection repairDetail={repairDetail} isLoading={isLoading}/>
                 <ButtonSection />
             </div>
         </>

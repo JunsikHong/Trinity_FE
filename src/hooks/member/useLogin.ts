@@ -1,22 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "@/hooks/axiosInstance";
 import { useAuthStore } from "@/store/authStore";
-import type { UserRole } from '@/types/auth';
-
-interface LoginRequest {
-    email: string;
-    password: string;
-}
-
-interface LoginResponse {
-    accessToken: string;
-    refreshToken: string;
-    user: {
-        id: number;
-        role: UserRole;
-    };
-}
+import type { LoginRequest, LoginResponse } from "@/common/type/member/auth";
 
 export const useLogin = () => {
     const navigate = useNavigate();

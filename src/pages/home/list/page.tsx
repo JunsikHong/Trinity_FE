@@ -1,24 +1,21 @@
 import { Plus } from "lucide-react";
-import { useMaintenance } from "@/hooks/useMaintenance";
+import { useRepairList } from "@/hooks/repair/useRepairList";
 import SearchSection from "@/pages/home/list/components/SearchSection";
 import ListSection from "@/pages/home/list/components/ListSection";
-import useStateStore from "@/store/stateStore";
-import { useMaintenanceStore } from "@/store/maintenanceStore";
+import { useRepairStore } from "@/store/repairStore";
 
 const ListPage = () => {
-    const { data: maintenanceList = [], isLoading } = useMaintenance();
-    const { clearSelectedMaintenance } = useMaintenanceStore();
-    const { openWrite } = useStateStore();
+    const { data: repairList = [], isLoading } = useRepairList();
+    const { clearSelectedRepair } = useRepairStore();
 
     return (
         <aside className="flex h-full flex-col border-r bg-white relative">
-            <SearchSection maintenanceListCount={maintenanceList.length}/>
-            <ListSection maintenanceList={maintenanceList} isLoading={isLoading}/>
+            <SearchSection repairListCount={repairList.length}/>
+            <ListSection repairList={repairList} isLoading={isLoading}/>
             <div className="absolute bottom-6 right-3">
                 <button
                     onClick={() => {
-                        clearSelectedMaintenance();
-                        openWrite();
+                        clearSelectedRepair();
                     }}
                     className="flex h-10 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700"
                 >

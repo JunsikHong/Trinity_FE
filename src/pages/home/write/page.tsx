@@ -1,16 +1,16 @@
 import WriteSection from "@/pages/home/write/components/WriteSection";
 import ButtonSection from "@/pages/home/write/components/ButtonSection";
-import { useMaintenanceDetail } from "@/hooks/useMaintenanceDetail";
-import { useMaintenanceStore } from "@/store/maintenanceStore";
+import { useRepairDetail } from "@/hooks/repair/useRepairDetail";
+import { useRepairStore } from "@/store/repairStore";
 
 const WritePage = () => {
-    const { selectedMaintenanceId } = useMaintenanceStore();
-    const { data: maintenanceDetail } = useMaintenanceDetail(selectedMaintenanceId);
+    const { selectedRepairId } = useRepairStore();
+    const { data: repairDetail } = useRepairDetail(selectedRepairId);
     
     return (
         <>
             <div className="flex-1 overflow-y-auto">
-                <WriteSection maintenanceDetail={maintenanceDetail} />
+                <WriteSection repairDetail={repairDetail} />
                 <ButtonSection />
             </div>
         </>

@@ -1,20 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { UserRole } from '@/types/auth';
-
-interface AuthUser {
-    id : number,
-    role: UserRole;
-}
+import type { User } from "@/common/type/member";
 
 interface AuthState {
     accessToken: string | null;
     refreshToken: string | null;
-    user: AuthUser | null;
+    user: User | null;
     setAuth: (
         accessToken: string, 
         refreshToken: string, 
-        user: AuthUser
+        user: User
     ) => void;
     clearAuth: () => void;
 }

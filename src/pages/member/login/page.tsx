@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SystemInput from "@/common/ui/SystemInput";
-import { useLogin } from "@/hooks/useLogin";
+import { useLogin } from "@/hooks/member/useLogin";
 
 const LoginPage = () => {
     const [form, setForm] = useState({

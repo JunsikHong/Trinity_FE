@@ -3,10 +3,10 @@ import { Funnel } from "lucide-react";
 import { useState } from "react";
 
 interface SearchSectionProps {
-    maintenanceListCount: number;
+    repairListCount: number;
 }
 
-const SearchSection = ({ maintenanceListCount } : SearchSectionProps) => {
+const SearchSection = ({ repairListCount } : SearchSectionProps) => {
     const [keyword, setKeyword] = useState("");
 
     return (
@@ -14,14 +14,14 @@ const SearchSection = ({ maintenanceListCount } : SearchSectionProps) => {
             <div className="flex gap-2">
                 <SearchInput
                     value={keyword}
-                    onChange={setKeyword}
+                    onChange={(e) => setKeyword(e.target.value)}
                     placeholder="설명, 위치 검색"
                 />
                 <button
                     className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium hover:bg-slate-50"
                 >
                     <Funnel size={16} />
-                    ({maintenanceListCount}건)
+                    ({repairListCount}건)
                 </button>
             </div>
         </div>

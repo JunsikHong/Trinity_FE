@@ -1,20 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/hooks/axiosInstance";
-
-export interface MeResponse {
-    id: number;
-    name: string;
-    email: string;
-    departmentName: string;
-    role: string;
-}
+import type { Member } from "@/common/type/member";
 
 export const useMember = () => {
     return useQuery({
         queryKey: ["me"],
         queryFn: async () => {
             const { data } = await axiosInstance.get<{
-                data: MeResponse;
+                data: Member;
             }>("/user/me");
 
             return data.data;

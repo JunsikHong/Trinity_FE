@@ -1,39 +1,25 @@
 import { MapPin } from "lucide-react";
-import { useMaintenanceStore } from "@/store/maintenanceStore";
-import useStateStore from "@/store/stateStore";
-import type { MaintenanceResponse } from "@/hooks/useMaintenance";
+import { useRepairStore } from "@/store/repairStore";
+import type { RepairResponse } from "@/common/type/repair";
 
 interface ListSectionProps {
-    maintenanceList: MaintenanceResponse[];
+    repairList: RepairResponse[];
     isLoading: boolean;
 }
+const ListSection = ({ repairList, isLoading }: ListSectionProps) => {
+    const {
+        selectedRepairId,
+        setSelectedRepair,
+        clearSelectedRepair,
+    } = useRepairStore();
 
-const ListSection = ({ maintenanceList, isLoading } : ListSectionProps) => {
-    const { selectedMaintenanceId, setSelectedMaintenance, clearSelectedMaintenance } = useMaintenanceStore();
-    const { openDetail, closeDetail } = useStateStore();
-    const getLocationText = (item: any) => {
-        const locations = [];
-
-        if (item.chapter != null)
-            locations.push(`CH ${item.chapter}`);
-        if (item.station != null)
-            locations.push(`STA ${item.station}`);
-        if (item.waterLine != null)
-            locations.push(`WL ${item.waterLine}`);
-        if (item.buttockLine != null)
-            locations.push(`BL ${item.buttockLine}`);
-        if (item.stringer != null)
-            locations.push(`STR ${item.stringer}`);
-        if (item.frame != null)
-            locations.push(`FR ${item.frame}`);
-        if (item.rib != null)
-            locations.push(`RIB ${item.rib}`);
-        if (item.wingStation != null)
-            locations.push(`WS ${item.wingStation}`);
-        if (item.bodyStation != null)
-            locations.push(`BS ${item.bodyStation}`);
-
-        return locations.join(" / ");
+    const getLocationText = (item: RepairResponse) => {
+        return item.locations
+            .map(
+                (location) =>
+                    `CH ${location.chapterNumber} ${location.chapterName} : ${location.locationName} ${location.value}`
+            )
+            .join(" / ");
     };
 
     if (isLoading) {
@@ -46,25 +32,21 @@ const ListSection = ({ maintenanceList, isLoading } : ListSectionProps) => {
 
     return (
         <div className="relative flex-1 overflow-y-auto p-3">
-            {maintenanceList.map((item) => (
+            {repairList.map((item) => (
                 <button
                     key={item.id}
                     onClick={() => {
-                        if(item.id === selectedMaintenanceId) {
-                            clearSelectedMaintenance();
-                            closeDetail();
+                        if (item.id === selectedRepairId) {
+                            clearSelectedRepair();
                         } else {
-                            setSelectedMaintenance(item.id);
-                            openDetail();
+                            setSelectedRepair(item.id);
                         }
                     }}
-                    className={`mb-1 flex w-full gap-3 rounded-md border p-3 text-left transition hover:bg-slate-50
-                        ${
-                            item.id === selectedMaintenanceId
-                                ? "bg-blue-50 ring-1 ring-blue-500"
-                                : ""
-                        }
-                    `}
+                    className={`mb-1 flex w-full gap-3 rounded-md border p-3 text-left transition hover:bg-slate-50 ${
+                        item.id === selectedRepairId
+                            ? "bg-blue-50 ring-1 ring-blue-500"
+                            : ""
+                    }`}
                 >
                     <div className="flex h-16 w-20 shrink-0 items-center justify-center rounded-md border bg-slate-100">
                         <MapPin size={24} />
@@ -77,9 +59,7 @@ const ListSection = ({ maintenanceList, isLoading } : ListSectionProps) => {
                             </span>
 
                             <span className="text-xs text-slate-400">
-                                {new Date(
-                                    item.createdAt
-                                ).toLocaleDateString()}
+                                {new Date(item.createdAt).toLocaleDateString()}
                             </span>
                         </div>
 
@@ -87,15 +67,20 @@ const ListSection = ({ maintenanceList, isLoading } : ListSectionProps) => {
                             {item.description || "설명 없음"}
                         </p>
 
-                        <div className="mt-3 flex items-center gap-1 text-xs text-slate-500">
-                            <MapPin size={12} />
-                            {getLocationText(item)}
+                        <div className="mt-3 flex items-start gap-1 text-xs text-slate-500">
+                            <MapPin
+                                size={12}
+                                className="mt-0.5 shrink-0"
+                            />
+                            <span className="line-clamp-2">
+                                {getLocationText(item)}
+                            </span>
                         </div>
                     </div>
                 </button>
             ))}
 
-            {!maintenanceList.length && (
+            {!repairList.length && (
                 <div className="py-10 text-center text-sm text-slate-500">
                     등록된 정비 이력이 없습니다.
                 </div>

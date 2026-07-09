@@ -1,9 +1,9 @@
 import logo from '@/assets/logo.png';
 import { LogOut } from "lucide-react";
-import { useMember } from "@/hooks/useMember";
-import { useLogout } from "@/hooks/useLogout";
+import { useMember } from "@/hooks/member/useMember";
+import { useLogout } from "@/hooks/member/useLogout";
 import SearchSelect from "@/common/ui/SearchSelect";
-import { useAirplane } from "@/hooks/useAirplane";
+import { useAirplane } from "@/hooks/airplane/useAirplane";
 import { useAirplaneStore } from "@/store/airplaneStore";
 
 const DefaultHeader = () => {

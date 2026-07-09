@@ -1,19 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/hooks/axiosInstance";
-
-export interface AirplaneResponse {
-    id: number;
-    airplaneTypeId: number;
-    airplaneTypeName: string;
-    registrationNumber: string;
-}
+import type { Airplane } from "@/common/type/airplane";
 
 export const useAirplane = () => {
     return useQuery({
         queryKey: ["airplane"],
         queryFn: async () => {
             const { data } = await axiosInstance.get<{
-                data: AirplaneResponse[];
+                data: Airplane[];
             }>("/airplane");
 
             return data.data;
