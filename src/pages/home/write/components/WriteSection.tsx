@@ -3,153 +3,53 @@ import SystemInput from "@/common/ui/SystemInput";
 import SystemTextarea from "@/common/ui/SystemTextarea";
 import { useState, useEffect } from "react";
 import { Plus } from 'lucide-react';
-import type { RepairDetailResponse } from "@/common/type/repair";
+import { useRepairLocation } from "@/hooks/repair/useRepairLocation";
+import type { RepairChapterResponse, RepairDetailResponse } from "@/common/type/repair";
+import SearchSelect from "@/common/ui/SearchSelect";
 
 interface WriteSectionProps {
     repairDetail: RepairDetailResponse | undefined;
+    repairChapter: RepairChapterResponse[] | undefined;
 }
 
-interface FormData {
-    chapter: number | null;
-    station: number | null;
-    waterLine: number | null;
-    buttockLine: number | null;
-    stringer: number | null;
-    frame: number | null;
-    rib: number | null;
-    wingStation: number | null;
-    bodyStation: number | null;
-    description: string | null;
-    createdAt: string;
-}
+const WriteSection = ({ repairDetail, repairChapter }: WriteSectionProps) => {
 
-const WriteSection = ({ repairDetail }: WriteSectionProps) => {
-
-
-    const [formData, setFormData] = useState<FormData>({
-        chapter: null,
-        station: null,
-        waterLine: null,
-        buttockLine: null,
-        stringer: null,
-        frame: null,
-        rib: null,
-        wingStation: null,
-        bodyStation: null,
-        description: "",
-        createdAt: ""
-    });
-
-    const handleChange = <K extends keyof FormData>(
-        field: K,
-        value: FormData[K]
-    ) => {
-        setFormData((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
-    };
-
-    useEffect(() => {
-        if (!maintenanceDetail?.id) return;
-
-        setFormData({
-            chapter: maintenanceDetail.chapter ?? null,
-            station: maintenanceDetail.station ?? null,
-            waterLine: maintenanceDetail.waterLine ?? null,
-            buttockLine: maintenanceDetail.buttockLine ?? null,
-            stringer: maintenanceDetail.stringer ?? null,
-            frame: maintenanceDetail.frame ?? null,
-            rib: maintenanceDetail.rib ?? null,
-            wingStation: maintenanceDetail.wingStation ?? null,
-            bodyStation: maintenanceDetail.bodyStation ?? null,
-            description: maintenanceDetail.description ?? "",
-            createdAt: maintenanceDetail.createdAt ?? ""
-        });
-    }, [maintenanceDetail]);
-
+    const [chapterId, setChapterId] = useState<number | null>(null);
+    const { data: repairLocation } = useRepairLocation(chapterId);
+    
     return (
         <>
             <div className="space-y-4 m-2 p-3 border rounded-md border-slate-200">
+                <SearchSelect
+                    label="Chapter"
+                    onChange={(value) =>
+                        setChapterId(value ? Number(value) : null)
+                    }
+                    options={[
+                        {
+                            value: "",
+                            label: "- 선택 -",
+                        },
+                        ...(repairChapter?.map((chapter) => ({
+                            value: chapter.id.toString(),
+                            label: `${chapter.chapterName} (${chapter.chapterNumber})`,
+                        })) ?? []),
+                    ]}
+                    className="w-full"
+                />
                 <div className="grid grid-cols-3 gap-3">
+                    {/* todo : repair location 활용해서 인풋 생성 */}
                     <SystemInput
                         label="Chapter"
-                        value={formData.chapter}
-                        onChange={() =>
-                            handleChange("chapter", formData.chapter)
-                        }
-                    />
-                    <SystemInput
-                        label="Station"
-                        value={formData.station}
-                        onChange={() =>
-                            handleChange("station", formData.station)
-                        }
-                    />
-                    <SystemInput
-                        label="Water Line"
-                        value={formData.waterLine}
-                        onChange={() =>
-                            handleChange("waterLine", formData.waterLine)
-                        }
-                    />
-                    <SystemInput
-                        label="Buttock Line"
-                        value={formData.buttockLine}
-                        onChange={() =>
-                            handleChange("buttockLine", formData.buttockLine)
-                        }
-                    />
-                    <SystemInput
-                        label="Stringer"
-                        value={formData.stringer}
-                        onChange={() =>
-                            handleChange("stringer", formData.stringer)
-                        }
-                    />
-                    <SystemInput
-                        label="Frame"
-                        value={formData.frame}
-                        onChange={() =>
-                            handleChange("frame", formData.frame)
-                        }
-                    />
-                    <SystemInput
-                        label="Rib"
-                        value={formData.rib}
-                        onChange={() =>
-                            handleChange("rib", formData.rib)
-                        }
-                    />
-                    <SystemInput
-                        label="Wing Station"
-                        value={formData.wingStation}
-                        onChange={() =>
-                            handleChange("wingStation", formData.wingStation)
-                        }
-                    />
-                    <SystemInput
-                        label="Body Station"
-                        value={formData.bodyStation}
-                        onChange={() =>
-                            handleChange("bodyStation", formData.bodyStation)
-                        }
                     />
                 </div>
                 <SystemDateInput
                     label="수리일자"
-                    value={formData.createdAt}
-                    onChange={() =>
-                        handleChange("createdAt", formData.createdAt)
-                    }
+
                 />
                 <SystemTextarea
                     label="설명"
                     rows={5}
-                    value={formData.description}
-                    onChange={() =>
-                        handleChange("description", formData.description)
-                    }
                 />
             </div>
             <div className="space-y-4 m-2 p-3 border rounded-md border-slate-200">

@@ -16,7 +16,7 @@ export const useRepairList = () => {
         queryFn: async () => {
             const { data } = await axiosInstance.get<
                 {data : RepairResponse[] }
-            >(`/repairs/${selectedAirplaneId}`);
+            >(`/repair/${selectedAirplaneId}`);
 
             return data.data;
         },

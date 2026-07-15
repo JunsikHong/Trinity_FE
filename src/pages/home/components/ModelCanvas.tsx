@@ -4,11 +4,11 @@ import { Suspense } from 'react';
 import B737Model from '@/models/B737Model';
 import { MousePointer2, Hand, ZoomIn, ZoomOut, X } from 'lucide-react';
 import { useAirplaneStore } from "@/store/airplaneStore";
-import { useMaintenanceStore } from "@/store/maintenanceStore";
+import { useRepairStore } from "@/store/repairStore";
 
 const ModelCanvas = () => {
   const { selectedAirplaneId } = useAirplaneStore();
-  const { selectedMaintenanceId } = useMaintenanceStore();
+  const { selectedRepairId } = useRepairStore();
 
   return (
     <div className="flex h-full flex-col bg-black">
@@ -39,7 +39,7 @@ const ModelCanvas = () => {
             <ZoomOut size={18} />
           </button>
         </div>
-        {selectedMaintenanceId && (
+        {selectedRepairId && (
           <div className='absolute top-3 left-16 flex flex-col bg-slate-800 z-10 px-2 py-2 rounded-md'>
             <div className='flex items-center gap-3 justify-between mb-3 text-slate-500'>
               <p className='text-xs font-bold'>

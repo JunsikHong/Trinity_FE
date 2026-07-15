@@ -32,7 +32,7 @@ const DefaultHeader = () => {
 
         if (!airplane) return;
 
-        setSelectedAirplane(airplane.id);
+        setSelectedAirplane(airplane);
     };
 
     return (
