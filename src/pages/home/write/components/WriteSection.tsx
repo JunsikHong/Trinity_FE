@@ -1,11 +1,11 @@
 import SystemDateInput from "@/common/ui/SystemDateInput";
-import SystemInput from "@/common/ui/SystemInput";
 import SystemTextarea from "@/common/ui/SystemTextarea";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus } from 'lucide-react';
 import { useRepairLocation } from "@/hooks/repair/useRepairLocation";
 import type { RepairChapterResponse, RepairDetailResponse } from "@/common/type/repair";
 import SearchSelect from "@/common/ui/SearchSelect";
+import RenderLocation from "@/pages/home/write/components/RenderLocation";
 
 interface WriteSectionProps {
     repairDetail: RepairDetailResponse | undefined;
@@ -16,6 +16,20 @@ const WriteSection = ({ repairDetail, repairChapter }: WriteSectionProps) => {
 
     const [chapterId, setChapterId] = useState<number | null>(null);
     const { data: repairLocation } = useRepairLocation(chapterId);
+
+    const [locationValues, setLocationValues] = useState<
+        Record<string, string | number | boolean>
+    >({});
+
+    const handleLocationChange = (
+        code: string,
+        value: string | number | boolean
+    ) => {
+        setLocationValues((prev) => ({
+            ...prev,
+            [code]: value,
+        }));
+    };
     
     return (
         <>
@@ -38,10 +52,16 @@ const WriteSection = ({ repairDetail, repairChapter }: WriteSectionProps) => {
                     className="w-full"
                 />
                 <div className="grid grid-cols-3 gap-3">
-                    {/* todo : repair location 활용해서 인풋 생성 */}
-                    <SystemInput
-                        label="Chapter"
-                    />
+                    {repairLocation?.map((location) => (
+                        <RenderLocation
+                            key={location.id}
+                            location={location}
+                            value={locationValues[location.code]}
+                            onChange={(value) =>
+                                handleLocationChange(location.code, value)
+                            }
+                        />
+                    ))}
                 </div>
                 <SystemDateInput
                     label="수리일자"

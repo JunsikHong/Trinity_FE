@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import { AdminRouter } from "@/routes/components/AdminRouter";
 import { PrivateRouter } from "@/routes/components/PrivateRouter";
 import { PublicRouter } from "@/routes/components/PublicRouter";
 
@@ -8,6 +9,7 @@ import SimpleLayout from "@/layouts/simple/SimpleLayout";
 import HomePage from "@/pages/home/page";
 import DashboardPage from '@/pages/dashboard/page';
 import LoginPage from "@/pages/member/login/page";
+import AdminPage from "@/pages/admin/page";
 
 export const Router = createBrowserRouter([
     {
@@ -37,6 +39,20 @@ export const Router = createBrowserRouter([
                     {
                         path: '/dashboard',
                         element: <DashboardPage />,
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        element: <AdminRouter />,
+        children: [
+            {
+                element: <DefaultLayout />,
+                children: [
+                    {
+                        path: '/admin',
+                        element: <AdminPage />,
                     },
                 ],
             },
