@@ -6,3 +6,28 @@ export type RepairLocationResponse = {
     inputType: string;
     sortOrder: number;
 };
+
+export type RepairLocationDetailResponse = {
+    id: number;
+    repairChapterId: number;
+    repairChapterNumber: number;
+    repairChapterName: string;
+    airplaneTypeId: number;
+    airplaneTypeName: string;
+    name: string;
+    code: string;
+    section: string;
+    inputType: string;
+    sortOrder: number;
+    isActive: boolean;
+};
+
+export type RepairLocationDetailRequest = {
+    repairChapterId: number;
+    name: string;
+    code: string;
+    section: string;
+    inputType: string;
+    sortOrder: number;
+    isActive: boolean;
+};

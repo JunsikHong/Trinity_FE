@@ -1,6 +1,6 @@
 import WriteSection from "@/pages/home/write/components/WriteSection";
 import ButtonSection from "@/pages/home/write/components/ButtonSection";
-import { useRepairDetail } from "@/hooks/repair/useRepairDetail";
+import { useRepairDetail } from "@/hooks/repair/useRepair";
 import { useRepairChapter } from "@/hooks/repair/useRepairChapter";
 import { useRepairStore } from "@/store/repairStore";
 import { useAirplaneStore } from "@/store/airplaneStore";

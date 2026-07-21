@@ -6,6 +6,7 @@ interface SystemInputProps {
     label?: string;
     name?: string;
     disabled?: boolean;
+    className?: string;
 }
 
 const SystemInput = ({
@@ -16,6 +17,7 @@ const SystemInput = ({
     name,
     placeholder,
     disabled = false,
+    className
 }: SystemInputProps) => {
     return (
         <div className="space-y-1">
@@ -29,7 +31,7 @@ const SystemInput = ({
                 value={value ?? undefined}
                 placeholder={placeholder}
                 onChange={onChange}
-                className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none transition focus:border-blue-500 disabled:bg-slate-100"/>
+                className={`h-10 w-full rounded-lg border border-slate-200 px-3 text-sm outline-none transition focus:border-blue-500 disabled:bg-slate-100 ${className}`} />
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import ViewSection from "@/pages/home/view/components/ViewSection";
 import ButtonSection from "@/pages/home/view/components/ButtonSection";
-import { useRepairDetail } from "@/hooks/repair/useRepairDetail";
+import { useRepairDetail } from "@/hooks/repair/useRepair";
 import { useRepairStore } from "@/store/repairStore";
 
 const ViewPage = () => {

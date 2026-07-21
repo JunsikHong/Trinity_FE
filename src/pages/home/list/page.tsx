@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { useRepairList } from "@/hooks/repair/useRepairList";
+import { useRepairList } from "@/hooks/repair/useRepair";
 import SearchSection from "@/pages/home/list/components/SearchSection";
 import ListSection from "@/pages/home/list/components/ListSection";
 import { useRepairStore } from "@/store/repairStore";

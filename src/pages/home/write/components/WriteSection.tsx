@@ -5,7 +5,7 @@ import { Plus } from 'lucide-react';
 import { useRepairLocation } from "@/hooks/repair/useRepairLocation";
 import type { RepairChapterResponse, RepairDetailResponse } from "@/common/type/repair";
 import SearchSelect from "@/common/ui/SearchSelect";
-import RenderLocation from "@/pages/home/write/components/RenderLocation";
+import RenderLocationGroup from "@/pages/home/write/components/RenderLocationGroup";
 
 interface WriteSectionProps {
     repairDetail: RepairDetailResponse | undefined;
@@ -15,20 +15,13 @@ interface WriteSectionProps {
 const WriteSection = ({ repairDetail, repairChapter }: WriteSectionProps) => {
 
     const [chapterId, setChapterId] = useState<number | null>(null);
+    
     const { data: repairLocation } = useRepairLocation(chapterId);
+    
+    const [locationValues, setLocationValues] = useState<Record<string, string | number | boolean>>({});
 
-    const [locationValues, setLocationValues] = useState<
-        Record<string, string | number | boolean>
-    >({});
-
-    const handleLocationChange = (
-        code: string,
-        value: string | number | boolean
-    ) => {
-        setLocationValues((prev) => ({
-            ...prev,
-            [code]: value,
-        }));
+    const handleLocationChange = (code: string, value: string | number | boolean) => {
+        setLocationValues((prev) => ({ ...prev, [code]: value }));
     };
     
     return (
@@ -51,18 +44,11 @@ const WriteSection = ({ repairDetail, repairChapter }: WriteSectionProps) => {
                     ]}
                     className="w-full"
                 />
-                <div className="grid grid-cols-3 gap-3">
-                    {repairLocation?.map((location) => (
-                        <RenderLocation
-                            key={location.id}
-                            location={location}
-                            value={locationValues[location.code]}
-                            onChange={(value) =>
-                                handleLocationChange(location.code, value)
-                            }
-                        />
-                    ))}
-                </div>
+                <RenderLocationGroup
+                    locations={repairLocation}
+                    values={locationValues}
+                    onChange={handleLocationChange}
+                />
                 <SystemDateInput
                     label="수리일자"
 
