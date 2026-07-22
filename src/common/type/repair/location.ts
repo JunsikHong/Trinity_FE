@@ -4,6 +4,7 @@ export type RepairLocationResponse = {
     code: string;
     section: string;
     inputType: string;
+    inputDescription: string;
     sortOrder: number;
 };
 
@@ -18,6 +19,7 @@ export type RepairLocationDetailResponse = {
     code: string;
     section: string;
     inputType: string;
+    inputDescription: string;
     sortOrder: number;
     isActive: boolean;
 };
@@ -28,6 +30,7 @@ export type RepairLocationDetailRequest = {
     code: string;
     section: string;
     inputType: string;
+    inputDescription: string;
     sortOrder: number;
     isActive: boolean;
 };

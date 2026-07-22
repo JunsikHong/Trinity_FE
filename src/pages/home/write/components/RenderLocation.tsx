@@ -6,9 +6,10 @@ interface RenderLocationProps {
     location: RepairLocationResponse;
     value: string | number | boolean;
     onChange: (value: string | number | boolean) => void;
+    placeholder: string;
 }
 
-const RenderLocation = ({ location, value, onChange }: RenderLocationProps) => {
+const RenderLocation = ({ location, value, onChange, placeholder }: RenderLocationProps) => {
     switch (location.inputType) {
         case "text":
             return (
@@ -19,6 +20,7 @@ const RenderLocation = ({ location, value, onChange }: RenderLocationProps) => {
                     label={location.name}
                     value={value as string}
                     onChange={(e) => onChange(e.target.value)}
+                    placeholder={placeholder}
                 />
             );
         case "checkbox":

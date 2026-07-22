@@ -5,10 +5,12 @@ import B737Model from '@/models/B737Model';
 import { MousePointer2, Hand, ZoomIn, ZoomOut, X } from 'lucide-react';
 import { useAirplaneStore } from "@/store/airplaneStore";
 import { useRepairStore } from "@/store/repairStore";
+import { useRepairDetail } from "@/hooks/repair/useRepair";
 
 const ModelCanvas = () => {
   const { selectedAirplaneId } = useAirplaneStore();
   const { selectedRepairId } = useRepairStore();
+  const { data: repairDetail } = useRepairDetail(selectedRepairId);
 
   return (
     <div className="flex h-full flex-col bg-black">
@@ -44,14 +46,13 @@ const ModelCanvas = () => {
             <div className='flex items-center gap-3 justify-between mb-3 text-slate-500'>
               <p className='text-xs font-bold'>
                 위치정보
-                <span className='text-xs'>(선택기준)</span>
               </p>
               <X size={14} />
             </div>
             <div className='flex flex-col gap-1 text-xs text-slate-300'>
               <div className='flex justify-between'>
                 <p>Chapter</p>
-                <p>45.0</p>
+                <p>{repairDetail?.locationItems[0].chapterNumber}</p>
               </div>
               <div className='flex justify-between'>
                 <p>STA</p>

@@ -1,11 +1,22 @@
 import { Trash2, Edit2 } from "lucide-react";
+import { useDeleteRepair } from "@/hooks/repair/useRepair";
+import { useRepairStore } from "@/store/repairStore";
+import { useStatusStore } from "@/store/statusStore";
 
-const ButtonSection = () => {
+const ButtonSection = ({ selectedRepairId } : any) => {
 
-    const handleEdit = () => {
-    };
+    const deleteRepair = useDeleteRepair();
+    const { clearSelectedRepair } = useRepairStore();
+    const { setStatus } = useStatusStore();
 
     const handleDelete = () => {
+        if(!confirm("삭제하시겠습니까?")) return;
+        deleteRepair.mutate(selectedRepairId);
+        clearSelectedRepair();
+    };
+
+    const handleEdit = () => {
+        setStatus('edit');
     };
 
     return (

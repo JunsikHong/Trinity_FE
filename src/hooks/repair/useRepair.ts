@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/hooks/axiosInstance";
 import { useAirplaneStore } from "@/store/airplaneStore";
-import type { RepairResponse } from "@/common/type/repair/repair";
-import type { RepairDetailResponse } from "@/common/type/repair/repair";
+import { useStatusStore } from "@/store/statusStore";
+import type { RepairListResponse, RepairDetailResponse, RepairDetailRequest } from "@/common/type/repair/repair";
 
 export const useRepairList = () => {
     const selectedAirplaneId = useAirplaneStore(
@@ -16,7 +17,7 @@ export const useRepairList = () => {
 
         queryFn: async () => {
             const { data } = await axiosInstance.get<
-                {data : RepairResponse[] }
+                {data : RepairListResponse[] }
             >(`/repair/${selectedAirplaneId}`);
 
             return data.data;
@@ -35,9 +36,92 @@ export const useRepairDetail = (
         queryFn: async () => {
             const { data } = await axiosInstance.get<
                 { data: RepairDetailResponse }
-            >(`/repairs/detail/${repairId}`);
+            >(`/repair/detail/${repairId}`);
 
             return data.data;
+        },
+    });
+};
+
+export const useCreateRepair = () => {
+    const selectedAirplaneId = useAirplaneStore(
+        (state) => state.selectedAirplaneId
+    );
+    const { setStatus } = useStatusStore();
+
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (request: RepairDetailRequest) => {
+            const { data } = await axiosInstance.post(
+                "/repair",
+                request
+            );
+
+            return data;
+        },
+
+        onSuccess: () => {
+            setStatus('view');
+            queryClient.invalidateQueries({
+                queryKey: ["repairList", selectedAirplaneId],
+            });
+        },
+    });
+};
+
+export const useUpdateRepair = () => {
+    const selectedAirplaneId = useAirplaneStore(
+        (state) => state.selectedAirplaneId
+    );
+    const { setStatus } = useStatusStore();
+
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({
+            id,
+            request,
+        }: {
+            id: number;
+            request: RepairDetailRequest;
+        }) => {
+            const { data } = await axiosInstance.put(
+                `/repair/${id}`,
+                request
+            );
+
+            return data;
+        },
+
+        onSuccess: () => {
+            setStatus('view');
+            queryClient.invalidateQueries({
+                queryKey: ["repairList", selectedAirplaneId],
+            });
+        },
+    });
+};
+
+export const useDeleteRepair = () => {
+    const selectedAirplaneId = useAirplaneStore(
+        (state) => state.selectedAirplaneId
+    );
+    const { clearStatus } = useStatusStore();
+
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            const { data } = await axiosInstance.delete(`/repair/${id}`);
+            return data;
+        },
+
+        onSuccess: () => {
+            clearStatus();
+            queryClient.invalidateQueries({
+                queryKey: ["repairList", selectedAirplaneId],
+            });
         },
     });
 };

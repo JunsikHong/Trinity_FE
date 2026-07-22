@@ -16,6 +16,7 @@ type LocationItem =
     | { type: "checkboxGroup"; locations: RepairLocationResponse[] };
 
 const RenderLocationGroup = ({ locations, values, onChange }: RenderLocationGroupProps) => {
+    
     const groupedItems = useMemo<LocationItem[]>(() => {
         if (!locations) return [];
 
@@ -79,6 +80,7 @@ const RenderLocationGroup = ({ locations, values, onChange }: RenderLocationGrou
                             onChange={(value) =>
                                 onChange(item.location.code, value)
                             }
+                            placeholder={item.location.inputDescription}
                         />
                     );
                 }
@@ -102,6 +104,7 @@ const RenderLocationGroup = ({ locations, values, onChange }: RenderLocationGrou
                                             onChange={(e) =>
                                                 onChange(loc.id.toString(), e.target.value)
                                             }
+                                            placeholder={loc.inputDescription}
                                         />
                                     </div>
                                 ))}
@@ -119,11 +122,11 @@ const RenderLocationGroup = ({ locations, values, onChange }: RenderLocationGrou
                             {item.locations.map((loc) => (
                                 <SystemCheckbox
                                     key={loc.id}
-                                    name={loc.code}
+                                    name={`${loc.code}_${loc.id}`}
                                     label={loc.name}
-                                    checked={(values[loc.code] as boolean) ?? false}
+                                    checked={(values[loc.id] as boolean) ?? false}
                                     onChange={(e) =>
-                                        onChange(loc.code, e.target.checked)
+                                        onChange(loc.id.toString(), e.target.checked)
                                     }
                                 />
                             ))}

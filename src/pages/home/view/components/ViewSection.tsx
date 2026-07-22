@@ -1,4 +1,4 @@
-import type { RepairDetailResponse } from "@/common/type/repair";
+import type { RepairDetailResponse, RepairLocationItemListResponse } from "@/common/type/repair";
 
 interface DetailSectionProps {
     repairDetail: RepairDetailResponse | undefined;
@@ -9,6 +9,7 @@ const ViewSection = ({
     repairDetail,
     isLoading,
 }: DetailSectionProps) => {
+
     if (isLoading) {
         return (
             <div className="flex-1 p-4 text-sm text-slate-500">
@@ -29,44 +30,68 @@ const ViewSection = ({
         <>
             <div className="m-2 space-y-4 rounded-md border border-slate-200 p-3">
                 <div>
-                    <p className="mb-1 text-xs text-slate-600">수리번호</p>
+                    <p className="mb-1 text-xs text-slate-600">수리 번호</p>
                     <p className="text-sm font-medium text-slate-900">
-                        #{repairDetail.id}
+                        CODE : #{repairDetail.id}
                     </p>
                 </div>
 
                 <div>
                     <p className="mb-2 text-xs text-slate-600">수리 위치</p>
+                    <p className="text-sm text-slate-700 mb-2">
+                        CHAPTER : {repairDetail.locationItems[0].chapterName} ({repairDetail.locationItems[0].chapterNumber})
+                    </p>
+                    <div className="flex flex-col gap-2">
+                        {(() => {
+                            const groups = repairDetail.locationItems.reduce(
+                                (acc, cur) => {
+                                    if (!acc[cur.locationCode]) {
+                                        acc[cur.locationCode] = [];
+                                    }
+                                    acc[cur.locationCode].push(cur);
+                                    return acc;
+                                },
+                                {} as Record<string, RepairLocationItemListResponse[]>
+                            );
 
-                    <div className="space-y-2">
-                        {repairDetail.locations.map((location) => (
-                            <div
-                                key={location.locationId}
-                                className="rounded-md border border-slate-200 bg-slate-50 p-3"
-                            >
-                                <p className="text-sm font-medium text-slate-900">
-                                    CH {location.chapterNumber}{" "}
-                                    {location.chapterName}
-                                </p>
+                            return Object.entries(groups).map(([code, items]) => {
+                                let text = "";
 
-                                <p className="mt-1 text-sm text-slate-700">
-                                    {location.locationName}
-                                    {location.value
-                                        ? ` : ${location.value}`
-                                        : ""}
-                                </p>
-                            </div>
-                        ))}
+                                if (code === "STA" || code === "STR") {
+                                    const values = items.map((v) => v.value);
+
+                                    text =
+                                        values.length > 1
+                                            ? `${code} ${values[0]} ~ ${values[values.length - 1]}`
+                                            : `${code} ${values[0]}`;
+                                } else {
+                                    text = items
+                                        .map((v) =>
+                                            v.value === "true"
+                                                ? v.locationName
+                                                : `${v.locationName} ${v.value}`
+                                        )
+                                        .join(" / ");
+                                }
+
+                                return (
+                                    <span
+                                        key={code}
+                                        className="rounded-md border border-blue-200 px-3 py-1 text-sm font-medium text-slate-700"
+                                    >
+                                        {text}
+                                    </span>
+                                );
+                            });
+                        })()}
                     </div>
                 </div>
 
                 <div>
-                    <p className="mb-1 text-xs text-slate-600">수리일자</p>
+                    <p className="mb-1 text-xs text-slate-600">수리 일자</p>
                     <p className="text-sm text-slate-900">
                         {repairDetail.repairAt
-                            ? new Date(
-                                  repairDetail.repairAt
-                              ).toLocaleString()
+                            ? repairDetail.repairAt.slice(0, 10)
                             : "-"}
                     </p>
                 </div>
@@ -85,7 +110,7 @@ const ViewSection = ({
                         첨부 사진
                     </h3>
 
-                    {repairDetail.files.length > 0 ? (
+                    {/* {repairDetail.files.length > 0 ? (
                         <div className="grid grid-cols-2 gap-2">
                             {repairDetail.files.map((file) => (
                                 <img
@@ -100,34 +125,31 @@ const ViewSection = ({
                         <div className="flex h-16 items-center justify-center rounded-lg border border-slate-300 text-sm text-slate-400">
                             첨부된 사진이 없습니다.
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
 
-            <div className="flex items-center gap-3 px-3 py-1">
+            <div className="grid grid-cols-2 px-2 py-1">
                 <div className="flex items-center gap-2">
                     <p className="rounded-md border border-slate-300 p-1 text-xs text-slate-400">
                         생성일
                     </p>
 
                     <p className="text-xs text-slate-500">
-                        {new Date(
-                            repairDetail.createdAt
-                        ).toLocaleString()}
+                        {repairDetail.createdAt
+                            ? repairDetail.createdAt.slice(0, 10)
+                            : "-"}
                     </p>
                 </div>
-
-                <div className="h-4 border border-slate-200"></div>
-
                 <div className="flex items-center gap-2">
                     <p className="rounded-md border border-slate-300 p-1 text-xs text-slate-400">
                         수정일
                     </p>
 
                     <p className="text-xs text-slate-500">
-                        {new Date(
-                            repairDetail.updatedAt
-                        ).toLocaleString()}
+                        {repairDetail.updatedAt
+                            ? repairDetail.updatedAt.slice(0, 10)
+                            : "-"}
                     </p>
                 </div>
             </div>

@@ -1,43 +1,27 @@
+import { Plus } from 'lucide-react';
+
+// components
+import SearchSelect from "@/common/ui/SearchSelect";
 import SystemDateInput from "@/common/ui/SystemDateInput";
 import SystemTextarea from "@/common/ui/SystemTextarea";
-import { useState } from "react";
-import { Plus } from 'lucide-react';
-import { useRepairLocation } from "@/hooks/repair/useRepairLocation";
-import type { RepairChapterResponse, RepairDetailResponse } from "@/common/type/repair";
-import SearchSelect from "@/common/ui/SearchSelect";
 import RenderLocationGroup from "@/pages/home/write/components/RenderLocationGroup";
 
-interface WriteSectionProps {
-    repairDetail: RepairDetailResponse | undefined;
-    repairChapter: RepairChapterResponse[] | undefined;
-}
-
-const WriteSection = ({ repairDetail, repairChapter }: WriteSectionProps) => {
-
-    const [chapterId, setChapterId] = useState<number | null>(null);
-    
-    const { data: repairLocation } = useRepairLocation(chapterId);
-    
-    const [locationValues, setLocationValues] = useState<Record<string, string | number | boolean>>({});
-
-    const handleLocationChange = (code: string, value: string | number | boolean) => {
-        setLocationValues((prev) => ({ ...prev, [code]: value }));
-    };
-    
+const WriteSection = ({ repairChapter, repairLocation, locationValues, chapterId, repairDate, description, handleLocationChange, setChapterId, setRepairDate, setDescription } : any) => {
     return (
         <>
             <div className="space-y-4 m-2 p-3 border rounded-md border-slate-200">
                 <SearchSelect
-                    label="Chapter"
+                    label="챕터"
+                    value={chapterId?.toString() ?? ""}
                     onChange={(value) =>
                         setChapterId(value ? Number(value) : null)
                     }
                     options={[
                         {
                             value: "",
-                            label: "- 선택 -",
+                            label: "-선택-",
                         },
-                        ...(repairChapter?.map((chapter) => ({
+                        ...(repairChapter?.map((chapter : any) => ({
                             value: chapter.id.toString(),
                             label: `${chapter.chapterName} (${chapter.chapterNumber})`,
                         })) ?? []),
@@ -51,11 +35,14 @@ const WriteSection = ({ repairDetail, repairChapter }: WriteSectionProps) => {
                 />
                 <SystemDateInput
                     label="수리일자"
-
+                    value={repairDate}
+                    onChange={(e) => setRepairDate(e.target.value)}
                 />
                 <SystemTextarea
                     label="설명"
                     rows={5}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                 />
             </div>
             <div className="space-y-4 m-2 p-3 border rounded-md border-slate-200">

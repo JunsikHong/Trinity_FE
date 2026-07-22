@@ -6,7 +6,7 @@ import { useRepairLocationList, useCreateRepairLocation, useUpdateRepairLocation
 import { useAirplaneType } from "@/hooks/airplane/useAriplaneType";
 import { useRepairChapter } from "@/hooks/repair/useRepairChapter";
 
-const initialFormData = { id: "", airplaneType: "", chapter: "", inputType: "", name: "", code: "", section: "", sortOrder: "", isActive: false };
+const initialFormData = { id: "", airplaneType: "", chapter: "", inputType: "", inputDescription: "", name: "", code: "", section: "", sortOrder: "", isActive: false };
 
 const RepairLocationSection = () => {
     const [status, setStatus] = useState("create");
@@ -38,6 +38,7 @@ const RepairLocationSection = () => {
             code: row.code,
             section: row.section,
             sortOrder: String(row.sortOrder),
+            inputDescription: row.inputDescription,
             isActive: row.isActive,
         });
     };
@@ -51,6 +52,7 @@ const RepairLocationSection = () => {
             code: formData.code,
             section: formData.section,
             inputType: formData.inputType,
+            inputDescription: formData.inputDescription,
             sortOrder: Number(formData.sortOrder) || 0,
             isActive: formData.isActive
         };
@@ -63,7 +65,7 @@ const RepairLocationSection = () => {
     };
 
     const handleDelete = () => {
-        deleteRepairLocation.mutate( Number(formData.id) );
+        deleteRepairLocation.mutate(Number(formData.id));
         setFormData(initialFormData);
     }
 
@@ -120,6 +122,13 @@ const RepairLocationSection = () => {
                     </div>
                     <div>
                         <SystemInput
+                            label="input description"
+                            value={formData.inputDescription}
+                            onChange={(e) => handleChange("inputDescription", e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <SystemInput
                             label="name"
                             value={formData.name}
                             onChange={(e) => handleChange("name", e.target.value)}
@@ -145,11 +154,13 @@ const RepairLocationSection = () => {
                             onChange={(e) => handleChange("sortOrder", e.target.value)}
                         />
                     </div>
-                    <SystemCheckbox
-                        label="Active"
-                        checked={formData.isActive}
-                        onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
-                    />
+                    <div>
+                        <SystemCheckbox
+                            label="Active"
+                            checked={formData.isActive}
+                            onChange={(e) => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
+                        />
+                    </div>
                 </div>
                 <div className="mt-3 w-full flex justify-end">
                     {status == 'edit' && (
