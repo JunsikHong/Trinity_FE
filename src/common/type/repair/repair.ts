@@ -9,12 +9,32 @@ export interface RepairLocationItemListResponse {
 }
 
 export interface RepairListResponse {
-    id: number;
-    description: string | null;
-    repairAt: string | null;
-    createdAt: string;
-    updatedAt: string;
-    locationItems: RepairLocationItemListResponse[];
+  id: number;
+  description: string;
+  repairAt: string;
+  createdAt: string;
+  updatedAt: string;
+  locationItems: {
+    locationId: number;
+    locationName: string;
+    locationCode: string;
+    chapterId: number;
+    chapterNumber: number;
+    chapterName: string;
+    value: string;
+  }[];
+}
+
+export interface CursorPageResponse<T> {
+  content: T[];
+  hasNext: boolean;
+  nextCursorRepairAt: string | null;
+  nextCursorId: number | null;
+}
+
+export interface RepairCursorParam {
+  cursorRepairAt?: string;
+  cursorId?: number;
 }
 
 export interface RepairDetailResponse {
@@ -63,4 +83,21 @@ export interface RepairDetailRequest {
     description: string | null;
     repairAt: string | null;
     locations: RepairLocationItemRequest[];
+}
+
+export type RepairSortBy = "REPAIR_AT" | "CREATED_AT";
+export type RepairSortDirection = "ASC" | "DESC";
+
+export interface RepairSearchParams {
+  search?: string;
+  chapterId?: number;
+  startDate?: string; // "YYYY-MM-DD"
+  endDate?: string;   // "YYYY-MM-DD"
+  sortBy: RepairSortBy;
+  sortDirection: RepairSortDirection;
+}
+
+export interface RepairCursorParam {
+  cursorValue?: string;
+  cursorId?: number;
 }

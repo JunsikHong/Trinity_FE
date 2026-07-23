@@ -13,8 +13,27 @@ const ListSection = ({ repairList, isLoading }: ListSectionProps) => {
 
     if (isLoading) {
         return (
-            <div className="flex-1 p-4 text-sm text-slate-500">
-                정비 이력을 불러오는 중...
+            <div className="relative flex-1 overflow-y-auto p-2">
+                {Array.from({ length: 3 }).map((_, index) => (
+                    <div
+                        key={index}
+                        className="mb-2 flex w-full rounded-md border animate-pulse"
+                    >
+                        <div className="h-28 w-28 shrink-0 bg-slate-200" />
+                        <div className="flex-1 p-2">
+                            <div className="flex items-center justify-between">
+                                <div className="h-4 w-24 rounded bg-slate-200" />
+                                <div className="h-3 w-16 rounded bg-slate-200" />
+                            </div>
+                            <div className="mt-3 h-3 w-40 rounded bg-slate-200" />
+                            <div className="mt-2 space-y-2">
+                                <div className="h-3 w-full rounded bg-slate-200" />
+                                <div className="h-3 w-3/4 rounded bg-slate-200" />
+                            </div>
+                            <div className="mt-4 h-3 w-5/6 rounded bg-slate-200" />
+                        </div>
+                    </div>
+                ))}
             </div>
         );
     }
@@ -33,12 +52,12 @@ const ListSection = ({ repairList, isLoading }: ListSectionProps) => {
                             setSelectedRepair(item.id);
                         }
                     }}
-                    className={`mb-2 flex w-full border text-left transition hover:ring-1 hover:ring-blue-500 rounded-md ${item.id === selectedRepairId
+                    className={`mb-2 overflow-hidden flex w-full border text-left transition hover:ring-1 hover:ring-blue-500 rounded-md ${item.id === selectedRepairId
                         ? "ring-1 ring-blue-500"
                         : ""
                         }`}
                 >
-                    <div className="flex h-24 w-24 shrink-0 items-center justify-center bg-slate-100">
+                    <div className="flex h-28 w-28 shrink-0 items-center justify-center bg-slate-100">
                         <Camera className="h-6 w-6 text-slate-400" strokeWidth={1.5} />
                     </div>
 
@@ -51,16 +70,18 @@ const ListSection = ({ repairList, isLoading }: ListSectionProps) => {
                                 {new Date(item.createdAt).toLocaleDateString()}
                             </span>
                         </div>
+                        <div className="mt-1 flex items-start gap-1 text-xs text-slate-500 px-2 uppercase">
+                            <p>
+                                CHAPTER {item.locationItems[0].chapterNumber} : {item.locationItems[0].chapterName}
+                            </p>
+                        </div>
                         <div className="mt-1 flex items-start gap-1 text-xs text-slate-500 px-2">
                             <MapPin
                                 size={12}
                                 className="mt-0.5 shrink-0"
                             />
                             <div>
-                                <p>
-                                    CHAPTER : {item.locationItems[0].chapterName} ({item.locationItems[0].chapterNumber})
-                                </p>
-                                <span className="line-clamp-1">
+                                <span className="line-clamp-2">
                                     {(() => {
                                         const groups = item.locationItems.reduce(
                                             (acc, cur) => {

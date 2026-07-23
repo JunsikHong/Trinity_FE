@@ -1,48 +1,28 @@
 import logo from '@/assets/logo.png';
-import { User, Menu } from "lucide-react";
-import { useState } from "react";
+import { Menu } from "lucide-react";
 
-// components
-import DefaultMenu from '@/layouts/default/components/DefaultMenu';
-import DefaultMyMenu from '@/layouts/default/components/DefaultMyMenu';
-
-const DefaultHeader = () => {
-    const [myMenuOpen, setMyMenuOpen] = useState(false);
-    const [menuOpen, setMenuOpen] = useState(false);
-
+const DefaultHeader = ({ onMenuClick } : any) => {
     return (
-        <header className="flex items-center justify-between border-b border-slate-200 bg-white px-2 relative">
-            <div className="flex items-center gap-2 p-2">
-                <img src={logo} alt="" className='w-[40px]' />
-                <p className="flex flex-col justify-center items-center">
-                    <span className='text-lg font-bold'>AirONE</span>
-                    <span className='-mt-1 text-slate-400 text-[9px] font-semibold'>REPAIR MANAGE</span>
+        <header className="flex items-center bg-slate-100 border-b border-slate-300">
+            <div className='w-16 border-r border-slate-300 px-2 py-2 flex justify-center items-center'>
+                <button
+                    onClick={onMenuClick}
+                    className={`flex items-center rounded-lg px-3 h-10 transition bg-slate-300 text-slate-800 hover:bg-slate-400`}
+                >
+                    <Menu className="h-5 w-5 shrink-0" />
+                </button>
+            </div>
+            <div className="flex items-center gap-2 ml-3">
+                <img src={logo} alt="AirONE" className="w-8" />
+                <p className="flex flex-col justify-center text-slate-700">
+                    <span className="text-lg font-bold">AirONE</span>
+                    <span className="-mt-1 text-[9px] font-semibold text-slate-400">
+                        REPAIR MANAGE
+                    </span>
                 </p>
             </div>
-            <div className="flex items-center gap-3 p-2">
-                <button
-                    onClick={() => setMyMenuOpen((prev) => !prev)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 transition hover:bg-slate-200"
-                >
-                    <User className="h-5 w-5 text-slate-600" />
-                </button>
-                <button
-                    onClick={() => setMenuOpen((prev) => !prev)}
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white transition hover:bg-slate-50"
-                >
-                    <Menu className="h-5 w-5 text-slate-700" />
-                </button>
-            </div>
-            <DefaultMyMenu
-                open={myMenuOpen}
-                onClose={() => setMyMenuOpen(false)}
-            />
-            <DefaultMenu
-                open={menuOpen}
-                onClose={() => setMenuOpen(false)}
-            />
         </header>
     );
-}
+};
 
 export default DefaultHeader;

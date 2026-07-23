@@ -1,26 +1,47 @@
-import { useQuery } from "@tanstack/react-query";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/hooks/axiosInstance";
 import { useAirplaneStore } from "@/store/airplaneStore";
 import { useStatusStore } from "@/store/statusStore";
-import type { RepairListResponse, RepairDetailResponse, RepairDetailRequest } from "@/common/type/repair/repair";
+import type { RepairListResponse, RepairDetailResponse, RepairDetailRequest, RepairCursorParam, CursorPageResponse, RepairSearchParams } from "@/common/type/repair/repair";
 
-export const useRepairList = () => {
+export const useRepairList = (searchParams: RepairSearchParams) => {
     const selectedAirplaneId = useAirplaneStore(
         (state) => state.selectedAirplaneId
     );
 
-    return useQuery({
-        queryKey: ["repairList", selectedAirplaneId],
+    return useInfiniteQuery({
+        queryKey: ["repairList", selectedAirplaneId, searchParams],
 
         enabled: selectedAirplaneId != null,
 
-        queryFn: async () => {
-            const { data } = await axiosInstance.get<
-                {data : RepairListResponse[] }
-            >(`/repair/${selectedAirplaneId}`);
+        initialPageParam: {} as RepairCursorParam,
+
+        queryFn: async ({ pageParam }) => {
+            const { data } = await axiosInstance.get<{
+                data: CursorPageResponse<RepairListResponse>;
+            }>(`/repair/${selectedAirplaneId}`, {
+                params: {
+                    search: searchParams.search || undefined,
+                    chapterId: searchParams.chapterId,
+                    startDate: searchParams.startDate,
+                    endDate: searchParams.endDate,
+                    sortBy: searchParams.sortBy,
+                    sortDirection: searchParams.sortDirection,
+                    cursorValue: pageParam.cursorValue,
+                    cursorId: pageParam.cursorId,
+                    size: 20,
+                },
+            });
 
             return data.data;
+        },
+
+        getNextPageParam: (lastPage): RepairCursorParam | undefined => {
+            if (!lastPage.hasNext) return undefined;
+            return {
+                cursorValue: lastPage.nextCursorRepairAt ?? undefined,
+                cursorId: lastPage.nextCursorId ?? undefined,
+            };
         },
     });
 };
@@ -34,6 +55,8 @@ export const useRepairDetail = (
         enabled: !!repairId,
 
         queryFn: async () => {
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+
             const { data } = await axiosInstance.get<
                 { data: RepairDetailResponse }
             >(`/repair/detail/${repairId}`);

@@ -12,9 +12,57 @@ const ViewSection = ({
 
     if (isLoading) {
         return (
-            <div className="flex-1 p-4 text-sm text-slate-500">
-                정비 이력을 불러오는 중...
-            </div>
+            <>
+                <div className="m-2 animate-pulse rounded-xl border border-slate-200 bg-white">
+                    <div className="border-b p-3">
+                        <div className="h-3 w-20 rounded bg-slate-200" />
+
+                        <div className="mt-3 flex items-center gap-2">
+                            <div className="h-6 w-28 rounded-md bg-slate-200" />
+                            <div className="h-5 w-40 rounded bg-slate-200" />
+                        </div>
+                    </div>
+                    <div className="space-y-5 p-3">
+                        <div>
+                            <div className="mb-2 h-3 w-16 rounded bg-slate-200" />
+
+                            <div className="flex flex-wrap gap-2">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className="h-9 w-28 rounded-lg bg-slate-200"
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            <div className="mb-2 h-3 w-20 rounded bg-slate-200" />
+
+                            <div className="h-[120px] rounded-lg bg-slate-200" />
+                        </div>
+                    </div>
+                </div>
+                <div className="m-2 animate-pulse rounded-md border border-slate-200 p-3">
+                    <div className="mb-3 h-4 w-20 rounded bg-slate-200" />
+
+                    <div className="grid grid-cols-2 gap-2">
+                        {Array.from({ length: 4 }).map((_, i) => (
+                            <div
+                                key={i}
+                                className="aspect-square rounded-lg bg-slate-200"
+                            />
+                        ))}
+                    </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4 px-2 py-1 animate-pulse">
+                    {[1, 2].map((i) => (
+                        <div key={i} className="flex items-center gap-2">
+                            <div className="h-6 w-12 rounded bg-slate-200" />
+                            <div className="h-4 w-20 rounded bg-slate-200" />
+                        </div>
+                    ))}
+                </div>
+            </>
         );
     }
 
@@ -28,82 +76,81 @@ const ViewSection = ({
 
     return (
         <>
-            <div className="m-2 space-y-4 rounded-md border border-slate-200 p-3">
-                <div>
-                    <p className="mb-1 text-xs text-slate-600">수리 번호</p>
-                    <p className="text-sm font-medium text-slate-900">
-                        CODE : #{repairDetail.id}
+            <div className="m-2 rounded-xl border border-slate-200 bg-white">
+                <div className="border-b p-3 flex items-center justify-between gap-2">
+                    <p className="text-sm uppercase tracking-wider text-slate-800 font-semibold">
+                        Code #{repairDetail.id}
                     </p>
-                </div>
-
-                <div>
-                    <p className="mb-2 text-xs text-slate-600">수리 위치</p>
-                    <p className="text-sm text-slate-700 mb-2">
-                        CHAPTER : {repairDetail.locationItems[0].chapterName} ({repairDetail.locationItems[0].chapterNumber})
-                    </p>
-                    <div className="flex flex-col gap-2">
-                        {(() => {
-                            const groups = repairDetail.locationItems.reduce(
-                                (acc, cur) => {
-                                    if (!acc[cur.locationCode]) {
-                                        acc[cur.locationCode] = [];
-                                    }
-                                    acc[cur.locationCode].push(cur);
-                                    return acc;
-                                },
-                                {} as Record<string, RepairLocationItemListResponse[]>
-                            );
-
-                            return Object.entries(groups).map(([code, items]) => {
-                                let text = "";
-
-                                if (code === "STA" || code === "STR") {
-                                    const values = items.map((v) => v.value);
-
-                                    text =
-                                        values.length > 1
-                                            ? `${code} ${values[0]} ~ ${values[values.length - 1]}`
-                                            : `${code} ${values[0]}`;
-                                } else {
-                                    text = items
-                                        .map((v) =>
-                                            v.value === "true"
-                                                ? v.locationName
-                                                : `${v.locationName} ${v.value}`
-                                        )
-                                        .join(" / ");
-                                }
-
-                                return (
-                                    <span
-                                        key={code}
-                                        className="rounded-md border border-blue-200 px-3 py-1 text-sm font-medium text-slate-700"
-                                    >
-                                        {text}
-                                    </span>
-                                );
-                            });
-                        })()}
+                    <div className="flex items-center gap-1">
+                        <span className="rounded-md bg-slate-700 px-2 py-1 text-xs font-bold text-white flex flex-col  justify-center items-center">
+                            CHAPTER {repairDetail.locationItems[0].chapterNumber}
+                            <span className="text-xs font-semibold text-white uppercase">
+                                {repairDetail.locationItems[0].chapterName}
+                            </span>
+                        </span>
                     </div>
                 </div>
+                <div className="space-y-5 p-3">
+                    <div>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            Location
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            {(() => {
+                                const groups = repairDetail.locationItems.reduce(
+                                    (acc, cur) => {
+                                        if (!acc[cur.locationCode]) {
+                                            acc[cur.locationCode] = [];
+                                        }
+                                        acc[cur.locationCode].push(cur);
+                                        return acc;
+                                    },
+                                    {} as Record<string, RepairLocationItemListResponse[]>
+                                );
 
-                <div>
-                    <p className="mb-1 text-xs text-slate-600">수리 일자</p>
-                    <p className="text-sm text-slate-900">
-                        {repairDetail.repairAt
-                            ? repairDetail.repairAt.slice(0, 10)
-                            : "-"}
-                    </p>
-                </div>
+                                return Object.entries(groups).map(([code, items]) => {
+                                    let text = "";
 
-                <div>
-                    <p className="mb-1 text-xs text-slate-600">설명</p>
-                    <p className="whitespace-pre-wrap text-sm text-slate-900">
-                        {repairDetail.description || "설명이 없습니다."}
-                    </p>
+                                    if (code === "STA" || code === "STR") {
+                                        const values = items.map((v) => v.value);
+
+                                        text =
+                                            values.length > 1
+                                                ? `${code} ${values[0]} ~ ${values[values.length - 1]}`
+                                                : `${code} ${values[0]}`;
+                                    } else {
+                                        text = items
+                                            .map((v) =>
+                                                v.value === "true"
+                                                    ? v.locationName
+                                                    : `${v.locationName} ${v.value}`
+                                            )
+                                            .join(" / ");
+                                    }
+
+                                    return (
+                                        <div
+                                            key={code}
+                                            className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700"
+                                        >
+                                            {text}
+                                        </div>
+                                    );
+                                });
+                            })()}
+                        </div>
+                    </div>
+                    <div>
+                        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            Description
+                        </p>
+
+                        <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 min-h-[120px]">
+                            {repairDetail.description || "설명이 없습니다."}
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <div className="m-2 space-y-4 rounded-md border border-slate-200 p-3">
                 <div>
                     <h3 className="mb-3 text-sm text-slate-600">
@@ -132,23 +179,23 @@ const ViewSection = ({
             <div className="grid grid-cols-2 px-2 py-1">
                 <div className="flex items-center gap-2">
                     <p className="rounded-md border border-slate-300 p-1 text-xs text-slate-400">
+                        수리일
+                    </p>
+
+                    <p className="text-xs text-slate-500">
+                        {repairDetail.repairAt
+                            ? repairDetail.repairAt.slice(0, 10)
+                            : "-"}
+                    </p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <p className="rounded-md border border-slate-300 p-1 text-xs text-slate-400">
                         생성일
                     </p>
 
                     <p className="text-xs text-slate-500">
                         {repairDetail.createdAt
                             ? repairDetail.createdAt.slice(0, 10)
-                            : "-"}
-                    </p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <p className="rounded-md border border-slate-300 p-1 text-xs text-slate-400">
-                        수정일
-                    </p>
-
-                    <p className="text-xs text-slate-500">
-                        {repairDetail.updatedAt
-                            ? repairDetail.updatedAt.slice(0, 10)
                             : "-"}
                     </p>
                 </div>

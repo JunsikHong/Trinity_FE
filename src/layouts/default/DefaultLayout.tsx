@@ -1,15 +1,28 @@
 import { Outlet } from "react-router-dom";
-import DefaultHeader from '@/layouts/default/components/DefaultHeader';
+import { useState } from "react";
+import DefaultHeader from "@/layouts/default/components/DefaultHeader";
+import DefaultMenu from "@/layouts/default/components/DefaultMenu";
+
 const DefaultLayout = () => {
+    const [collapsed, setCollapsed] = useState(true);
 
     return (
         <div className="flex h-screen flex-col bg-slate-100">
-            <DefaultHeader />
-            <main className="flex flex-1 overflow-hidden">
-                <Outlet />
-            </main>
+            <DefaultHeader
+                onMenuClick={() => setCollapsed(!collapsed)}
+            />
+
+            <div className="flex flex-1 overflow-hidden">
+                <DefaultMenu
+                    collapsed={collapsed}
+                />
+
+                <main className="flex-1 overflow-auto">
+                    <Outlet />
+                </main>
+            </div>
         </div>
-    )
-}
+    );
+};
 
 export default DefaultLayout;

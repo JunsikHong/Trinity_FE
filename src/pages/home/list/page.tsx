@@ -1,37 +1,92 @@
-import { Plus } from "lucide-react";
+import { useState, useMemo } from "react";
+import type { RepairSearchParams } from "@/common/type/repair";
 
 // components
 import SearchSection from "@/pages/home/list/components/SearchSection";
+import SortSection from "@/pages/home/list/components/SortSection";
 import ListSection from "@/pages/home/list/components/ListSection";
+
+// store
+import { useAirplaneStore } from "@/store/airplaneStore";
 
 // hooks
 import { useRepairList } from "@/hooks/repair/useRepair";
-
-// store
-import { useRepairStore } from "@/store/repairStore";
-import { useStatusStore } from "@/store/statusStore";
+import { useAirplane } from "@/hooks/airplane/useAirplane";
+import { useRepairChapter } from "@/hooks/repair/useRepairChapter";
 
 const ListPage = () => {
-    const { data: repairList = [], isLoading } = useRepairList();
-    const { clearSelectedRepair } = useRepairStore();
-    const { setStatus } = useStatusStore();
+
+    // 수리 리스트
+    const [searchParams, setSearchParams] = useState<RepairSearchParams>({
+        search: "",
+        chapterId: undefined,
+        startDate: undefined,
+        endDate: undefined,
+        sortBy: "REPAIR_AT",
+        sortDirection: "DESC",
+    });
+
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useRepairList(searchParams);
+    const repairList = useMemo(
+        () => data?.pages.flatMap((page) => page.content) ?? [],
+        [data]
+    );
+
+    // 항공기 리스트
+    const { selectedAirplaneTypeId, selectedAirplaneId, setSelectedAirplane } = useAirplaneStore();
+
+    const { data: airplanes = [] } = useAirplane();
+    const airplaneOptions = useMemo(
+        () => [
+            { value: "", label: "항공기 선택" },
+            ...airplanes.map((airplane) => ({
+                value: airplane.id.toString(),
+                label: `${airplane.registrationNumber} (${airplane.airplaneTypeName})`,
+            })),
+        ],
+        [airplanes]
+    );
+
+    const handleAirplaneChange = (value: string) => {
+        if (!value) {
+            setSelectedAirplane(null);
+            return;
+        }
+
+        const airplane = airplanes.find(
+            (item) => item.id === Number(value)
+        );
+
+        if (!airplane) return;
+
+        setSelectedAirplane(airplane);
+    };
+
+    // 챕터 리스트
+    const { data: repairChapter } = useRepairChapter(selectedAirplaneTypeId);
 
     return (
         <aside className="flex h-full flex-col border-r bg-white relative">
-            <SearchSection repairListCount={repairList.length}/>
-            <ListSection repairList={repairList} isLoading={isLoading}/>
-            <div className="absolute bottom-6 right-3">
-                <button
-                    onClick={() => {
-                        clearSelectedRepair();
-                        setStatus('edit');
-                    }}
-                    className="flex h-10 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700"
-                >
-                    <Plus size={16} />
-                    새 수리이력
-                </button>
-            </div>
+            <SearchSection
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
+                selectedAirplaneId={selectedAirplaneId} 
+                airplaneOptions={airplaneOptions} 
+                handleAirplaneChange={handleAirplaneChange}
+                repairChapter={repairChapter}
+            />
+            <SortSection
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
+                repairListCount={repairList.length}
+            />
+            <ListSection 
+                repairList={repairList} 
+                isLoading={isLoading} 
+                fetchNextPage={fetchNextPage}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+            />
         </aside>
     );
 };

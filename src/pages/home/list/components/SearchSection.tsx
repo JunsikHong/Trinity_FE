@@ -1,118 +1,78 @@
-import { Funnel } from "lucide-react";
-import { useState, useMemo } from "react";
-
-// hooks
-import { useAirplane } from "@/hooks/airplane/useAirplane";
-import { useRepairChapter } from "@/hooks/repair/useRepairChapter";
-
-// store
-import { useAirplaneStore } from "@/store/airplaneStore";
+import { Search } from "lucide-react";
 
 // components
 import SearchSelect from "@/common/ui/SearchSelect";
 import SearchInput from "@/common/ui/SearchInput";
 import SystemDateInput from "@/common/ui/SystemDateInput";
 
-interface SearchSectionProps {
-    repairListCount: number;
-}
-
-const SearchSection = ({ repairListCount }: SearchSectionProps) => {
-
-    const [filterOpen, setFilterOpen] = useState(false);
-
-    // 검색
-    const [search, setSearch] = useState("");
-    const [chapterId, setChapterId] = useState<number | null>(null);
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
-
-    const { data: airplanes = [] } = useAirplane();
-    const { selectedAirplaneTypeId, selectedAirplaneId, setSelectedAirplane } = useAirplaneStore();
-    const { data: repairChapter } = useRepairChapter(selectedAirplaneTypeId);
-
-    const airplaneOptions = useMemo(
-        () => [
-            { value: "", label: "선택" },
-            ...airplanes.map((airplane) => ({
-                value: airplane.id.toString(),
-                label: `${airplane.registrationNumber} (${airplane.airplaneTypeName})`,
-            })),
-        ],
-        [airplanes]
-    );
-
-    const handleAirplaneChange = (value: string) => {
-        if (!value) {
-            setSelectedAirplane(null);
-            return;
-        }
-
-        const airplane = airplanes.find(
-            (item) => item.id === Number(value)
-        );
-
-        if (!airplane) return;
-
-        setSelectedAirplane(airplane);
-    };
+const SearchSection = ({
+    searchParams,
+    setSearchParams,
+    selectedAirplaneId,
+    airplaneOptions,
+    handleAirplaneChange,
+    repairChapter
+}: any) => {
 
     return (
-        <div className="space-y-3 border-b py-4 px-3">
+        <div className="space-y-3 border-b py-2 px-2 border rounded-md m-2">
             <SearchSelect
-                label="항공기"
                 value={selectedAirplaneId ?? ""}
                 options={airplaneOptions}
                 onChange={handleAirplaneChange}
                 className="w-full"
             />
+            <SearchSelect
+                value={searchParams.chapterId?.toString() ?? ""}
+                onChange={(e) =>
+                    setSearchParams((prev) => ({ ...prev, chapterId: Number(e.target.value) }))
+                }
+                options={[
+                    {
+                        value: "",
+                        label: "챕터 선택",
+                    },
+                    ...(repairChapter?.map((chapter: any) => ({
+                        value: chapter.id.toString(),
+                        label: `CHAPTER ${chapter.chapterNumber} : ${chapter.chapterName}`,
+                    })) ?? []),
+                ]}
+                className="w-full uppercase"
+            />
+            <div className="flex justify-between items-center gap-2">
+                <div className="flex-1 min-w-0">
+                    <SystemDateInput
+                        value={searchParams.startDate}
+                        onChange={(e) =>
+                            setSearchParams((prev) => ({ ...prev, startDate: e.target.value }))
+                        }
+                    />
+                </div>
+                <p className="shrink-0">~</p>
+                <div className="flex-1 min-w-0">
+                    <SystemDateInput
+                        value={searchParams.endDate}
+                        onChange={(e) =>
+                            setSearchParams((prev) => ({ ...prev, endDate: e.target.value }))
+                        }
+                    />
+                </div>
+            </div>
             <div className="flex gap-2">
                 <SearchInput
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    value={searchParams.search}
+                    onChange={(e) =>
+                        setSearchParams((prev) => ({ ...prev, search: e.target.value }))
+                    }
                     placeholder="설명, 위치 검색"
                 />
                 <button
-                    onClick={() => setFilterOpen(!filterOpen)}
-                    className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium hover:bg-slate-50"
+                    className="flex h-10 items-center gap-1 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium hover:bg-slate-50"
                 >
-                    <Funnel size={16} />
-                    ({repairListCount}건)
+                    <Search size={16} />
+                    검색
                 </button>
             </div>
-
-            {filterOpen && (
-                <>
-                    <SearchSelect
-                        value={chapterId?.toString() ?? ""}
-                        onChange={(value) =>
-                            setChapterId(value ? Number(value) : null)
-                        }
-                        options={[
-                            {
-                                value: "",
-                                label: "-선택-",
-                            },
-                            ...(repairChapter?.map((chapter: any) => ({
-                                value: chapter.id.toString(),
-                                label: `${chapter.chapterName} (${chapter.chapterNumber})`,
-                            })) ?? []),
-                        ]}
-                        className="w-full"
-                    />
-                    <div className="grid grid-cols-2 gap-3">
-                        <SystemDateInput
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                        />
-
-                        <SystemDateInput
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                        />
-                    </div>
-                </>
-            )}
         </div>
     );
 };

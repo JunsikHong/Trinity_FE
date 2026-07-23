@@ -16,7 +16,7 @@ import { useAirplaneStore } from "@/store/airplaneStore";
 
 const WritePage = () => {
     const [chapterId, setChapterId] = useState<number | null>(null);
-    const [repairDate, setRepairDate] = useState<string | null>("");
+    const [repairDate, setRepairDate] = useState<string | null>(new Date().toISOString().split("T")[0]);
     const [description, setDescription] = useState<string | null>("");
     const [locationValues, setLocationValues] = useState<Record<string, string | number | boolean>>({});
 

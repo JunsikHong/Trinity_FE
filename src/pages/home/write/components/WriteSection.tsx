@@ -11,7 +11,7 @@ const WriteSection = ({ repairChapter, repairLocation, locationValues, chapterId
         <>
             <div className="space-y-4 m-2 p-3 border rounded-md border-slate-200">
                 <SearchSelect
-                    label="챕터"
+                    label="CHAPTER"
                     value={chapterId?.toString() ?? ""}
                     onChange={(value) =>
                         setChapterId(value ? Number(value) : null)
@@ -19,14 +19,14 @@ const WriteSection = ({ repairChapter, repairLocation, locationValues, chapterId
                     options={[
                         {
                             value: "",
-                            label: "-선택-",
+                            label: "챕터 선택",
                         },
                         ...(repairChapter?.map((chapter : any) => ({
                             value: chapter.id.toString(),
-                            label: `${chapter.chapterName} (${chapter.chapterNumber})`,
+                            label: `CHAPTER ${chapter.chapterNumber} : ${chapter.chapterName}`,
                         })) ?? []),
                     ]}
-                    className="w-full"
+                    className="w-full uppercase"
                 />
                 <RenderLocationGroup
                     locations={repairLocation}
@@ -34,12 +34,12 @@ const WriteSection = ({ repairChapter, repairLocation, locationValues, chapterId
                     onChange={handleLocationChange}
                 />
                 <SystemDateInput
-                    label="수리일자"
+                    label="DATE"
                     value={repairDate}
                     onChange={(e) => setRepairDate(e.target.value)}
                 />
                 <SystemTextarea
-                    label="설명"
+                    label='CONTENT'
                     rows={5}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}

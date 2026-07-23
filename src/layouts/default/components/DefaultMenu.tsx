@@ -1,50 +1,60 @@
-import {
-    Home,
-    Wrench,
-} from "lucide-react";
-import { Link } from "react-router-dom";
+import { LogOut } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { MENUS } from "@/constants/menu";
+import { useLogout } from "@/hooks/member/useLogout";
 
-interface Props {
-    open: boolean;
-    onClose: () => void;
+interface DefaultMenuProps {
+    collapsed: boolean;
 }
 
-const DefaultMenu = ({ open, onClose }: Props) => {
-    if (!open) return null;
+const DefaultMenu = ({ collapsed }: DefaultMenuProps) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const logout = useLogout();
 
-    const menus = [
-        {
-            icon: Home,
-            label: "홈",
-            to: "/",
-        },
-        {
-            icon: Wrench,
-            label: "수리이력",
-            to: "/repair",
-        },
-    ];
+    const menuClass = (active: boolean) => `
+        flex h-10 cursor-pointer items-center rounded-lg transition
+        ${collapsed ? "justify-center" : "px-4"}
+        ${
+            active
+                ? "bg-slate-700 text-white"
+                : "text-slate-700 hover:bg-slate-700 hover:text-white"
+        }
+    `;
 
     return (
-        <div className="absolute right-2 top-16 z-50 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
-            <div className="border-b border-slate-100 px-4 py-3">
-                <p className="text-xs font-semibold tracking-wide text-slate-400">
-                    MENU
-                </p>
-            </div>
+        <aside
+            className={`flex h-full flex-col border-r border-slate-300 bg-slate-100 transition-all duration-300 ${
+                collapsed ? "w-16" : "w-48"
+            }`}
+        >
+            <nav className="flex-1 space-y-1 p-2">
+                {MENUS.map(({ title, path, icon: Icon }) => (
+                    <div
+                        key={path}
+                        onClick={() => navigate(path)}
+                        className={menuClass(location.pathname === path)}
+                    >
+                        <Icon className="h-5 w-5 shrink-0" />
 
-            {menus.map(({ icon: Icon, label, to }) => (
-                <Link
-                    key={label}
-                    to={to}
-                    onClick={onClose}
-                    className="flex items-center gap-3 px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-50"
+                        {!collapsed && (
+                            <span className="ml-3 text-sm">{title}</span>
+                        )}
+                    </div>
+                ))}
+            </nav>
+            <div className="border-t border-slate-300 p-2">
+                <div
+                    onClick={logout}
+                    className={menuClass(false)}
                 >
-                    <Icon className="h-4 w-4 text-slate-500" />
-                    <span>{label}</span>
-                </Link>
-            ))}
-        </div>
+                    <LogOut className="h-5 w-5 shrink-0" />
+                    {!collapsed && (
+                        <span className="ml-3 text-sm">로그아웃</span>
+                    )}
+                </div>
+            </div>
+        </aside>
     );
 };
 

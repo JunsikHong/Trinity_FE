@@ -34,11 +34,11 @@ export const Router = createBrowserRouter([
                 children: [
                     {
                         path: '/',
-                        element: <HomePage />,
+                        element: <DashboardPage />,
                     },
                     {
-                        path: '/dashboard',
-                        element: <DashboardPage />,
+                        path: '/repair',
+                        element: <HomePage />,
                     },
                 ],
             },
