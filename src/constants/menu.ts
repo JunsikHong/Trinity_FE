@@ -1,16 +1,10 @@
 import {
     LayoutDashboard,
     Wrench,
-    Users,
     Settings,
 } from "lucide-react";
 
 export const MENUS = [
-    {
-        title: "회원관리",
-        icon: Users,
-        path: "/member",
-    },
     {
         title: "대시보드",
         icon: LayoutDashboard,
