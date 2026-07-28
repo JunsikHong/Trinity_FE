@@ -1,7 +1,6 @@
 import {
     LayoutDashboard,
     Wrench,
-    Settings,
 } from "lucide-react";
 
 export const MENUS = [
@@ -14,10 +13,5 @@ export const MENUS = [
         title: "정비관리",
         icon: Wrench,
         path: "/repair",
-    },
-    {
-        title: "환경설정",
-        icon: Settings,
-        path: "/setting",
     },
 ];

@@ -17,6 +17,7 @@ import { useRepairChapter } from "@/hooks/repair/useRepairChapter";
 const ListPage = () => {
 
     // 수리 리스트
+    const [searchKeyword, setSearchKeyword] = useState("");
     const [searchParams, setSearchParams] = useState<RepairSearchParams>({
         search: "",
         chapterId: undefined,
@@ -68,6 +69,8 @@ const ListPage = () => {
     return (
         <aside className="flex h-full flex-col border-r bg-white relative">
             <SearchSection
+                searchKeyword={searchKeyword}
+                setSearchKeyword={setSearchKeyword}
                 searchParams={searchParams}
                 setSearchParams={setSearchParams}
                 selectedAirplaneId={selectedAirplaneId} 
@@ -81,11 +84,11 @@ const ListPage = () => {
                 repairListCount={repairList.length}
             />
             <ListSection 
-                repairList={repairList} 
-                isLoading={isLoading} 
                 fetchNextPage={fetchNextPage}
                 hasNextPage={hasNextPage}
                 isFetchingNextPage={isFetchingNextPage}
+                repairList={repairList} 
+                isLoading={isLoading} 
             />
         </aside>
     );

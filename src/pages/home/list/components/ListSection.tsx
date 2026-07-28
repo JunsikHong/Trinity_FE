@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { MapPin, Camera, FileText } from "lucide-react";
 import { useRepairStore } from "@/store/repairStore";
 import { useStatusStore } from "@/store/statusStore";
@@ -6,10 +7,43 @@ import type { RepairListResponse, RepairLocationItemListResponse } from "@/commo
 interface ListSectionProps {
     repairList: RepairListResponse[];
     isLoading: boolean;
+    fetchNextPage: () => void;
+    hasNextPage?: boolean;
+    isFetchingNextPage: boolean;
 }
-const ListSection = ({ repairList, isLoading }: ListSectionProps) => {
+
+const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairList, isLoading }: ListSectionProps) => {
     const { setStatus, clearStatus } = useStatusStore();
     const { selectedRepairId, setSelectedRepair, clearSelectedRepair } = useRepairStore();
+
+    const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (!hasNextPage || isFetchingNextPage) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    fetchNextPage();
+                }
+            },
+            {
+                root: null,
+                rootMargin: "150px",
+                threshold: 0,
+            }
+        );
+
+        const target = loadMoreRef.current;
+
+        if (target) {
+            observer.observe(target);
+        }
+
+        return () => {
+            if (target) observer.unobserve(target);
+        };
+    }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
     if (isLoading) {
         return (
@@ -129,6 +163,14 @@ const ListSection = ({ repairList, isLoading }: ListSectionProps) => {
             {!repairList.length && (
                 <div className="py-10 text-center text-sm text-slate-500">
                     등록된 정비 이력이 없습니다.
+                </div>
+            )}
+            
+            {hasNextPage && <div ref={loadMoreRef} className="h-8" />}
+
+            {isFetchingNextPage && (
+                <div className="py-3 text-center text-sm text-slate-500">
+                    불러오는 중...
                 </div>
             )}
         </div>

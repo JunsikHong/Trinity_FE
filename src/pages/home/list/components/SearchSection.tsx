@@ -6,6 +6,8 @@ import SearchInput from "@/common/ui/SearchInput";
 import SystemDateInput from "@/common/ui/SystemDateInput";
 
 const SearchSection = ({
+    searchKeyword,
+    setSearchKeyword,
     searchParams,
     setSearchParams,
     selectedAirplaneId,
@@ -24,8 +26,8 @@ const SearchSection = ({
             />
             <SearchSelect
                 value={searchParams.chapterId?.toString() ?? ""}
-                onChange={(e) =>
-                    setSearchParams((prev) => ({ ...prev, chapterId: Number(e.target.value) }))
+                onChange={(value) =>
+                    setSearchParams((prev: any) => ({ ...prev, chapterId: value }))
                 }
                 options={[
                     {
@@ -44,7 +46,7 @@ const SearchSection = ({
                     <SystemDateInput
                         value={searchParams.startDate}
                         onChange={(e) =>
-                            setSearchParams((prev) => ({ ...prev, startDate: e.target.value }))
+                            setSearchParams((prev: any) => ({ ...prev, startDate: e.target.value }))
                         }
                     />
                 </div>
@@ -53,20 +55,21 @@ const SearchSection = ({
                     <SystemDateInput
                         value={searchParams.endDate}
                         onChange={(e) =>
-                            setSearchParams((prev) => ({ ...prev, endDate: e.target.value }))
+                            setSearchParams((prev: any) => ({ ...prev, endDate: e.target.value }))
                         }
                     />
                 </div>
             </div>
             <div className="flex gap-2">
                 <SearchInput
-                    value={searchParams.search}
-                    onChange={(e) =>
-                        setSearchParams((prev) => ({ ...prev, search: e.target.value }))
-                    }
+                    value={searchKeyword}
+                    onChange={(e) => setSearchKeyword(e.target.value)}
                     placeholder="설명, 위치 검색"
                 />
                 <button
+                    onClick={() =>
+                        setSearchParams((prev: any) => ({ ...prev, search: searchKeyword }))
+                    }
                     className="flex h-10 items-center gap-1 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium hover:bg-slate-50"
                 >
                     <Search size={16} />

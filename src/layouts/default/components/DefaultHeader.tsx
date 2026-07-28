@@ -1,5 +1,5 @@
 import logo from '@/assets/logo.png';
-import { Menu, LogOut, User, ChevronDown } from "lucide-react";
+import { Menu, ChevronDown, UserRound, UserCog, Settings } from "lucide-react";
 import { useMember } from "@/hooks/member/useMember";
 import { useLogout } from "@/hooks/member/useLogout";
 import { useEffect, useRef, useState } from "react";
@@ -35,7 +35,7 @@ const DefaultHeader = ({ onMenuClick }: any) => {
                         <Menu className="h-5 w-5 shrink-0" />
                     </button>
                 </div>
-                <div className="flex items-center gap-2 pl-3 border-r border-slate-300 w-36">
+                <div className="flex items-center gap-2 pl-3 border-r border-slate-200 w-36">
                     <img src={logo} alt="AirONE" className="w-8" />
                     <p className="flex flex-col justify-center text-slate-700">
                         <span className="text-lg font-bold">AirONE</span>
@@ -47,37 +47,43 @@ const DefaultHeader = ({ onMenuClick }: any) => {
             </div>
             <div className='flex px-3 items-center'>
                 <div
-                    ref={menuRef}
-                    className="relative flex gap-1 pl-3 text-slate-700 border-l border-slate-300 items-center h-10"
+                    className="relative flex gap-3 pl-3 text-slate-700 border-l border-slate-200 items-center h-10"
                 >
-                    <button
-                        onClick={() => setOpen((prev) => !prev)}
-                        className="flex h-10 items-center gap-2 rounded-lg bg-slate-300 px-2 hover:bg-slate-400"
-                    >
-                        <p className="flex flex-col text-left">
-                            <span className="text-xs font-semibold">
-                                {member?.name}님
-                            </span>
-                            <span className="text-[10px] text-slate-600">
-                                {member?.email}
-                            </span>
-                        </p>
-                        <ChevronDown
-                            size={16}
-                            className={`transition-transform ${open ? "rotate-180" : ""
-                                }`}
-                        />
-                    </button>
-                    {open && (
-                        <DefaultMyMenu
-                            member={member}
-                            onClose={() => setOpen(false)}
-                            onLogout={() => {
-                                setOpen(false);
-                                logout();
-                            }}
-                        />
-                    )}
+                    <div>
+                        <button
+                            className="flex h-10 items-center rounded-lg bg-slate-300 w-10 justify-center hover:bg-slate-400"
+                        >
+                            <Settings size={20} />
+                        </button>
+                    </div>
+                    <div ref={menuRef}>
+                        <button
+                            onClick={() => setOpen((prev) => !prev)}
+                            className="flex h-10 items-center gap-2 rounded-lg bg-slate-300 px-2 hover:bg-slate-400"
+                        >
+                            <p className="flex items-center gap-1 text-left">
+                                {member?.role == 'ADMIN' ? <UserCog size={18}/> : <UserRound size={18}/>}
+                                <span className="font-semibold">
+                                    {member?.name}님
+                                </span>
+                            </p>
+                            <ChevronDown
+                                size={16}
+                                className={`transition-transform ${open ? "rotate-180" : ""
+                                    }`}
+                            />
+                        </button>
+                        {open && (
+                            <DefaultMyMenu
+                                member={member}
+                                onClose={() => setOpen(false)}
+                                onLogout={() => {
+                                    setOpen(false);
+                                    logout();
+                                }}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </header>
