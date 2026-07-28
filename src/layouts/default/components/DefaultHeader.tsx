@@ -4,12 +4,14 @@ import { useMember } from "@/hooks/member/useMember";
 import { useLogout } from "@/hooks/member/useLogout";
 import { useEffect, useRef, useState } from "react";
 import DefaultMyMenu from "@/layouts/default/components/DefaultMyMenu";
+import DefaultThemeMenu from "@/layouts/default/components/DefaultThemeMenu";
 
 const DefaultHeader = ({ onMenuClick }: any) => {
     const logout = useLogout();
     const { data: member } = useMember();
 
     const [open, setOpen] = useState(false);
+    const [themeOpen, setThemeOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -25,21 +27,21 @@ const DefaultHeader = ({ onMenuClick }: any) => {
     }, []);
 
     return (
-        <header className="flex items-center justify-between bg-slate-100 border-b border-slate-300">
+        <header className="flex items-center justify-between bg-background border-b border-border">
             <div className='flex items-center'>
-                <div className='w-16 border-r border-slate-300 px-2 py-2 flex justify-center items-center'>
+                <div className='w-16 border-r border-border px-2 py-2 flex justify-center items-center'>
                     <button
                         onClick={onMenuClick}
-                        className={`flex items-center rounded-lg px-3 h-10 transition bg-slate-300 text-slate-800 hover:bg-slate-400`}
+                        className={`flex items-center rounded-lg px-3 h-10 transition bg-background text-foreground hover:bg-slate-400`}
                     >
                         <Menu className="h-5 w-5 shrink-0" />
                     </button>
                 </div>
-                <div className="flex items-center gap-2 pl-3 border-r border-slate-200 w-36">
+                <div className="flex items-center gap-2 pl-3 border-r border-border w-36">
                     <img src={logo} alt="AirONE" className="w-8" />
-                    <p className="flex flex-col justify-center text-slate-700">
+                    <p className="flex flex-col justify-center text-foreground">
                         <span className="text-lg font-bold">AirONE</span>
-                        <span className="-mt-1 text-[9px] font-semibold text-slate-400">
+                        <span className="-mt-1 text-[9px] font-semibold text-muted-foreground">
                             REPAIR MANAGE
                         </span>
                     </p>
@@ -47,16 +49,23 @@ const DefaultHeader = ({ onMenuClick }: any) => {
             </div>
             <div className='flex px-3 items-center'>
                 <div
-                    className="relative flex gap-3 pl-3 text-slate-700 border-l border-slate-200 items-center h-10"
+                    className="relative flex gap-1 pl-3 text-foreground border-l border-border items-center h-10"
                 >
                     <div>
                         <button
-                            className="flex h-10 items-center rounded-lg bg-slate-300 w-10 justify-center hover:bg-slate-400"
+                            onClick={() => setThemeOpen((prev) => !prev)}
+                            className="flex h-10 items-center gap-2 rounded-lg bg-background px-2 hover:hover"
                         >
-                            <Settings size={20} />
+                            <Settings/>
                         </button>
+                        {themeOpen && (
+                            <DefaultThemeMenu
+                            />
+                        )}
                     </div>
-                    <div ref={menuRef}>
+                    <div
+                        ref={menuRef}
+                    >
                         <button
                             onClick={() => setOpen((prev) => !prev)}
                             className="flex h-10 items-center gap-2 rounded-lg bg-slate-300 px-2 hover:bg-slate-400"

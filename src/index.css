@@ -8,3 +8,21 @@
 body {
     font-family: 'Pretendard', sans-serif;
 }
+
+:root {
+  --background: 241 245 249;
+  --card: 255 255 255;
+  --foreground: 15 23 42;
+  --muted-foreground: 100 116 139;
+  --border: 226 232 240;
+  --hover: 226 232 240;
+}
+
+.dark {
+  --background: 15 23 42;
+  --card: 30 41 59;
+  --foreground: 248 250 252;
+  --muted-foreground: 148 163 184;
+  --border: 51 65 85;
+  --hover: 51 65 85;
+}
