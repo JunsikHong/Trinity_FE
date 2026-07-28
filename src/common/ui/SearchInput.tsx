@@ -21,7 +21,7 @@ const SearchInput = ({
         <div className="relative flex-1">
             <Search
                 size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-input-text"
             />
             <input
                 name={name}
@@ -34,14 +34,15 @@ const SearchInput = ({
                     w-full
                     rounded-lg
                     border
-                    border-slate-200
-                    bg-white
+                    border-border
+                    bg-input
                     pl-10
                     pr-3
                     text-sm
                     outline-none
                     transition
-                    focus:border-blue-500
+                    text-input-text
+                    focus:border-focus-input
                 "
             />
         </div>

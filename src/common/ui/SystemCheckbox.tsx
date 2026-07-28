@@ -39,7 +39,7 @@ const SystemCheckbox = ({
             </span>
 
             {label && (
-                <span className="text-sm text-slate-700">
+                <span className="text-sm text-input-text">
                     {label}
                 </span>
             )}

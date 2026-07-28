@@ -34,12 +34,12 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="rounded-xl bg-white p-8 shadow-sm border border-slate-200">
+        <div className="rounded-xl bg-surface p-8 shadow-sm border border-border">
             <div className="mb-6 text-center">
-                <h1 className="text-2xl font-bold text-slate-900">
+                <h1 className="text-2xl font-bold text-primary">
                     로그인
                 </h1>
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-secondary">
                     Airplane Maintenance System
                 </p>
             </div>
@@ -65,7 +65,7 @@ const LoginPage = () => {
                 <button
                     type="submit"
                     disabled={loginMutation.isPending}
-                    className="h-10 w-full rounded-lg bg-slate-900 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="h-10 w-full rounded-lg text-sm font-medium text-btn-text transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {loginMutation.isPending
                         ? "로그인 중..."

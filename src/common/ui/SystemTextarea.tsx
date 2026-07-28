@@ -15,13 +15,12 @@ const SystemTextarea = ({
 }: Props) => {
     return (
         <div className="space-y-1">
-            <label className="block text-xs font-medium text-slate-600">
+            <label className="block text-xs font-medium text-input-text">
                 {label}
             </label>
 
             <textarea
                 rows={rows}
-                value={value}
                 placeholder={placeholder}
                 onChange={onChange}
                 className="
@@ -29,14 +28,18 @@ const SystemTextarea = ({
                     resize-none
                     rounded-lg
                     border
-                    border-slate-200
+                    border-input-border
                     p-3
+                    bg-input
+                    text-input-text
                     text-sm
                     outline-none
                     transition
                     focus:border-blue-500
                 "
-            />
+            >
+                {value}
+            </textarea>
         </div>
     );
 };

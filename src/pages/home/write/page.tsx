@@ -107,7 +107,7 @@ const WritePage = () => {
 
     return (
         <>
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto bg-surface">
                 <WriteSection
                     repairDetail={repairDetail}
                     repairChapter={repairChapter}

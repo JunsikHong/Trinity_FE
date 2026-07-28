@@ -76,13 +76,13 @@ const ViewSection = ({
 
     return (
         <>
-            <div className="m-2 rounded-xl border border-slate-200 bg-white">
-                <div className="border-b p-3 flex items-center justify-between gap-2">
-                    <p className="text-sm uppercase tracking-wider text-slate-800 font-semibold">
+            <div className="m-2 rounded-xl border border-border">
+                <div className="border-b border-border p-3 flex items-center justify-between gap-2">
+                    <p className="text-sm uppercase tracking-wider text-primary font-semibold">
                         Code #{repairDetail.id}
                     </p>
                     <div className="flex items-center gap-1">
-                        <span className="rounded-md bg-slate-700 px-2 py-1 text-xs font-bold text-white flex flex-col  justify-center items-center">
+                        <span className="rounded-md bg-icon px-2 py-1 text-xs font-bold text-icon-text flex gap-1 justify-center items-center">
                             CHAPTER {repairDetail.locationItems[0].chapterNumber}
                             <span className="text-xs font-semibold text-white uppercase">
                                 {repairDetail.locationItems[0].chapterName}
@@ -92,7 +92,7 @@ const ViewSection = ({
                 </div>
                 <div className="space-y-5 p-3">
                     <div>
-                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-secondary">
                             Location
                         </p>
                         <div className="flex flex-wrap gap-2">
@@ -131,7 +131,7 @@ const ViewSection = ({
                                     return (
                                         <div
                                             key={code}
-                                            className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700"
+                                            className="rounded-lg border border-border bg-icon px-3 py-2 text-sm font-medium text-icon-text"
                                         >
                                             {text}
                                         </div>
@@ -141,19 +141,19 @@ const ViewSection = ({
                         </div>
                     </div>
                     <div>
-                        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-secondary">
                             Description
                         </p>
 
-                        <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 min-h-[120px]">
+                        <div className="rounded-lg border border-border bg-icon px-3 py-2 text-sm text-icon-text min-h-[120px]">
                             {repairDetail.description || "설명이 없습니다."}
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="m-2 space-y-4 rounded-md border border-slate-200 p-3">
+            <div className="m-2 space-y-4 rounded-md border border-border p-3">
                 <div>
-                    <h3 className="mb-3 text-sm text-slate-600">
+                    <h3 className="mb-3 text-sm text-secondary">
                         첨부 사진
                     </h3>
 
@@ -178,22 +178,22 @@ const ViewSection = ({
 
             <div className="grid grid-cols-2 px-2 py-1">
                 <div className="flex items-center gap-2">
-                    <p className="rounded-md border border-slate-300 p-1 text-xs text-slate-400">
+                    <p className="rounded-md border border-border p-1 text-xs text-primary">
                         수리일
                     </p>
 
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-secondary">
                         {repairDetail.repairAt
                             ? repairDetail.repairAt.slice(0, 10)
                             : "-"}
                     </p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <p className="rounded-md border border-slate-300 p-1 text-xs text-slate-400">
+                    <p className="rounded-md border border-border p-1 text-xs text-primary">
                         생성일
                     </p>
 
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-secondary">
                         {repairDetail.createdAt
                             ? repairDetail.createdAt.slice(0, 10)
                             : "-"}

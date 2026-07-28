@@ -13,7 +13,7 @@ const SystemDateInput = ({
 }: Props) => {
     return (
         <div className="space-y-1">
-            <label className="block text-xs font-medium text-slate-600">
+            <label className="block text-xs font-medium text-input-text">
                 {label}
             </label>
 
@@ -25,25 +25,27 @@ const SystemDateInput = ({
                         left-3
                         top-1/2
                         -translate-y-1/2
-                        text-slate-400
+                        text-input-text
                     "
                 />
 
                 <input
                     type="date"
                     value={value}
-                onChange={onChange}
+                    onChange={onChange}
                     className="
                         h-10
                         w-full
                         rounded-lg
                         border
-                        border-slate-200
+                        border-input-border
                         pl-10
                         pr-3
                         text-sm
                         outline-none
-                        focus:border-blue-500
+                        bg-input
+                        text-input-text
+                        focus:border-input-focus
                     "
                 />
             </div>

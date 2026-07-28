@@ -88,14 +88,14 @@ const RenderLocationGroup = ({ locations, values, onChange }: RenderLocationGrou
                 if (item.type === "textGroup") {
                     return (
                         <div key={item.code} className="flex items-center gap-2">
-                            <span className="w-8 shrink-0 text-sm font-medium text-slate-700">
+                            <span className="w-8 shrink-0 text-sm font-medium text-input-text">
                                 {item.code}
                             </span>
                             <div className="flex items-center gap-2">
                                 {item.locations.map((loc, idx) => (
                                     <div key={loc.id} className="flex items-center gap-2">
                                         {idx > 0 && (
-                                            <span className="text-slate-400">~</span>
+                                            <span className="text-input-text">~</span>
                                         )}
                                         <SystemInput
                                             type="text"

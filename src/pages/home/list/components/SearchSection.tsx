@@ -17,7 +17,7 @@ const SearchSection = ({
 }: any) => {
 
     return (
-        <div className="space-y-3 border-b py-2 px-2 border rounded-md m-2">
+        <div className="space-y-3 border-b py-2 px-2 border border-border rounded-md m-2">
             <SearchSelect
                 value={selectedAirplaneId ?? ""}
                 options={airplaneOptions}
@@ -50,7 +50,7 @@ const SearchSection = ({
                         }
                     />
                 </div>
-                <p className="shrink-0">~</p>
+                <p className="shrink-0 text-input-text">~</p>
                 <div className="flex-1 min-w-0">
                     <SystemDateInput
                         value={searchParams.endDate}
@@ -70,7 +70,7 @@ const SearchSection = ({
                     onClick={() =>
                         setSearchParams((prev: any) => ({ ...prev, search: searchKeyword }))
                     }
-                    className="flex h-10 items-center gap-1 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium hover:bg-slate-50"
+                    className="flex h-10 text-input-text items-center gap-1 rounded-lg border border-input-border bg-input px-4 text-sm font-medium"
                 >
                     <Search size={16} />
                     검색

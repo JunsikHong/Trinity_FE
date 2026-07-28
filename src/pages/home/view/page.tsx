@@ -9,7 +9,7 @@ const ViewPage = () => {
     
     return (
         <>
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto bg-surface">
                 <ViewSection repairDetail={repairDetail} isLoading={isLoading}/>
                 <ButtonSection selectedRepairId={selectedRepairId}/>
             </div>

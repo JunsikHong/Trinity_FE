@@ -13,15 +13,15 @@ const DefaultMenu = ({ collapsed }: DefaultMenuProps) => {
         flex h-10 cursor-pointer items-center rounded-lg transition
         ${collapsed ? "justify-center" : "px-4"}
         ${active
-            ? "bg-slate-700 text-white"
-            : "text-slate-700 hover:bg-slate-700 hover:text-white"
+            ? "bg-menu-active text-menu-text"
+            : "text-menu-text hover:bg-menu-hover"
         }
     `;
 
     return (
-        <aside className="relative h-full w-16 shrink-0 border-r border-slate-300 bg-slate-100">
+        <aside className="relative h-full w-16 shrink-0 border-r border-border bg-surface">
             <div
-                className={`absolute left-0 top-0 z-50 flex h-full flex-col border-r border-slate-300 bg-slate-100 transition-all duration-300 ${collapsed ? "w-16" : "w-52 shadow-xl"
+                className={`absolute left-0 top-0 z-50 flex h-full flex-col border-r border-border bg-surface transition-all duration-300 ${collapsed ? "w-16" : "w-52 shadow-xl"
                     }`}
             >
                 <nav className="flex-1 space-y-1 p-2">
@@ -41,7 +41,7 @@ const DefaultMenu = ({ collapsed }: DefaultMenuProps) => {
                 </nav>
 
                 {!collapsed && (
-                    <div className="border-t border-slate-300 p-2 text-center text-[9px] text-slate-500">
+                    <div className="border-t border-border p-2 text-center text-[9px] text-secondary">
                         Copyright © 2026 AirOne All Rights Reserved
                     </div>
                 )}

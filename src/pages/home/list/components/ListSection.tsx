@@ -86,30 +86,30 @@ const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairLis
                             setSelectedRepair(item.id);
                         }
                     }}
-                    className={`mb-2 overflow-hidden flex w-full border text-left transition hover:ring-1 hover:ring-blue-500 rounded-md ${item.id === selectedRepairId
-                        ? "ring-1 ring-blue-500"
+                    className={`mb-2 overflow-hidden bg-card flex w-full border border-border text-left transition hover:ring-1 hover:ring-blue-500 rounded-md ${item.id === selectedRepairId
+                        ? "ring-2 ring-blue-500"
                         : ""
                         }`}
                 >
-                    <div className="flex h-28 w-28 shrink-0 items-center justify-center bg-slate-100">
+                    <div className="flex h-28 w-28 shrink-0 items-center justify-center bg-slate-200">
                         <Camera className="h-6 w-6 text-slate-400" strokeWidth={1.5} />
                     </div>
 
                     <div className="min-w-0 flex-1 mt-2">
                         <div className="flex items-start justify-between px-2">
-                            <span className="text-sm font-semibold">
+                            <span className="text-sm font-semibold text-primary">
                                 CODE : #{item.id}
                             </span>
-                            <span className="text-xs text-slate-400">
+                            <span className="text-xs text-secondary">
                                 {new Date(item.createdAt).toLocaleDateString()}
                             </span>
                         </div>
-                        <div className="mt-1 flex items-start gap-1 text-xs text-slate-500 px-2 uppercase">
+                        <div className="mt-1 flex items-start gap-1 text-xs text-secondary px-2 uppercase">
                             <p>
                                 CHAPTER {item.locationItems[0].chapterNumber} : {item.locationItems[0].chapterName}
                             </p>
                         </div>
-                        <div className="mt-1 flex items-start gap-1 text-xs text-slate-500 px-2">
+                        <div className="mt-1 flex items-start gap-1 text-xs text-secondary px-2">
                             <MapPin
                                 size={12}
                                 className="mt-0.5 shrink-0"
@@ -151,7 +151,7 @@ const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairLis
                                 </span>
                             </div>
                         </div>
-                        <p className="mt-3 flex items-center gap-1 px-2 text-xs text-slate-500">
+                        <p className="mt-3 flex items-center gap-1 px-2 text-xs text-secondary">
                             <FileText size={12} className="shrink-0" />
                             <span className="line-clamp-1">
                                 {item.description || "-"}

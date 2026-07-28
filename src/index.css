@@ -1,28 +1,96 @@
-
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 @import "@fontsource-variable/geist";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 body {
-    font-family: 'Pretendard', sans-serif;
+  font-family: 'Pretendard', sans-serif;
 }
-
 :root {
-  --background: 241 245 249;
-  --card: 255 255 255;
-  --foreground: 15 23 42;
-  --muted-foreground: 100 116 139;
-  --border: 226 232 240;
-  --hover: 226 232 240;
+  --bg-page: 241 242 245;
+  --bg-surface: 247 247 249;
+  --bg-card: 243 244 247;
+  --text-primary: 24 27 35;
+  --text-secondary: 100 108 122;
+  --text-muted: 156 163 175;
+  --border: 223 225 230;
+  --btn-icon-bg: 241 242 245;
+  --btn-icon-hover: 233 235 239;
+  --btn-icon-active: 223 225 230;
+  --btn-icon-text: 100 108 122;
+  --btn-menu-bg: 247 247 249;
+  --btn-menu-hover: 238 239 242;
+  --btn-menu-active: 219 234 254;
+  --btn-menu-text: 30 64 175;
+  --btn-primary: 37 99 235;
+  --btn-primary-hover: 29 78 216;
+  --btn-secondary: 236 238 241;
+  --btn-secondary-hover: 224 227 232;
+  --btn-danger: 239 68 68;
+  --btn-danger-hover: 220 38 38;
+  --input-bg: 247 247 249;
+  --input-text: 24 27 35;
+  --input-placeholder: 156 163 175;
+  --input-border: 214 217 224;
+  --input-hover: 223 225 230;
+  --input-focus: 37 99 235;
+  --input-disabled: 236 238 241;
+  --separator-bg: 241 242 245;
+  --separator-hover: 233 235 239;
+  --separator-line: 223 225 230;
+  --separator-handle-bg: 247 247 249;
+  --separator-handle-border: 223 225 230;
+  --separator-dot: 156 163 175;
+  --separator-active: 59 130 246;
+  --tab-bg: 241 242 245;
+  --tab-hover: 233 235 239;
+  --tab-active-bg: 247 247 249;
+  --tab-border: 223 225 230;
+  --tab-active-border: 59 130 246;
+  --tab-text: 100 108 122;
+  --tab-active-text: 37 99 235;
 }
-
 .dark {
-  --background: 15 23 42;
-  --card: 30 41 59;
-  --foreground: 248 250 252;
-  --muted-foreground: 148 163 184;
-  --border: 51 65 85;
-  --hover: 51 65 85;
+  --bg-page: 2 3 6;
+  --bg-surface: 7 9 14;
+  --bg-card: 12 14 20;
+  --text-primary: 245 247 250;
+  --text-secondary: 205 211 220;
+  --text-muted: 130 138 150;
+  --border: 38 42 51;
+  --btn-icon-bg: 24 32 47;
+  --btn-icon-hover: 22 25 33;
+  --btn-icon-active: 38 42 51;
+  --btn-icon-text: 205 211 220;
+  --btn-menu-bg: 7 9 14;
+  --btn-menu-hover: 12 14 20;
+  --btn-menu-active: 30 58 110;
+  --btn-menu-text: 147 197 253;
+  --btn-primary: 59 130 246;
+  --btn-primary-hover: 37 99 235;
+  --btn-secondary: 34 38 46;
+  --btn-secondary-hover: 46 51 60;
+  --btn-danger: 239 68 68;
+  --btn-danger-hover: 220 38 38;
+  --input-bg: 12 14 20;
+  --input-text: 245 247 250;
+  --input-placeholder: 130 138 150;
+  --input-border: 38 42 51;
+  --input-hover: 55 60 70;
+  --input-focus: 96 165 250;
+  --input-disabled: 20 23 30;
+  --separator-bg: 7 9 14;
+  --separator-hover: 12 14 20;
+  --separator-line: 38 42 51;
+  --separator-handle-bg: 12 14 20;
+  --separator-handle-border: 38 42 51;
+  --separator-dot: 130 138 150;
+  --separator-active: 96 165 250;
+  --tab-bg: 7 9 14;
+  --tab-hover: 12 14 20;
+  --tab-active-bg: 12 14 20;
+  --tab-border: 38 42 51;
+  --tab-active-border: 96 165 250;
+  --tab-text: 205 211 220;
+  --tab-active-text: 147 197 253;
 }

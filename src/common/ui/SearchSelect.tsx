@@ -24,7 +24,7 @@ export default function SearchSelect({
 }: SearchSelectProps) {
     return (
         <div className="space-y-1">
-            <label className="block text-xs font-medium text-slate-600">
+            <label className="block text-xs font-medium text-input-text">
                 {label}
             </label>
             <select
@@ -36,16 +36,16 @@ export default function SearchSelect({
                     rounded-md
                     h-9
                     min-w-[95px]
-                    border border-slate-300
-                    bg-white
+                    border
+                    border-input-border
+                    bg-input
                     px-1
-                    text-sm text-slate-700
-                    outline-none
+                    text-sm text-input-text
                     transition-colors
-                    focus:border-blue-500
-                    focus:ring-2 focus:ring-blue-100
+                    focus:border-input-focus
+                    focus:ring-2 
                     disabled:cursor-not-allowed
-                    disabled:bg-slate-100
+                    disabled:bg-input-disabled
                     disabled:text-slate-400
                     ${className}
                 `}

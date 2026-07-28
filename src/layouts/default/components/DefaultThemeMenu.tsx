@@ -6,35 +6,49 @@ const DefaultThemeMenu = () => {
     const { themeStatus, toggleThemeStatus } = useStatusStore();
 
     return (
-        <div className="absolute right-0 top-14 z-50 w-56 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-xl">
-
-            <button
-                onClick={toggleThemeStatus}
-                className={`
+        <div className="absolute right-0 top-14 z-50 w-64 overflow-hidden rounded-lg border border-border bg-surface shadow-xl p-3 flex flex-col gap-3">
+            <div className="flex justify-between items-center w-full">
+                <div className="text-primary">
+                    테마설정
+                </div>
+                <button
+                    onClick={toggleThemeStatus}
+                    className={`
                 relative flex h-8 w-16 items-center rounded-full
                 transition-colors duration-300
                 ${themeStatus === "dark"
-                        ? "bg-slate-700"
-                        : "bg-slate-300"}
+                            ? "bg-slate-700"
+                            : "bg-slate-300"}
             `}
-            >
-                <div
-                    className={`
+                >
+                    <div
+                        className={`
                     absolute left-1 flex h-6 w-6 items-center justify-center
                     rounded-full bg-white shadow-md
                     transition-transform duration-300
                     ${themeStatus === "dark"
-                            ? "translate-x-8"
-                            : "translate-x-0"}
+                                ? "translate-x-8"
+                                : "translate-x-0"}
                 `}
-                >
-                    {themeStatus === "dark" ? (
-                        <Moon size={14} className="text-slate-700" />
-                    ) : (
-                        <Sun size={14} className="text-yellow-500" />
-                    )}
+                    >
+                        {themeStatus === "dark" ? (
+                            <Moon size={14} className="text-slate-700" />
+                        ) : (
+                            <Sun size={14} className="text-yellow-500" />
+                        )}
+                    </div>
+                </button>
+            </div>
+            <div className="flex justify-between items-center w-full">
+                <div className="text-primary">
+                    목록넓이
                 </div>
-            </button>
+            </div>
+            <div className="flex justify-between items-center w-full">
+                <div className="text-primary">
+                    상세넓이
+                </div>
+            </div>
         </div>
     );
 };

@@ -4,7 +4,7 @@ import RecentSection from '@/pages/dashboard/components/RecentSection';
 
 const DashboardPage = () => {
     return (
-        <div className="flex flex-col gap-2 p-5">
+        <div className="flex flex-col gap-2 p-5 bg-page h-full">
             <StatusSection />
             <ModelViewSection />
             <RecentSection />

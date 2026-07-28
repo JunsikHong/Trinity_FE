@@ -20,7 +20,7 @@ const AsideSection = () => {
     }
 
     return (
-        <aside className="flex h-full flex-col border-r bg-white relative">
+        <aside className="flex h-full flex-col relative">
             {(selectedAirplaneId && selectedRepairId && status == 'view') && <ViewPage />}
             {(selectedAirplaneId && status == 'edit') && <WritePage />}
             {(status == '') && (

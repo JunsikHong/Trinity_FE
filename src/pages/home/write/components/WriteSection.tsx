@@ -9,7 +9,7 @@ import RenderLocationGroup from "@/pages/home/write/components/RenderLocationGro
 const WriteSection = ({ repairChapter, repairLocation, locationValues, chapterId, repairDate, description, handleLocationChange, setChapterId, setRepairDate, setDescription } : any) => {
     return (
         <>
-            <div className="space-y-4 m-2 p-3 border rounded-md border-slate-200">
+            <div className="space-y-4 m-2 p-3 border rounded-md border-border">
                 <SearchSelect
                     label="CHAPTER"
                     value={chapterId?.toString() ?? ""}
@@ -45,9 +45,9 @@ const WriteSection = ({ repairChapter, repairLocation, locationValues, chapterId
                     onChange={(e) => setDescription(e.target.value)}
                 />
             </div>
-            <div className="space-y-4 m-2 p-3 border rounded-md border-slate-200">
+            <div className="space-y-4 m-2 p-3 border border-border rounded-md">
                 <div className="flex justify-between items-center">
-                    <h3 className="text-sm text-slate-600">첨부 사진</h3>
+                    <h3 className="text-sm text-input-text">첨부 사진</h3>
                     <button
                         className="flex h-8 items-center gap-1 rounded-md border text-slate-600 border-slate-200 bg-white px-2 font-medium hover:bg-slate-50 text-xs"
                     >
@@ -56,7 +56,7 @@ const WriteSection = ({ repairChapter, repairLocation, locationValues, chapterId
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                     <div className="col-span-2">
-                        <div className="border border-slate-300 h-16 rounded-lg flex items-center justify-center text-sm text-slate-400">
+                        <div className="border border-border h-16 rounded-lg flex items-center justify-center text-sm text-input-text">
                             사진을 첨부해주세요.
                         </div>
                     </div>

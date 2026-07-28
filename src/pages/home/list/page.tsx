@@ -67,7 +67,7 @@ const ListPage = () => {
     const { data: repairChapter } = useRepairChapter(selectedAirplaneTypeId);
 
     return (
-        <aside className="flex h-full flex-col border-r bg-white relative">
+        <aside className="flex h-full flex-col bg-surface relative">
             <SearchSection
                 searchKeyword={searchKeyword}
                 setSearchKeyword={setSearchKeyword}
