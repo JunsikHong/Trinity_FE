@@ -7,7 +7,7 @@ const DefaultLayout = () => {
     const [collapsed, setCollapsed] = useState(true);
 
     return (
-        <div className="flex h-screen flex-col bg-slate-100">
+        <div className="flex h-screen flex-col bg-background">
             <DefaultHeader
                 onMenuClick={() => setCollapsed(!collapsed)}
             />
