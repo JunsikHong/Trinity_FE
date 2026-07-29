@@ -6,12 +6,16 @@ import LogSection from "@/pages/home/list/page";
 import SeperatorSection from "@/pages/home/components/SeperatorSection";
 import AsideSection from "@/pages/home/components/AsideSection";
 
+import { useStatusStore } from "@/store/statusStore";
+
 const HomePage = () => {
+
+    const { listWidth, viewWidth, setListWidth, setViewWidth } = useStatusStore();
 
     return (
         <Group orientation="horizontal" className="h-full w-full">
             <Panel
-                defaultSize="20%"
+                defaultSize={`${listWidth}%`}
                 minSize="350px"
                 maxSize="50%"
                 collapsible
@@ -31,7 +35,7 @@ const HomePage = () => {
             </Panel>
             <SeperatorSection />
             <Panel
-                defaultSize="20%"
+                defaultSize={`${viewWidth}%`}
                 minSize="350px"
                 maxSize="50%"
                 collapsible

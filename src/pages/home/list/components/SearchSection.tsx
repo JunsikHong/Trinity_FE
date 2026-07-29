@@ -13,7 +13,8 @@ const SearchSection = ({
     selectedAirplaneId,
     airplaneOptions,
     handleAirplaneChange,
-    repairChapter
+    repairChapter,
+    INITIAL_SEARCH_PARAMS
 }: any) => {
 
     return (
@@ -26,9 +27,11 @@ const SearchSection = ({
             />
             <SearchSelect
                 value={searchParams.chapterId?.toString() ?? ""}
-                onChange={(value) =>
-                    setSearchParams((prev: any) => ({ ...prev, chapterId: value }))
-                }
+                onChange={(value) => {
+                    setSearchKeyword("");
+                    
+                    setSearchParams(() => ({ ...INITIAL_SEARCH_PARAMS, chapterId: value }))
+                }}
                 options={[
                     {
                         value: "",

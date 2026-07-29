@@ -10,8 +10,8 @@ const DefaultHeader = ({ onMenuClick }: any) => {
     const logout = useLogout();
     const { data: member } = useMember();
 
-    const [open, setOpen] = useState(false);
-    const [themeOpen, setThemeOpen] = useState(false);
+    const [openedMenu, setOpenedMenu] =
+        useState<"theme" | "user" | null>(null);
     const menuRef = useRef<HTMLDivElement>(null);
     const themeMenuRef = useRef<HTMLDivElement>(null);
 
@@ -19,17 +19,20 @@ const DefaultHeader = ({ onMenuClick }: any) => {
         const handler = (e: MouseEvent) => {
             const target = e.target as Node;
 
-            if (
-                !menuRef.current?.contains(target) &&
-                !themeMenuRef.current?.contains(target)
-            ) {
-                setOpen(false);
+            const clickedMenu =
+                menuRef.current?.contains(target) ||
+                themeMenuRef.current?.contains(target);
+
+            if (!clickedMenu) {
+                setOpenedMenu(null);
             }
         };
 
         document.addEventListener("mousedown", handler);
 
-        return () => document.removeEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
     }, []);
 
     return (
@@ -55,53 +58,70 @@ const DefaultHeader = ({ onMenuClick }: any) => {
             </div>
             <div className='flex px-3 items-center'>
                 <div className="relative flex gap-3 pl-3 text-foreground border-l border-border items-center h-10">
-                    <div
-                        ref={themeMenuRef}
-                    >
+                    <div ref={themeMenuRef} className="relative">
                         <button
-                            onClick={() => {
-                                setThemeOpen((prev) => !prev)
-                            }}
+                            onClick={() =>
+                                setOpenedMenu(prev => prev === "theme" ? null : "theme")
+                            }
                             className="flex h-10 items-center gap-2 rounded-lg bg-background px-2 bg-icon hover:bg-icon-hover text-icon-text"
                         >
                             <Settings />
                         </button>
-                        {themeOpen && (
-                            <DefaultThemeMenu
-                            />
-                        )}
+                        <div
+                            className={`
+                                absolute right-0 top-full mt-2 z-50 origin-top-right
+                                transition-all duration-200 ease-out
+                                ${openedMenu === "theme"
+                                    ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+                                    : "opacity-0 -translate-y-2 scale-95 pointer-events-none"
+                                }
+                            `}
+                        >
+                            <DefaultThemeMenu />
+                        </div>
                     </div>
-                    <div
-                        ref={menuRef}
-                    >
+                    <div ref={menuRef} className="relative">
                         <button
-                            onClick={() => {
-                                setOpen((prev) => !prev)
-                            }}
+                            onClick={() =>
+                                setOpenedMenu(prev => prev === "user" ? null : "user")
+                            }
                             className="flex h-10 items-center gap-2 rounded-lg bg-icon hover:bg-icon-hover text-icon-text px-2"
                         >
                             <p className="flex items-center gap-1 text-left">
-                                {member?.role == 'ADMIN' ? <UserCog size={18} /> : <UserRound size={18} />}
-                                <span className="font-semibold">
-                                    {member?.name}님
-                                </span>
+                                {member?.role === "ADMIN" ? (
+                                    <UserCog size={18} />
+                                ) : (
+                                    <UserRound size={18} />
+                                )}
+                                <span className="font-semibold">{member?.name}님</span>
                             </p>
+
                             <ChevronDown
                                 size={16}
-                                className={`transition-transform ${open ? "rotate-180" : ""
+                                className={`transition-transform duration-200 ${openedMenu === "user" ? "rotate-180" : ""
                                     }`}
                             />
                         </button>
-                        {open && (
+
+                        <div
+                            className={`
+                                absolute right-0 top-full mt-2 origin-top-right z-50
+                                transition-all duration-200 ease-out
+                                ${openedMenu === "user"
+                                    ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+                                    : "opacity-0 -translate-y-2 scale-95 pointer-events-none"
+                                }
+                            `}
+                        >
                             <DefaultMyMenu
                                 member={member}
-                                onClose={() => setOpen(false)}
+                                onClose={() => setOpenedMenu(null)}
                                 onLogout={() => {
-                                    setOpen(false);
+                                    setOpenedMenu(null);
                                     logout();
                                 }}
                             />
-                        )}
+                        </div>
                     </div>
                 </div>
             </div>

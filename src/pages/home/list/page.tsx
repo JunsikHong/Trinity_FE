@@ -14,18 +14,28 @@ import { useRepairList } from "@/hooks/repair/useRepair";
 import { useAirplane } from "@/hooks/airplane/useAirplane";
 import { useRepairChapter } from "@/hooks/repair/useRepairChapter";
 
+const INITIAL_SEARCH_PARAMS: RepairSearchParams = {
+    search: "",
+    chapterId: undefined,
+    startDate: undefined,
+    endDate: undefined,
+    sortBy: "REPAIR_AT",
+    sortDirection: "DESC",
+};
+
 const ListPage = () => {
 
     // 수리 리스트
     const [searchKeyword, setSearchKeyword] = useState("");
-    const [searchParams, setSearchParams] = useState<RepairSearchParams>({
-        search: "",
-        chapterId: undefined,
-        startDate: undefined,
-        endDate: undefined,
-        sortBy: "REPAIR_AT",
-        sortDirection: "DESC",
-    });
+    const [searchParams, setSearchParams] = useState<RepairSearchParams>(INITIAL_SEARCH_PARAMS);
+
+    const resetSearch = () => {
+        setSearchKeyword("");
+
+        setSearchParams({
+            ...INITIAL_SEARCH_PARAMS,
+        });
+    };
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useRepairList(searchParams);
     const repairList = useMemo(
@@ -49,6 +59,8 @@ const ListPage = () => {
     );
 
     const handleAirplaneChange = (value: string) => {
+        resetSearch();
+
         if (!value) {
             setSelectedAirplane(null);
             return;
@@ -77,6 +89,7 @@ const ListPage = () => {
                 airplaneOptions={airplaneOptions} 
                 handleAirplaneChange={handleAirplaneChange}
                 repairChapter={repairChapter}
+                INITIAL_SEARCH_PARAMS={INITIAL_SEARCH_PARAMS}
             />
             <SortSection
                 searchParams={searchParams}

@@ -6,12 +6,17 @@ export type ThemeStatus = "light" | "dark";
 interface StatusState {
     status: string | null;
     themeStatus: ThemeStatus;
+    listWidth: number | null;
+    viewWidth: number | null;
 
     setStatus: (status: string | null) => void;
     clearStatus: () => void;
 
     setThemeStatus: (theme: ThemeStatus) => void;
     toggleThemeStatus: () => void;
+
+    setListWidth: (width: number | null) => void;
+    setViewWidth: (width: number | null) => void;
 }
 
 export const useStatusStore = create<StatusState>()(
@@ -19,6 +24,8 @@ export const useStatusStore = create<StatusState>()(
         (set) => ({
             status: null,
             themeStatus: "light",
+            listWidth: 25,
+            viewWidth: 25,
 
             setStatus: (status) =>
                 set({
@@ -51,6 +58,16 @@ export const useStatusStore = create<StatusState>()(
                     return {
                         themeStatus: next,
                     };
+                }),
+
+            setListWidth: (width) => 
+                set({
+                    listWidth: width ?? null,
+                }),
+
+            setViewWidth: (width) => 
+                set({
+                    viewWidth: width ?? null,
                 }),
         }),
         {

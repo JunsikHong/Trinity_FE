@@ -55,7 +55,6 @@ export const useRepairDetail = (
         enabled: !!repairId,
 
         queryFn: async () => {
-            await new Promise((resolve) => setTimeout(resolve, 2000));
 
             const { data } = await axiosInstance.get<
                 { data: RepairDetailResponse }

@@ -95,7 +95,7 @@ const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairLis
                         <Camera className="h-6 w-6 text-slate-400" strokeWidth={1.5} />
                     </div>
 
-                    <div className="min-w-0 flex-1 mt-2">
+                    <div className="min-w-0 flex-1 mt-2 flex flex-col">
                         <div className="flex items-start justify-between px-2">
                             <span className="text-sm font-semibold text-primary">
                                 CODE : #{item.id}
@@ -115,29 +115,33 @@ const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairLis
                                 className="mt-0.5 shrink-0"
                             />
                             <div>
-                                <span className="line-clamp-2">
+                                <div className="line-clamp-2">
                                     {(() => {
                                         const groups = item.locationItems.reduce(
                                             (acc, cur) => {
                                                 if (!acc[cur.locationCode]) {
                                                     acc[cur.locationCode] = [];
                                                 }
+
                                                 acc[cur.locationCode].push(cur);
                                                 return acc;
                                             },
                                             {} as Record<string, RepairLocationItemListResponse[]>
                                         );
 
-                                        return Object.entries(groups)
+                                        const staStr = Object.entries(groups)
+                                            .filter(([code]) => code === "STA" || code === "STR")
                                             .map(([code, items]) => {
-                                                if (code === "STA" || code === "STR") {
-                                                    const values = items.map((v) => v.value);
+                                                const values = items.map((v) => v.value);
 
-                                                    return values.length > 1
-                                                        ? `${code} ${values[0]} ~ ${values[values.length - 1]}`
-                                                        : `${code} ${values[0]}`;
-                                                }
+                                                return values.length > 1
+                                                    ? `${code} ${values[0]} ~ ${values[values.length - 1]}`
+                                                    : `${code} ${values[0]}`;
+                                            });
 
+                                        const others = Object.entries(groups)
+                                            .filter(([code]) => code !== "STA" && code !== "STR")
+                                            .map(([code, items]) => {
                                                 return items
                                                     .map((v) =>
                                                         v.value === "true"
@@ -145,14 +149,30 @@ const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairLis
                                                             : `${v.locationName} ${v.value}`
                                                     )
                                                     .join(" / ");
-                                            })
-                                            .join(" / ");
+                                            });
+
+
+                                        return (
+                                            <>
+                                                {[
+                                                    ...staStr,
+                                                    others.join(" / ")
+                                                ]
+                                                    .filter(Boolean)
+                                                    .map((text, index) => (
+                                                        <div key={index}>
+                                                            {text}
+                                                        </div>
+                                                    ))}
+                                            </>
+                                        );
                                     })()}
-                                </span>
+                                </div>
                             </div>
                         </div>
-                        <p className="mt-3 flex items-center gap-1 px-2 text-xs text-secondary">
+                        <p className="mt-auto flex items-center gap-1 px-2 pb-2 text-xs text-secondary">
                             <FileText size={12} className="shrink-0" />
+
                             <span className="line-clamp-1">
                                 {item.description || "-"}
                             </span>
@@ -165,7 +185,7 @@ const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairLis
                     등록된 정비 이력이 없습니다.
                 </div>
             )}
-            
+
             {hasNextPage && <div ref={loadMoreRef} className="h-8" />}
 
             {isFetchingNextPage && (

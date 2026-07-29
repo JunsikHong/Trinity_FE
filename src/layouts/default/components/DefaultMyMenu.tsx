@@ -1,5 +1,8 @@
 import { ChevronRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import Modal from '@/common/ux/Modal';
+import AuthInfoPage from "@/pages/member/auth-info/page";
+import MyPage from "@/pages/member/my/page";
 
 interface Props {
     member: any;
@@ -8,10 +11,11 @@ interface Props {
 }
 
 const DefaultMyMenu = ({ member, onLogout, onClose }: Props) => {
-    const navigate = useNavigate();
+    const [openedMenu, setOpenedMenu] =
+        useState<"auth-info" | "my" | null>(null);
 
     return (
-        <div className="absolute right-0 top-14 z-50 w-64 overflow-hidden rounded-lg border border-border bg-surface shadow-xl">
+        <div className="w-72 overflow-hidden rounded-lg border border-border bg-surface shadow-xl">
 
             <div className="border-b border-border px-4 py-3">
                 <div className="flex gap-3 items-center">
@@ -32,8 +36,11 @@ const DefaultMyMenu = ({ member, onLogout, onClose }: Props) => {
                         </p>
                     </div>
                 </div>
-                <div 
-                    
+                <div
+                    onClick={() => {
+                        onClose();
+                        setOpenedMenu('auth-info');
+                    }}
                     className="bg-icon hover:bg-icon-hover text-icon-text rounded-2xl w-full text-xs px-2 py-1.5 mt-3 flex justify-between items-center cursor-pointer"
                 >
                     <span className="flex items-center gap-1">
@@ -41,11 +48,18 @@ const DefaultMyMenu = ({ member, onLogout, onClose }: Props) => {
                     </span>
                     <ChevronRight size={12} />
                 </div>
+                <Modal
+                    open={openedMenu == 'auth-info' ? true : false}
+                    onClose={() => setOpenedMenu(null)}
+                    width="max-w-4xl"
+                >
+                    <AuthInfoPage/>
+                </Modal>
                 <div className="flex flex-col mt-5 border-t border-border">
                     <button
                         onClick={() => {
                             onClose();
-                            navigate("/member");
+                            setOpenedMenu('my');
                         }}
                         className="flex gap-0.5 text-sm mt-4 items-center text-primary">
                         <span>내 정보 관리</span>
@@ -61,6 +75,13 @@ const DefaultMyMenu = ({ member, onLogout, onClose }: Props) => {
                         <ChevronRight size={12} />
                     </button>
                 </div>
+                <Modal
+                    open={openedMenu == 'my' ? true : false}
+                    onClose={() => setOpenedMenu(null)}
+                    width="max-w-4xl"
+                >
+                    <MyPage/>
+                </Modal>
             </div>
         </div>
     );

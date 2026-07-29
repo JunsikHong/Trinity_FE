@@ -84,7 +84,7 @@ const ViewSection = ({
                     <div className="flex items-center gap-1">
                         <span className="rounded-md bg-icon px-2 py-1 text-xs font-bold text-icon-text flex gap-1 justify-center items-center">
                             CHAPTER {repairDetail.locationItems[0].chapterNumber}
-                            <span className="text-xs font-semibold text-white uppercase">
+                            <span className="text-xs font-semibold text-primary uppercase">
                                 {repairDetail.locationItems[0].chapterName}
                             </span>
                         </span>

@@ -94,3 +94,26 @@ body {
   --tab-text: 205 211 220;
   --tab-active-text: 147 197 253;
 }
+
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--border)) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(var(--border));
+    border-radius: 999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--text-muted));
+}
