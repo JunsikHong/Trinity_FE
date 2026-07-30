@@ -1,27 +1,15 @@
-import { useEffect, useState } from "react";
 import { useStatusStore } from "@/store/statusStore";
-import SystemInput from "@/common/ui/SystemInput";
-import { Moon, Sun, Check } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 
 const DefaultThemeMenu = () => {
+
+    // TODO
+    // 3D 모델 도구 설정 추가
+
     const {
         themeStatus,
         toggleThemeStatus,
-        listWidth,
-        viewWidth,
-        setListWidth,
-        setViewWidth,
     } = useStatusStore();
-
-    const [tempListWidth, setTempListWidth] = useState(listWidth);
-    const [tempViewWidth, setTempViewWidth] = useState(viewWidth);
-
-
-    useEffect(() => {
-        setTempListWidth(listWidth);
-        setTempViewWidth(viewWidth);
-    }, [listWidth, viewWidth]);
-
 
     return (
         <div className="w-72 overflow-hidden rounded-lg border border-border bg-surface shadow-xl p-3 flex flex-col gap-3">
@@ -57,77 +45,6 @@ const DefaultThemeMenu = () => {
                     </div>
                 </button>
             </div>
-            <div className="flex items-center justify-between gap-20">
-                <span className="text-primary">
-                    목록넓이
-                </span>
-                <div className="flex flex-1 items-center gap-2">
-                    <div className="relative flex-1">
-                        <SystemInput
-                            value={tempListWidth}
-                            onChange={(e) =>
-                                setTempListWidth(Number(e.target.value))
-                            }
-                        />
-                        <span className="
-                            absolute right-3 top-1/2 mt-0.5
-                            -translate-y-1/2
-                            text-xs text-muted
-                            pointer-events-none
-                        ">
-                            %
-                        </span>
-                    </div>
-                    <button
-                        onClick={() => setListWidth(tempListWidth)}
-                        className="
-                            flex h-9 w-9 items-center justify-center mt-1
-                            rounded-lg bg-primaryBtn
-                            text-white
-                            transition
-                            hover:bg-primaryBtn-hover
-                        "
-                    >
-                        <Check size={16} />
-                    </button>
-                </div>
-            </div>
-            <div className="flex items-center justify-between gap-20">
-                <span className="text-primary">
-                    상세넓이
-                </span>
-                <div className="flex flex-1 items-center gap-2">
-                    <div className="relative flex-1">
-                        <SystemInput
-                            value={tempViewWidth}
-                            onChange={(e) =>
-                                setTempViewWidth(Number(e.target.value))
-                            }
-                        />
-                        <span className="
-                            absolute right-3 top-1/2 mt-0.5
-                            -translate-y-1/2
-                            text-xs text-muted
-                            pointer-events-none
-                        ">
-                            %
-                        </span>
-                    </div>
-                    <button
-                        onClick={() => setViewWidth(tempViewWidth)}
-                        className="
-                            flex h-9 w-9 items-center justify-center mt-1
-                            rounded-lg bg-primaryBtn
-                            text-white
-                            transition
-                            hover:bg-primaryBtn-hover
-                        "
-                    >
-                        <Check size={16} />
-                    </button>
-                </div>
-            </div>
-
         </div>
     );
 };

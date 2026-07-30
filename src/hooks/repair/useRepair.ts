@@ -2,7 +2,7 @@ import { useMutation, useQueryClient, useInfiniteQuery, useQuery } from "@tansta
 import axiosInstance from "@/hooks/axiosInstance";
 import { useAirplaneStore } from "@/store/airplaneStore";
 import { useStatusStore } from "@/store/statusStore";
-import type { RepairListResponse, RepairDetailResponse, RepairDetailRequest, RepairCursorParam, CursorPageResponse, RepairSearchParams } from "@/common/type/repair/repair";
+import type { RepairListResponse, RepairDetailResponse, CreateRepairPayload, UpdateRepairPayload, RepairCursorParam, CursorPageResponse, RepairSearchParams } from "@/common/type/repair/repair";
 
 export const useRepairList = (searchParams: RepairSearchParams) => {
     const selectedAirplaneId = useAirplaneStore(
@@ -74,10 +74,35 @@ export const useCreateRepair = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (request: RepairDetailRequest) => {
+        mutationFn: async ({
+            request,
+            files = [],
+        }: CreateRepairPayload) => {
+
+            const formData = new FormData();
+
+            formData.append(
+                "request",
+                new Blob(
+                    [JSON.stringify(request)],
+                    {
+                        type: "application/json",
+                    }
+                )
+            );
+
+            files.forEach((file) => {
+                formData.append("files", file);
+            });
+
             const { data } = await axiosInstance.post(
                 "/repair",
-                request
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
             );
 
             return data;
@@ -104,13 +129,44 @@ export const useUpdateRepair = () => {
         mutationFn: async ({
             id,
             request,
-        }: {
-            id: number;
-            request: RepairDetailRequest;
-        }) => {
+            files =[],
+            deleteFiles = [],
+        }: UpdateRepairPayload) => {
+            const formData = new FormData();
+
+            formData.append(
+                "request",
+                new Blob(
+                    [JSON.stringify(request)],
+                    {
+                        type: "application/json",
+                    }
+                )
+            );
+
+            files.forEach((file) => {
+                formData.append("files", file);
+            });
+
+            formData.append(
+                "deleteFiles",
+                new Blob(
+                    [JSON.stringify(deleteFiles)],
+                    {
+                        type: "application/json",
+                    }
+                )
+            );
+
+
             const { data } = await axiosInstance.put(
                 `/repair/${id}`,
-                request
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
             );
 
             return data;

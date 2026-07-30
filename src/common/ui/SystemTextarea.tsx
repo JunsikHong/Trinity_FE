@@ -21,6 +21,7 @@ const SystemTextarea = ({
 
             <textarea
                 rows={rows}
+                value={value}
                 placeholder={placeholder}
                 onChange={onChange}
                 className="
@@ -38,7 +39,7 @@ const SystemTextarea = ({
                     focus:border-blue-500
                 "
             >
-                {value}
+                
             </textarea>
         </div>
     );

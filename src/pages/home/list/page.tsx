@@ -8,6 +8,8 @@ import ListSection from "@/pages/home/list/components/ListSection";
 
 // store
 import { useAirplaneStore } from "@/store/airplaneStore";
+import { useRepairStore } from "@/store/repairStore";
+import { useStatusStore } from "@/store/statusStore";
 
 // hooks
 import { useRepairList } from "@/hooks/repair/useRepair";
@@ -17,13 +19,16 @@ import { useRepairChapter } from "@/hooks/repair/useRepairChapter";
 const INITIAL_SEARCH_PARAMS: RepairSearchParams = {
     search: "",
     chapterId: undefined,
-    startDate: undefined,
-    endDate: undefined,
+    startDate: null,
+    endDate: null,
     sortBy: "REPAIR_AT",
     sortDirection: "DESC",
 };
 
 const ListPage = () => {
+
+    const { clearSelectedRepair } = useRepairStore();
+    const { setStatus } = useStatusStore();
 
     // 수리 리스트
     const [searchKeyword, setSearchKeyword] = useState("");
@@ -35,6 +40,9 @@ const ListPage = () => {
         setSearchParams({
             ...INITIAL_SEARCH_PARAMS,
         });
+
+        clearSelectedRepair();
+        setStatus("");
     };
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useRepairList(searchParams);
@@ -89,7 +97,6 @@ const ListPage = () => {
                 airplaneOptions={airplaneOptions} 
                 handleAirplaneChange={handleAirplaneChange}
                 repairChapter={repairChapter}
-                INITIAL_SEARCH_PARAMS={INITIAL_SEARCH_PARAMS}
             />
             <SortSection
                 searchParams={searchParams}

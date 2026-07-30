@@ -13,7 +13,10 @@ export default {
       colors: {
         page: "rgb(var(--bg-page) / <alpha-value>)",
         surface: "rgb(var(--bg-surface) / <alpha-value>)",
-        card: "rgb(var(--bg-card) / <alpha-value>)",
+        card: {
+          DEFAULT: "rgb(var(--bg-card) / <alpha-value>)",
+          image: "rgb(var(--card-image) / <alpha-value>)",
+        },
 
         primary: "rgb(var(--text-primary) / <alpha-value>)",
         secondary: "rgb(var(--text-secondary) / <alpha-value>)",
@@ -82,6 +85,11 @@ export default {
 
           text: "rgb(var(--tab-text) / <alpha-value>)",
           activeText: "rgb(var(--tab-active-text) / <alpha-value>)",
+        },
+
+        logo: {
+          primary: "rgb(var(--logo-primary) / <alpha-value>)",
+          secondary: "rgb(var(--logo-secondary) / <alpha-value>)",
         },
       },
     }

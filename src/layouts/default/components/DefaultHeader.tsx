@@ -48,9 +48,9 @@ const DefaultHeader = ({ onMenuClick }: any) => {
                 </div>
                 <div className="flex items-center gap-2 pl-3 border-r border-border w-36">
                     <img src={logo} alt="AirONE" className="w-8" />
-                    <p className="flex flex-col justify-center text-icon-text">
-                        <span className="text-lg font-bold">AirONE</span>
-                        <span className="-mt-1 text-[9px] font-semibold text-muted-foreground">
+                    <p className="flex flex-col justify-center">
+                        <span className="text-lg font-bold text-logo-primary">AirONE</span>
+                        <span className="-mt-1 text-[9px] font-semibold text-logo-secondary">
                             REPAIR MANAGE
                         </span>
                     </p>

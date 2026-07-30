@@ -1,7 +1,7 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Grid, GizmoHelper, GizmoViewport } from '@react-three/drei';
 import { Suspense } from 'react';
-import B737Model from '@/models/B737Model';
+import B737Model from '@/models/b737/B737Model';
 import { MousePointer2, Hand, ZoomIn, ZoomOut, X } from 'lucide-react';
 import { useAirplaneStore } from "@/store/airplaneStore";
 import { useRepairStore } from "@/store/repairStore";
@@ -12,6 +12,7 @@ const ModelCanvas = () => {
   const { selectedAirplaneId } = useAirplaneStore();
   const { selectedRepairId } = useRepairStore();
   const { data: repairDetail } = useRepairDetail(selectedRepairId);
+  
 
   return (
     <div className="flex h-full flex-col bg-black">
@@ -103,13 +104,6 @@ const ModelCanvas = () => {
             cellSize={1}
             sectionSize={5}
           />
-
-          <GizmoHelper
-            alignment="bottom-right"
-          >
-            <GizmoViewport />
-          </GizmoHelper>
-
           <ambientLight intensity={0.9} />
           <directionalLight
             position={[10, 10, 10]}

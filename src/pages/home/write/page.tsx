@@ -13,15 +13,27 @@ import { useRepairLocation } from "@/hooks/repair/useRepairLocation";
 // store
 import { useRepairStore } from "@/store/repairStore";
 import { useAirplaneStore } from "@/store/airplaneStore";
+import { useModelStore } from "@/store/modelStore";
+
+export interface UploadFile {
+    id?: number;
+    url: string;
+    name: string;
+    file?: File;
+    isNew: boolean;
+}
 
 const WritePage = () => {
     const [chapterId, setChapterId] = useState<number | null>(null);
     const [repairDate, setRepairDate] = useState<string | null>(new Date().toISOString().split("T")[0]);
     const [description, setDescription] = useState<string | null>("");
     const [locationValues, setLocationValues] = useState<Record<string, string | number | boolean>>({});
+    const [files, setFiles] = useState<UploadFile[]>([]);
+	const [deleteFiles, setDeleteFiles] = useState<number[]>([]);
 
     const { selectedAirplaneTypeId } = useAirplaneStore();
     const { selectedRepairId } = useRepairStore();
+    const { station, stringer } = useModelStore();
 
     const { data: repairDetail } = useRepairDetail(selectedRepairId);
     const { data: repairChapter } = useRepairChapter(selectedAirplaneTypeId);
@@ -44,6 +56,36 @@ const WritePage = () => {
             }));
     };
 
+    const handleFilesChange = (selectedFiles: File[]) => {
+    	const validFiles: UploadFile[] = [];
+
+    	selectedFiles.forEach((file) => {
+
+    		validFiles.push({
+    			file,
+    			name: file.name,
+    			url: URL.createObjectURL(file),
+    			isNew: true,
+    		});
+    	});
+
+        if (validFiles.length > 0) {
+    		setFiles((prev) => [...prev, ...validFiles]);
+    	}
+    };
+
+    const handleRemoveFile = ({ index, id, isNew }: { index: number; id?: number; isNew: boolean }) => {
+    	if (isNew) {
+    		const target = files[index];
+    		if (target) URL.revokeObjectURL(target.url);
+    	} else {
+    		if (id !== undefined) {
+            	setDeleteFiles(prev => [...prev, id]); // file.id (DB의 실제 id)
+        	}
+    	}
+    	setFiles(prev => prev.filter((_, i) => i !== index));
+	};
+
     const handleSubmit = () => {
         if (!chapterId) {
             alert("Chapter를 선택해주세요.");
@@ -62,10 +104,14 @@ const WritePage = () => {
             locations: buildLocationPayload(locationValues),
         };
 
+        const uploadFiles = files
+        .filter((file) => file.isNew && file.file)
+        .map((file) => file.file as File);
+
         if(selectedRepairId) {
-            updateRepair.mutate({ id: selectedRepairId, request: payload });
+            updateRepair.mutate({ id: selectedRepairId, request: payload, files: uploadFiles, deleteFiles: deleteFiles  });
         } else {
-            createRepair.mutate(payload);
+            createRepair.mutate({ request: payload, files: uploadFiles });
         }
     };
 
@@ -105,6 +151,10 @@ const WritePage = () => {
         setLocationValues(initialLocationValues);
     }, [repairDetail]);
 
+    useEffect(() => {
+        
+    }, [station, stringer]);
+
     return (
         <>
             <div className="flex-1 overflow-y-auto bg-surface">
@@ -116,10 +166,13 @@ const WritePage = () => {
                     locationValues={locationValues}
                     repairDate={repairDate}
                     description={description}
+                    files={files}
                     handleLocationChange={handleLocationChange}
                     setChapterId={setChapterId}
                     setRepairDate={setRepairDate}
                     setDescription={setDescription}
+                    handleFilesChange={handleFilesChange}
+					handleRemoveFile={handleRemoveFile}
                 />
                 <ButtonSection
                     handleSubmit={handleSubmit}

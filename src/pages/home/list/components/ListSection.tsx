@@ -91,7 +91,7 @@ const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairLis
                         : ""
                         }`}
                 >
-                    <div className="flex h-28 w-28 shrink-0 items-center justify-center bg-slate-200">
+                    <div className="flex h-28 w-28 shrink-0 items-center justify-center bg-card-image">
                         <Camera className="h-6 w-6 text-slate-400" strokeWidth={1.5} />
                     </div>
 

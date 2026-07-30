@@ -31,7 +31,7 @@ const SystemDateInput = ({
 
                 <input
                     type="date"
-                    value={value}
+                    value={value ?? ""}
                     onChange={onChange}
                     className="
                         h-10

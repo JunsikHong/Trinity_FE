@@ -78,6 +78,18 @@ export interface RepairLocationItemRequest {
     value: string;
 }
 
+export interface CreateRepairPayload {
+    request: RepairDetailRequest;
+    files?: File[];
+}
+
+export interface UpdateRepairPayload {
+    id: number;
+    request: RepairDetailRequest;
+    files?: File[];
+    deleteFiles?: number[];
+}
+
 export interface RepairDetailRequest {
     airplaneId: number;
     description: string | null;
@@ -91,8 +103,8 @@ export type RepairSortDirection = "ASC" | "DESC";
 export interface RepairSearchParams {
   search?: string;
   chapterId?: number;
-  startDate?: string; // "YYYY-MM-DD"
-  endDate?: string;   // "YYYY-MM-DD"
+  startDate?: string | null; // "YYYY-MM-DD"
+  endDate?: string | null;   // "YYYY-MM-DD"
   sortBy: RepairSortBy;
   sortDirection: RepairSortDirection;
 }
