@@ -1,4 +1,5 @@
 import type { RepairDetailResponse, RepairLocationItemListResponse } from "@/common/type/repair";
+import ImageGallery from "@/common/ux/ImageGallery";
 
 interface DetailSectionProps {
     repairDetail: RepairDetailResponse | undefined;
@@ -9,7 +10,6 @@ const ViewSection = ({
     repairDetail,
     isLoading,
 }: DetailSectionProps) => {
-
     if (isLoading) {
         return (
             <>
@@ -151,31 +151,11 @@ const ViewSection = ({
                     </div>
                 </div>
             </div>
-            <div className="m-2 space-y-4 rounded-md border border-border p-3">
-                <div>
-                    <h3 className="mb-3 text-sm text-secondary">
-                        첨부 사진
-                    </h3>
-
-                    {/* {repairDetail.files.length > 0 ? (
-                        <div className="grid grid-cols-2 gap-2">
-                            {repairDetail.files.map((file) => (
-                                <img
-                                    key={file.id}
-                                    src={file.filePath}
-                                    alt={file.originalName}
-                                    className="h-24 w-full rounded-lg border border-slate-200 object-cover"
-                                />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="flex h-16 items-center justify-center rounded-lg border border-slate-300 text-sm text-slate-400">
-                            첨부된 사진이 없습니다.
-                        </div>
-                    )} */}
-                </div>
-            </div>
-
+            {repairDetail.files.length > 0 && (
+                <ImageGallery
+                    images={repairDetail.files}
+                />
+            )}
             <div className="grid grid-cols-2 px-2 py-1">
                 <div className="flex items-center gap-2">
                     <p className="rounded-md border border-border p-1 text-xs text-primary">

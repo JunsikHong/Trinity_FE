@@ -13,6 +13,7 @@ interface ListSectionProps {
 }
 
 const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairList, isLoading }: ListSectionProps) => {
+    const API_URL = import.meta.env.VITE_API_URL;
     const { setStatus, clearStatus } = useStatusStore();
     const { selectedRepairId, setSelectedRepair, clearSelectedRepair } = useRepairStore();
 
@@ -73,7 +74,7 @@ const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairLis
     }
 
     return (
-        <div className="relative flex-1 overflow-y-auto p-2">
+        <div className="relative flex-1 overflow-y-auto p-2 custom-scrollbar">
             {repairList.map((item) => (
                 <button
                     key={item.id}
@@ -92,7 +93,11 @@ const ListSection = ({ fetchNextPage, hasNextPage, isFetchingNextPage, repairLis
                         }`}
                 >
                     <div className="flex h-28 w-28 shrink-0 items-center justify-center bg-card-image">
-                        <Camera className="h-6 w-6 text-slate-400" strokeWidth={1.5} />
+                        {item.files[0]?.id ? (
+                            <img src={API_URL+'repair-file/'+item.files[0]?.id}/>
+                        ) : (
+                            <Camera className="h-6 w-6 text-slate-400" strokeWidth={1.5} />
+                        )}
                     </div>
 
                     <div className="min-w-0 flex-1 mt-2 flex flex-col">

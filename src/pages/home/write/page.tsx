@@ -13,7 +13,6 @@ import { useRepairLocation } from "@/hooks/repair/useRepairLocation";
 // store
 import { useRepairStore } from "@/store/repairStore";
 import { useAirplaneStore } from "@/store/airplaneStore";
-import { useModelStore } from "@/store/modelStore";
 
 export interface UploadFile {
     id?: number;
@@ -33,7 +32,6 @@ const WritePage = () => {
 
     const { selectedAirplaneTypeId } = useAirplaneStore();
     const { selectedRepairId } = useRepairStore();
-    const { station, stringer } = useModelStore();
 
     const { data: repairDetail } = useRepairDetail(selectedRepairId);
     const { data: repairChapter } = useRepairChapter(selectedAirplaneTypeId);
@@ -150,10 +148,6 @@ const WritePage = () => {
         setLocationValues(initialLocationValues);
         setLocationValues(initialLocationValues);
     }, [repairDetail]);
-
-    useEffect(() => {
-        
-    }, [station, stringer]);
 
     return (
         <>

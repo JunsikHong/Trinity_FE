@@ -54,11 +54,11 @@ const Modal = ({
                 <div
                     onClick={(e) => e.stopPropagation()}
                     className={`
-        relative w-full ${width}
-        max-h-[80vh]
-        overflow-hidden
-        rounded-xl border border-border bg-surface shadow-xl
-    `}
+                        relative w-full ${width}
+                        max-h-[80vh]
+                        overflow-hidden
+                        rounded-xl border border-border bg-surface shadow-xl
+                    `}
                 >
                     <button
                         onClick={onClose}

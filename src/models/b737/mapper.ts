@@ -29,6 +29,27 @@ export const convertZToStation = (z: number): number | null => {
     return null;
 };
 
+// ---- STATION -> Z (역변환) ----
+export const convertStationToZ = (station: number): number | null => {
+    if (station === null || station === undefined || Number.isNaN(station)) return null;
+
+    const first = STATION_SEGMENTS[0];
+    const last = STATION_SEGMENTS[STATION_SEGMENTS.length - 1];
+
+    if (station <= first.sStart) return first.zStart;
+    if (station >= last.sEnd) return last.zEnd;
+
+    for (const seg of STATION_SEGMENTS) {
+        if (station >= seg.sStart && station <= seg.sEnd) {
+            const ratio = (station - seg.sStart) / (seg.sEnd - seg.sStart);
+            const z = seg.zStart - ratio * (seg.zStart - seg.zEnd);
+            return Math.round(z * 100) / 100; // 소수점 둘째자리
+        }
+    }
+
+    return null;
+};
+
 // ---- STRINGER (x, y -> stringer) ----
 // y <= Y_CUTOFF(1.14) -> "0" (동체 최하단, L/R 구분 없음)
 // y: Y_CUTOFF(1.14) ~ Y_MAX(4.53) 구간을 27(하단) ~ 1(상단)으로 역매핑
@@ -58,4 +79,40 @@ export const convertXYToStringer = (x: number, y: number): string | null => {
     const side = x >= 0 ? 'R' : 'L';
 
     return `${numberLabel}${side}`;
+};
+
+// ---- STRINGER -> X, Y (역변환) ----
+// stringer 형식: "12.3R" / "5L" / "0"
+// x는 부호 정보만 복원 가능 (크기는 xMagnitude 파라미터로 지정, 기본 1.59)
+// "0"인 경우 y는 0 ~ Y_CUTOFF 구간의 중간값으로 반환, side 정보 없으므로 x = 0
+export const convertStringerToXY = (
+    stringer: string,
+    xMagnitude: number = 1.59
+): { x: number; y: number } | null => {
+    if (!stringer) return null;
+
+    const trimmed = stringer.trim();
+
+    // "0" 케이스: 최하단부, side 없음
+    if (trimmed === '0') {
+        return { x: 0, y: Y_CUTOFF / 2 };
+    }
+
+    const match = trimmed.match(/^(\d+(\.\d+)?)([RL])$/i);
+    if (!match) return null;
+
+    const number = parseFloat(match[1]);
+    const side = match[3].toUpperCase();
+
+    if (number < STRINGER_MIN || number > STRINGER_MAX) return null;
+
+    // 순변환의 역산: rawNumber = STRINGER_MAX - ratio * (STRINGER_MAX - STRINGER_MIN)
+    // -> ratio = (STRINGER_MAX - number) / (STRINGER_MAX - STRINGER_MIN)
+    const ratio = (STRINGER_MAX - number) / (STRINGER_MAX - STRINGER_MIN);
+    const y = Y_CUTOFF + ratio * (Y_MAX - Y_CUTOFF);
+    const roundedY = Math.round(y * 100) / 100;
+
+    const x = side === 'R' ? xMagnitude : -xMagnitude;
+
+    return { x, y: roundedY };
 };

@@ -8,21 +8,22 @@ export interface RepairLocationItemListResponse {
     value: string;
 }
 
+export interface RepairFileResponse {
+  id: number;
+  originalName: string;
+  storedName: string;
+  mimeType: string;
+  size: number;
+}
+
 export interface RepairListResponse {
   id: number;
   description: string;
   repairAt: string;
   createdAt: string;
   updatedAt: string;
-  locationItems: {
-    locationId: number;
-    locationName: string;
-    locationCode: string;
-    chapterId: number;
-    chapterNumber: number;
-    chapterName: string;
-    value: string;
-  }[];
+  locationItems: RepairLocationItemListResponse[];
+  files: RepairFileResponse[];
 }
 
 export interface CursorPageResponse<T> {
@@ -44,6 +45,7 @@ export interface RepairDetailResponse {
     createdAt: string;
     updatedAt: string;
     locationItems: RepairLocationItemListResponse[];
+    files: RepairFileResponse[];
 }
 
 export interface RepairLocationItemResponse {

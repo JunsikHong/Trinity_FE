@@ -1,10 +1,10 @@
 import { Group, Panel } from "react-resizable-panels";
 
-import ModelCanvas from "@/pages/home/components/ModelCanvas";
+import ModelPage from "@/pages/home/model/page";
 import LogSection from "@/pages/home/list/page";
 
 import SeperatorSection from "@/pages/home/components/SeperatorSection";
-import AsideSection from "@/pages/home/components/AsideSection";
+import AsideSection from "@/pages/home/view/components/AsideSection";
 
 const HomePage = () => {
 
@@ -24,7 +24,7 @@ const HomePage = () => {
                 maxSize="100%"
             >
                 <div className="relative h-full bg-slate-900">
-                    <ModelCanvas />
+                    <ModelPage />
                 </div>
             </Panel>
             <SeperatorSection />
