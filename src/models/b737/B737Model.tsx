@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { EdgesGeometry, LineBasicMaterial, LineSegments } from "three";
 import * as THREE from "three";
 import type { CameraControls } from "@react-three/drei";
+import { convertStationToZ, convertStringerToXY } from '@/models/b737/mapper';
 
 // store
 import { useRepairStore } from "@/store/repairStore";
@@ -25,6 +26,8 @@ const B737Model = ({ cameraControlsRef }: Props) => {
     const { selectedRepairId } = useRepairStore();
     const { data: repairDetail } = useRepairDetail(selectedRepairId);
 
+    const [markers, setMarkers] = useState<[number, number, number][]>([]);
+
     const highlightMesh = (mesh: any) => {
         scene.traverse((child: any) => {
             if (!child.isMesh) return;
@@ -43,35 +46,62 @@ const B737Model = ({ cameraControlsRef }: Props) => {
 
     const handleDisplay = () => {
         let meshNames: string[] = [];
+        const points: [number, number, number][] = [];
 
+        repairDetail?.locationItems.forEach((location) => {
+            switch (location.chapterName) {
+                case "door":
+                    meshNames = ["Material.027"];
+                    break;
 
-        switch (repairDetail?.locationItems[0]?.chapterName) {
-            case "door":
-                meshNames = ["Material.027"];
-                break;
+                case "fuselage":
+                    meshNames = ["Material.005"];
+                    let currentSta: number | null = null;
+                    let currentStr: string | null = null;
 
-            case "fuselage":
-                meshNames = ["Material.005"];
-                break;
+                    if (location.locationCode === "STA") {
+                        currentSta = Number(location.value);
+                    }
 
-            case "wing":
-                meshNames = ["Material.030"];
-                break;
+                    if (location.locationCode === "STR") {
+                        currentStr = location.value;
+                    }
 
-            case "stabilizer":
-                meshNames = ["Cylinder.013__0"];
-                break;
+                    if (currentSta !== null && currentStr !== null && !Number.isNaN(currentSta)) {
+                        const z = convertStationToZ(currentSta);
+                        const xy = convertStringerToXY(currentStr);
+                        if (z !== null && xy !== null) {
+                            points.push([
+                                xy.x,
+                                xy.y,
+                                z,
+                            ]);
+                        }
+                        currentSta = null;
+                        currentStr = null;
+                    }
+                    break;
 
-            case "naccel":
-                meshNames = [
-                    "Material.010",
-                    "Material.011",
-                    "Material.012",
-                    "Material.014",
-                    "Material.023",
-                ];
-                break;
-        }
+                case "wing":
+                    meshNames = ["Material.030"];
+                    break;
+
+                case "stabilizer":
+                    meshNames = ["Cylinder.013__0"];
+                    break;
+
+                case "naccel":
+                    meshNames = [
+                        "Material.010",
+                        "Material.011",
+                        "Material.012",
+                        "Material.014",
+                        "Material.023",
+                    ];
+                    break;
+            }
+
+        });
 
         meshNames.forEach((name) => {
             const mesh = scene.getObjectByName(name);
@@ -80,10 +110,9 @@ const B737Model = ({ cameraControlsRef }: Props) => {
                 highlightMesh(mesh);
             }
         });
+        
+        setMarkers(points);
 
-
-
-        // location value -> marker 표시
     }
 
     const handleClick = (e) => {
@@ -103,7 +132,7 @@ const B737Model = ({ cameraControlsRef }: Props) => {
                 Number(e.point.z.toFixed(2)),
             ];
         focusObject(e.object);
-        setMarker(point);
+        setMarkers((prev) => [...prev, point]);
         if ((status == '' || status == 'view') && !repairDetail) {
             setStatus('edit');
 
@@ -119,7 +148,6 @@ const B737Model = ({ cameraControlsRef }: Props) => {
         handleDisplay();
     }, [repairDetail]);
 
-    const [marker, setMarker] = useState<[number, number, number] | null>(null);
 
 
     // mesh
@@ -193,13 +221,13 @@ const B737Model = ({ cameraControlsRef }: Props) => {
                 position={[0, 0, 0]}
                 onClick={(e: any) => handleClick(e)}
             />
-            {marker && (
-                <group position={marker}>
-                    <Html center >
+            {markers.map((point, index) => (
+                <group key={index} position={point}>
+                    <Html center>
                         <div className="h-4 w-4 rounded-full bg-red-500 border border-white shadow-lg" />
                     </Html>
                 </group>
-            )}
+            ))}
         </>
 
     );
