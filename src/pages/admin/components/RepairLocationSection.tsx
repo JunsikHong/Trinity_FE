@@ -70,9 +70,9 @@ const RepairLocationSection = () => {
     }
 
     return (
-        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-surface shadow-sm">
             <div className="flex items-center justify-between border-b px-6 py-4">
-                <div><h2 className="text-lg font-semibold">Repair Locations</h2></div>
+                <div><h2 className="text-lg font-semibold text-primary">Repair Locations</h2></div>
                 <button
                     onClick={() => {
                         setStatus("create");

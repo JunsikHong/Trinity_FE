@@ -25,15 +25,86 @@ const B737Model = ({ cameraControlsRef }: Props) => {
     const { selectedRepairId } = useRepairStore();
     const { data: repairDetail } = useRepairDetail(selectedRepairId);
 
+    const highlightMesh = (mesh: any) => {
+        scene.traverse((child: any) => {
+            if (!child.isMesh) return;
+            if (child.userData.originalMaterial) {
+                child.material = child.userData.originalMaterial.clone();
+            }
+        });
+        if (mesh) {
+            console.log(mesh.material);
+            mesh.material = mesh.material.clone();
+            mesh.material.emissive = new THREE.Color("red");
+            mesh.material.emissiveIntensity = 0.8;
+        }
+
+    };
+
     const handleDisplay = () => {
-        // repairDetail?.locationItems[0].chapterNumber
-        // repairDetail 이 있을 때, 
-        // chapter -> mesh 표시
+        let meshNames: string[] = [];
+
+
+        switch (repairDetail?.locationItems[0]?.chapterName) {
+            case "door":
+                meshNames = ["Material.027"];
+                break;
+
+            case "fuselage":
+                meshNames = ["Material.005"];
+                break;
+
+            case "wing":
+                meshNames = ["Material.030"];
+                break;
+
+            case "stabilizer":
+                meshNames = ["Cylinder.013__0"];
+                break;
+
+            case "naccel":
+                meshNames = [
+                    "Material.010",
+                    "Material.011",
+                    "Material.012",
+                    "Material.014",
+                    "Material.023",
+                ];
+                break;
+        }
+
+        meshNames.forEach((name) => {
+            const mesh = scene.getObjectByName(name);
+
+            if (mesh && (mesh as THREE.Mesh).isMesh) {
+                highlightMesh(mesh);
+            }
+        });
+
+
+
         // location value -> marker 표시
     }
 
-    const handleClick = () => {
-        if((status == '' || status == 'view') && !repairDetail) {
+    const handleClick = (e) => {
+        e.stopPropagation();
+        const mesh = e.object;
+        if (!mesh.isMesh) return;
+        highlightMesh(mesh);
+        if (!cameraControlsRef.current)
+            return;
+        const point: [
+            number,
+            number,
+            number
+        ] = [
+                Number(e.point.x.toFixed(2)),
+                Number(e.point.y.toFixed(2)),
+                Number(e.point.z.toFixed(2)),
+            ];
+        focusObject(e.object);
+        setMarker(point);
+        if ((status == '' || status == 'view') && !repairDetail) {
             setStatus('edit');
 
         } else if (status == 'edit' && repairDetail) {
@@ -44,7 +115,7 @@ const B737Model = ({ cameraControlsRef }: Props) => {
     }
 
     useEffect(() => {
-        if(!repairDetail) return;
+        if (!repairDetail) return;
         handleDisplay();
     }, [repairDetail]);
 
@@ -52,20 +123,7 @@ const B737Model = ({ cameraControlsRef }: Props) => {
 
 
     // mesh
-    const highlightMesh = (mesh: any) => {
-        scene.traverse((child: any) => {
-            if (!child.isMesh) return;
-            if (child.userData.originalMaterial) {
-                child.material = child.userData.originalMaterial.clone();
-            }
-        });
-        if (mesh) {
-            mesh.material = mesh.material.clone();
-            mesh.material.emissive = new THREE.Color("red");
-            mesh.material.emissiveIntensity = 0.8;
-        }
 
-    };
 
     // 카메라
     const focusObject = (
@@ -133,25 +191,7 @@ const B737Model = ({ cameraControlsRef }: Props) => {
                 object={scene}
                 scale={1}
                 position={[0, 0, 0]}
-                onClick={(e: any) => {
-                    e.stopPropagation();
-                    const mesh = e.object;
-                    if (!mesh.isMesh) return;
-                    highlightMesh(mesh);
-                    if (!cameraControlsRef.current)
-                        return;
-                    const point: [
-                        number,
-                        number,
-                        number
-                    ] = [
-                            Number(e.point.x.toFixed(2)),
-                            Number(e.point.y.toFixed(2)),
-                            Number(e.point.z.toFixed(2)),
-                        ];
-                    focusObject(e.object);
-                    setMarker(point);
-                }}
+                onClick={(e: any) => handleClick(e)}
             />
             {marker && (
                 <group position={marker}>

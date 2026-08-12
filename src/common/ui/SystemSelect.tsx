@@ -23,7 +23,7 @@ const SystemSelect = ({
 }: SystemSelectProps) => {
     return (
         <div className="space-y-1">
-            <label className="block text-xs font-medium text-slate-600">
+            <label className="block text-xs font-medium text-input-text">
                 {label}
             </label>
 
@@ -32,7 +32,7 @@ const SystemSelect = ({
                 value={value ?? ""}
                 onChange={onChange}
                 disabled={disabled}
-                className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-blue-500 disabled:bg-slate-100"
+                className="h-10 w-full text-input-text rounded-lg border border-input-border bg-input px-3 text-sm outline-none transition focus:border-focus disabled:bg-input-disabled"
             >
                 {options.map((option) => (
                     <option
