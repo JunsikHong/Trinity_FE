@@ -41,12 +41,80 @@ const B737Model = ({ cameraControlsRef }: Props) => {
             mesh.material.emissive = new THREE.Color("red");
             mesh.material.emissiveIntensity = 0.8;
         }
-
     };
 
     const handleDisplay = () => {
         let meshNames: string[] = [];
         const points: [number, number, number][] = [];
+
+        const locations = repairDetail?.locationItems ?? [];
+        const fuselageLocations = locations.filter(
+            (location) => location.chapterName === "fuselage"
+        );
+
+        if (fuselageLocations.length > 0) {
+            const stationStart = fuselageLocations.find(
+                (location) =>
+                    location.locationCode === "STA" &&
+                    location.locationName === "station_start"
+            );
+
+            const stationEnd = fuselageLocations.find(
+                (location) =>
+                    location.locationCode === "STA" &&
+                    location.locationName === "station_end"
+            );
+
+            const stringerStart = fuselageLocations.find(
+                (location) =>
+                    location.locationCode === "STR" &&
+                    location.locationName === "stringer_start"
+            );
+
+            const stringerEnd = fuselageLocations.find(
+                (location) =>
+                    location.locationCode === "STR" &&
+                    location.locationName === "stringer_end"
+            );
+
+            // start
+            if (stationStart && stringerStart) {
+                const z = convertStationToZ(
+                    Number(stationStart.value)
+                );
+
+                const xy = convertStringerToXY(
+                    stringerStart.value
+                );
+
+                if (z !== null && xy) {
+                    points.push([
+                        xy.x,
+                        xy.y,
+                        z,
+                    ]);
+                }
+            }
+
+            // end
+            if (stationEnd && stringerEnd) {
+                const z = convertStationToZ(
+                    Number(stationEnd.value)
+                );
+
+                const xy = convertStringerToXY(
+                    stringerEnd.value
+                );
+
+                if (z !== null && xy) {
+                    points.push([
+                        xy.x,
+                        xy.y,
+                        z,
+                    ]);
+                }
+            }
+        }
 
         repairDetail?.locationItems.forEach((location) => {
             switch (location.chapterName) {
@@ -56,30 +124,6 @@ const B737Model = ({ cameraControlsRef }: Props) => {
 
                 case "fuselage":
                     meshNames = ["Material.005"];
-                    let currentSta: number | null = null;
-                    let currentStr: string | null = null;
-
-                    if (location.locationCode === "STA") {
-                        currentSta = Number(location.value);
-                    }
-
-                    if (location.locationCode === "STR") {
-                        currentStr = location.value;
-                    }
-
-                    if (currentSta !== null && currentStr !== null && !Number.isNaN(currentSta)) {
-                        const z = convertStationToZ(currentSta);
-                        const xy = convertStringerToXY(currentStr);
-                        if (z !== null && xy !== null) {
-                            points.push([
-                                xy.x,
-                                xy.y,
-                                z,
-                            ]);
-                        }
-                        currentSta = null;
-                        currentStr = null;
-                    }
                     break;
 
                 case "wing":
@@ -103,14 +147,22 @@ const B737Model = ({ cameraControlsRef }: Props) => {
 
         });
 
-        meshNames.forEach((name) => {
-            const mesh = scene.getObjectByName(name);
-
-            if (mesh && (mesh as THREE.Mesh).isMesh) {
-                highlightMesh(mesh);
-            }
+        meshNames.forEach((materialName) => {
+            scene.traverse((child: any) => {
+                if (!child.isMesh) return;
+                const materials = Array.isArray(child.material)
+                    ? child.material
+                    : [child.material];
+                const matched = materials.some(
+                    (material: THREE.Material) =>
+                        material.name === materialName
+                );
+                if (matched) {
+                    highlightMesh(child);
+                }
+            });
         });
-        
+
         setMarkers(points);
 
     }
