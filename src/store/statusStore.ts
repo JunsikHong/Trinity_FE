@@ -12,13 +12,15 @@ interface StatusState {
     setThemeStatus: (theme: ThemeStatus) => void;
     toggleThemeStatus: () => void;
 
-    chapterName: string | null;
-    setChapterName: (name: string | null) => void;
-    clearChapterName: () => void;
+    tool: string | null;
+    setTool: (tool: string | null) => void;
 
-    locationValue: Object | null;
-    setLocationValue: (value: Object | null) => void;
-    clearLocationValue: () => void;
+    zoom: number | null;
+    setZoom: (zoom: number | null) => void;
+
+    zoomAction: string | null;
+    setZoomAction: (zoomAction: string | null) => void;
+    clearZoomAction: () => void;
 }
 
 export const useStatusStore = create<StatusState>()(
@@ -42,18 +44,20 @@ export const useStatusStore = create<StatusState>()(
                     return { themeStatus: next, };
             }),
 
-            chapterName: null,
-            setChapterName: (name) => 
-                set({ chapterName: name ?? null, }),
-            clearChapterName: () => 
-                set({ chapterName: null, }),
+            tool: "select",
+            setTool: (tool) =>
+                set({ tool: tool ?? null, }),
 
-            locationValue: null,
-            setLocationValue: (value) =>
-                set({ locationValue: value ?? null, }),
-            clearLocationValue: () => 
-                set({ locationValue: null, })
+            zoom: 0,
+            setZoom: (zoom) =>
+                set({ zoom: zoom ?? null, }),
 
+            zoomAction: "",
+            setZoomAction: (zoomAction) =>
+                set({ zoomAction: zoomAction ?? null, }),
+            clearZoomAction: () =>
+                set({ zoomAction: null, }),
+            
         }),
         {
             name: "status-storage",

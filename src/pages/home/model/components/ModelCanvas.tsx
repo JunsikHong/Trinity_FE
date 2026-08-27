@@ -1,7 +1,8 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, CameraControls, Grid } from '@react-three/drei';
-import { Suspense, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import B737Model from '@/models/b737/B737Model';
+import { useStatusStore } from '@/store/statusStore';
 
 type ModelCanvasProps = {
   selectedAirplaneId: number | null;
@@ -9,7 +10,22 @@ type ModelCanvasProps = {
 
 const ModelCanvas = ({ selectedAirplaneId }: ModelCanvasProps) => {
 
+  const initialDistance = 2;
   const cameraControlsRef = useRef<CameraControls>(null);
+
+  const { zoomAction, clearZoomAction, setZoom } = useStatusStore();
+
+  useEffect(() => {
+    if (zoomAction === 'in') {
+      cameraControlsRef.current?.dolly(2, true);
+      clearZoomAction();
+    } else if (zoomAction === 'out') {
+      cameraControlsRef.current?.dolly(-2, true);
+      clearZoomAction();
+    }
+
+  }, [zoomAction]);
+
   return (
     <Canvas
       camera={{
@@ -34,7 +50,18 @@ const ModelCanvas = ({ selectedAirplaneId }: ModelCanvasProps) => {
           />
         )}
       </Suspense>
-      <CameraControls ref={cameraControlsRef} />
+      <CameraControls
+        ref={cameraControlsRef}
+        smoothTime={0.2}
+        minDistance={2}
+        maxDistance={30}
+        onChange={() => {
+          const controls = cameraControlsRef.current;
+          if (!controls) return;
+          const distance = controls.distance;
+          setZoom(Math.round((initialDistance / distance) * 100));
+        }}
+      />
       <OrbitControls
         enablePan={false}
       />

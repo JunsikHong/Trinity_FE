@@ -2,6 +2,7 @@
 // store
 import { useAirplaneStore } from "@/store/airplaneStore";
 import { useRepairStore } from "@/store/repairStore";
+import { useStatusStore } from "@/store/statusStore";
 
 // hooks
 import { useRepairDetail } from "@/hooks/repair/useRepair";
@@ -17,7 +18,7 @@ const ModelPage = () => {
     const { selectedAirplaneId } = useAirplaneStore();
     const { selectedRepairId } = useRepairStore();
     const { data: repairDetail } = useRepairDetail(selectedRepairId);
-
+    const { zoom } = useStatusStore();
     return (
         <div className="flex h-full flex-col bg-black">
             <div className="relative flex-1">
@@ -30,6 +31,9 @@ const ModelPage = () => {
                 <ModelCanvas
                     selectedAirplaneId={selectedAirplaneId}
                 />
+                <div className="absolute top-3 right-3 text-white">
+                    {zoom}%
+                </div>
             </div>
             <ModelSource/>
         </div>
