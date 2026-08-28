@@ -19,6 +19,7 @@ const ModelPage = () => {
     const { selectedRepairId } = useRepairStore();
     const { data: repairDetail } = useRepairDetail(selectedRepairId);
     const { zoom } = useStatusStore();
+
     return (
         <div className="flex h-full flex-col bg-black">
             <div className="relative flex-1">

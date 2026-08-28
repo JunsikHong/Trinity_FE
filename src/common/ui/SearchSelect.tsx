@@ -24,9 +24,11 @@ export default function SearchSelect({
 }: SearchSelectProps) {
     return (
         <div className="space-y-1">
-            <label className="block text-xs font-medium text-input-text">
-                {label}
-            </label>
+            {label && (
+                <label className="block text-xs font-medium text-input-text">
+                    {label}
+                </label>
+            )}
             <select
                 name={name}
                 value={value}

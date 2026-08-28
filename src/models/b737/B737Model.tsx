@@ -25,7 +25,7 @@ const B737Model = ({ cameraControlsRef }: Props) => {
     const { scene } = useGLTF('/models/b737-800.glb');
 
     // storage
-    const { status, setStatus } = useStatusStore();
+    const { status, setStatus, raycastStatus, toolStatus } = useStatusStore();
     const { selectedRepairId, clearSelectedRepair } = useRepairStore();
     const { data: repairDetail } = useRepairDetail(selectedRepairId);
     const { chapter, setChapter, location, setLocation } = useLocationStore();
@@ -36,8 +36,9 @@ const B737Model = ({ cameraControlsRef }: Props) => {
     const handleClick = (e: ThreeEvent<MouseEvent>) => {
         e.stopPropagation();
         if (!cameraControlsRef.current) return;
+        if (toolStatus !== 'select') return;
         const mesh = e.object;
-        
+
         if (status === 'view' || status === 'edit') {
             clearSelectedRepair();
             setMarkers([]);
@@ -138,25 +139,46 @@ const B737Model = ({ cameraControlsRef }: Props) => {
         );
     };
 
-    // 라인
+    // 라인 생성
     useEffect(() => {
         scene.traverse((child: any) => {
             if (!child.isMesh) return;
+
             child.material = child.material.clone();
             child.material.transparent = true;
             child.material.opacity = 0.75;
+
             child.userData.originalMaterial = child.material;
+
             const edges = new EdgesGeometry(child.geometry, 5);
+
             const line = new LineSegments(
                 edges,
                 new LineBasicMaterial({
                     color: 0x333333,
                 })
             );
+
+            line.userData.isEdgeLine = true;
+
+            // 처음 상태 반영
+            line.visible = raycastStatus;
+
+            // 라인은 raycast 하지 않도록
             line.raycast = () => { };
+
             child.add(line);
         });
     }, [scene]);
+
+    useEffect(() => {
+        scene.traverse((child: any) => {
+            if (!child.isLineSegments) return;
+            if (!child.userData.isEdgeLine) return;
+
+            child.visible = raycastStatus;
+        });
+    }, [scene, raycastStatus]);
 
     return (
         <>

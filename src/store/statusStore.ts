@@ -12,8 +12,12 @@ interface StatusState {
     setThemeStatus: (theme: ThemeStatus) => void;
     toggleThemeStatus: () => void;
 
-    tool: string | null;
-    setTool: (tool: string | null) => void;
+    raycastStatus: boolean;
+    setRaycastStatus: (raycast: boolean) => void;
+    toggleRaycastStatus: () => void;
+
+    toolStatus: string | null;
+    setToolStatus: (tool: string | null) => void;
 
     zoom: number | null;
     setZoom: (zoom: number | null) => void;
@@ -44,9 +48,19 @@ export const useStatusStore = create<StatusState>()(
                     return { themeStatus: next, };
             }),
 
-            tool: "select",
-            setTool: (tool) =>
-                set({ tool: tool ?? null, }),
+            raycastStatus: true,
+            setRaycastStatus: (raycast) => {
+                set({ raycastStatus: raycast, });
+            },
+            toggleRaycastStatus: () => 
+                set((state) => {
+                    const next = state.raycastStatus === true ? false : true;
+                    return { raycastStatus: next, };
+            }),
+
+            toolStatus: "select",
+            setToolStatus: (tool) =>
+                set({ toolStatus: tool ?? null, }),
 
             zoom: 0,
             setZoom: (zoom) =>
@@ -61,6 +75,12 @@ export const useStatusStore = create<StatusState>()(
         }),
         {
             name: "status-storage",
+            partialize: (state) => ({
+                status: state.status,
+                themeStatus: state.themeStatus,
+                toolStatus: state.toolStatus,
+                raycastStatus: state.raycastStatus,
+            }),
         }
     )
 );

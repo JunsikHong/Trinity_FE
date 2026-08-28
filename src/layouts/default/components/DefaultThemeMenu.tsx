@@ -9,6 +9,8 @@ const DefaultThemeMenu = () => {
     const {
         themeStatus,
         toggleThemeStatus,
+        raycastStatus,
+        toggleRaycastStatus,
     } = useStatusStore();
 
     return (
@@ -42,6 +44,33 @@ const DefaultThemeMenu = () => {
                         ) : (
                             <Sun size={14} className="text-yellow-500" />
                         )}
+                    </div>
+                </button>
+            </div>
+            <div className="flex justify-between items-center w-full">
+                <div className="text-primary">
+                    레이캐스트설정
+                </div>
+                <button
+                    onClick={toggleRaycastStatus}
+                    className={`
+                        relative flex h-8 w-16 items-center rounded-full
+                        transition-colors duration-300
+                        ${raycastStatus === false
+                            ? "bg-slate-300"
+                            : "bg-blue-600"}
+                    `}
+                >
+                    <div
+                        className={`
+                            absolute left-1 flex h-6 w-6 items-center justify-center
+                            rounded-full bg-white shadow-md
+                            transition-transform duration-300
+                            ${raycastStatus === true
+                                ? "translate-x-8"
+                                : "translate-x-0"}
+                        `}
+                    >
                     </div>
                 </button>
             </div>
