@@ -194,7 +194,7 @@ const StatSection = ({ selectedStat, setSelectedStat }: StatSectionProps) => {
     const { data: airplaneList } = useAirplane();
 
     return (
-        <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
+        <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
             <StatCard
                 type="all"
                 title="전체 수리이력"
@@ -252,19 +252,7 @@ const StatSection = ({ selectedStat, setSelectedStat }: StatSectionProps) => {
                 selectedStat={selectedStat}
                 setSelectedStat={setSelectedStat}
             />
-            <StatCard
-                type="location"
-                title="부위별 수리이력"
-                subtitle="선택한 부위의 수리이력"
-                value="91"
-                filter={
-                    <SearchSelect
-                        options={[]}
-                    />
-                }
-                selectedStat={selectedStat}
-                setSelectedStat={setSelectedStat}
-            />
+            
         </div>
     );
 };

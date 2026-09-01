@@ -1,123 +1,210 @@
-const RecentSection = () => {
-    const MOCK_DATA = [
-        {
-            id: "R-2024-00024",
-            title: "Skin panel dent repair",
-            date: "2024-05-20",
-            location: "CH 45.0 / STA 320.0",
-            color: "bg-red-500",
-            thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=CH",
-        },
-        {
-            id: "R-2024-00023",
-            title: "Rivet replacement",
-            date: "2024-05-18",
-            location: "CH 32.0 / WL 210.0",
-            color: "bg-amber-500",
-            thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=WL",
-        },
-        {
-            id: "R-2024-00022",
-            title: "Crack repair",
-            date: "2024-05-15",
-            location: "STA 560.0 / BL 145.0",
-            color: "bg-green-500",
-            thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=BL",
-        },
-        {
-            id: "R-2024-00021",
-            title: "Stringer repair",
-            date: "2024-05-10",
-            location: "CH 18.0 / STA 120.0",
-            color: "bg-blue-500",
-            thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=STR",
-        },
-        {
-            id: "R-2024-00020",
-            title: "Corrosion treatment",
-            date: "2024-05-08",
-            location: "WL 180.0 / BL 220.0",
-            color: "bg-emerald-500",
-            thumbnail: "https://placehold.co/80x60/f8fafc/e2e8f0?text=COR",
-        },
-    ];
+import {
+    Plane,
+    MapPin,
+    Clock3,
+    ChevronRight,
+} from "lucide-react";
 
+type RecentRepair = {
+    id: number;
+    airplane: string;
+    registrationNumber: string;
+    chapter: string;
+    location: string;
+    description: string;
+    createdAt: string;
+    status: "completed" | "progress";
+};
+
+const recentRepairs: RecentRepair[] = [
+    {
+        id: 1,
+        airplane: "B737-800",
+        registrationNumber: "HL1234",
+        chapter: "32",
+        location: "Main Landing Gear",
+        description: "Landing Gear 점검 및 부품 교체",
+        createdAt: "10분 전",
+        status: "completed",
+    },
+    {
+        id: 2,
+        airplane: "B737-800",
+        registrationNumber: "HL5678",
+        chapter: "27",
+        location: "Right Wing",
+        description: "Flap actuator 이상 확인",
+        createdAt: "32분 전",
+        status: "progress",
+    },
+    {
+        id: 3,
+        airplane: "A320",
+        registrationNumber: "HL9012",
+        chapter: "24",
+        location: "Cockpit",
+        description: "Electrical Power system 점검",
+        createdAt: "1시간 전",
+        status: "completed",
+    },
+    {
+        id: 4,
+        airplane: "B777",
+        registrationNumber: "HL3456",
+        chapter: "21",
+        location: "Cabin",
+        description: "Air Conditioning system 정비",
+        createdAt: "2시간 전",
+        status: "completed",
+    },
+    {
+        id: 5,
+        airplane: "A350",
+        registrationNumber: "HL7890",
+        chapter: "49",
+        location: "APU",
+        description: "APU 시동 이상 점검",
+        createdAt: "3시간 전",
+        status: "progress",
+    },
+];
+
+const RecentSection = () => {
     return (
-        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-            <div className="flex items-center justify-between border-b border-border px-5 py-4">
+        <section className="rounded-xl border border-slate-200 bg-surface shadow-sm">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
                 <div>
-                    <h2 className="text-base font-semibold text-primary">
-                        최근 수리 이력
-                    </h2>
-                    <p className="mt-0.5 text-xs text-secondary">
-                        최근 등록된 수리 기록입니다.
+                    <p className="mb-1 text-xs font-medium tracking-wide text-secondary">
+                        RECENT ACTIVITY
                     </p>
+
+                    <h2 className="text-lg font-semibold text-primary">
+                        최근 정비 기록
+                    </h2>
                 </div>
 
-                <span className="rounded-full bg-page px-3 py-1 text-xs font-medium text-secondary">
-                    {MOCK_DATA.length}건
-                </span>
+                <button
+                    type="button"
+                    className="
+                        flex items-center gap-1
+                        text-sm font-medium
+                        text-slate-500
+                        transition
+                        hover:text-blue-600
+                    "
+                >
+                    전체보기
+                    <ChevronRight size={16} />
+                </button>
             </div>
 
-            <table className="w-full text-sm">
-                <thead className="bg-page">
-                    <tr className="border-b border-border">
-                        <th className="w-16 px-5 py-3 text-center text-xs font-semibold text-muted">
-                            No.
-                        </th>
+            {/* List */}
+            <div className="divide-y divide-slate-100">
+                {recentRepairs.map((repair) => (
+                    <div
+                        key={repair.id}
+                        className="
+                            group
+                            flex items-center gap-5
+                            px-6 py-4
+                            transition
+                            hover:bg-slate-50
+                        "
+                    >
+                        {/* Icon */}
+                        <div
+                            className="
+                                flex h-10 w-10 shrink-0
+                                items-center justify-center
+                                rounded-lg
+                                bg-blue-50
+                                text-blue-600
+                            "
+                        >
+                            <Plane size={18} />
+                        </div>
 
-                        <th className="px-5 py-3 text-left text-xs font-semibold text-muted">
-                            위치
-                        </th>
+                        {/* Main */}
+                        <div className="min-w-0 flex-1">
+                            <div className="mb-1 flex items-center gap-2">
+                                <span className="text-sm font-semibold text-slate-900">
+                                    {repair.registrationNumber}
+                                </span>
 
-                        <th className="w-36 px-5 py-3 text-center text-xs font-semibold text-muted">
-                            수리일
-                        </th>
-                    </tr>
-                </thead>
+                                <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-500">
+                                    {repair.airplane}
+                                </span>
 
-                <tbody>
-                    {MOCK_DATA.length === 0 ? (
-                        <tr>
-                            <td
-                                colSpan={3}
-                                className="py-12 text-center text-sm text-secondary"
-                            >
-                                최근 수리 이력이 없습니다.
-                            </td>
-                        </tr>
-                    ) : (
-                        MOCK_DATA.map((row, index) => (
-                            <tr
-                                key={row.id}
-                                className="cursor-pointer border-b border-border transition-colors last:border-0 hover:bg-page"
-                            >
-                                <td className="px-5 py-4 text-center">
-                                    <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-page px-2 text-xs font-semibold text-secondary">
-                                        {index + 1}
-                                    </span>
-                                </td>
+                                <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[11px] font-semibold text-blue-600">
+                                    CH {repair.chapter}
+                                </span>
+                            </div>
 
-                                <td className="px-5 py-4">
-                                    <div className="font-medium text-primary">
-                                        {row.location}
-                                    </div>
+                            <p className="truncate text-sm text-slate-500">
+                                {repair.description}
+                            </p>
 
-                                    <div className="mt-1 text-xs text-secondary">
-                                        {row.title}
-                                    </div>
-                                </td>
+                            <div className="mt-2 flex items-center gap-3 text-xs text-slate-400">
+                                <span className="flex items-center gap-1">
+                                    <MapPin size={12} />
+                                    {repair.location}
+                                </span>
 
-                                <td className="px-5 py-4 text-center text-secondary">
-                                    {row.date}
-                                </td>
-                            </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
-        </div>
+                                <span className="h-3 w-px bg-slate-200" />
+
+                                <span className="flex items-center gap-1">
+                                    <Clock3 size={12} />
+                                    {repair.createdAt}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Status */}
+                        <div className="shrink-0">
+                            {repair.status === "completed" ? (
+                                <span
+                                    className="
+                                        rounded-full
+                                        bg-emerald-50
+                                        px-2.5 py-1
+                                        text-xs font-medium
+                                        text-emerald-600
+                                    "
+                                >
+                                    완료
+                                </span>
+                            ) : (
+                                <span
+                                    className="
+                                        rounded-full
+                                        bg-amber-50
+                                        px-2.5 py-1
+                                        text-xs font-medium
+                                        text-amber-600
+                                    "
+                                >
+                                    진행중
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Arrow */}
+                        <ChevronRight
+                            size={17}
+                            className="
+                                shrink-0
+                                text-slate-300
+                                transition
+                                group-hover:translate-x-0.5
+                                group-hover:text-slate-500
+                            "
+                        />
+                    </div>
+                ))}
+            </div>
+        </section>
     );
-}
+};
 
 export default RecentSection;
