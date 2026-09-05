@@ -115,3 +115,40 @@ export interface RepairCursorParam {
   cursorValue?: string;
   cursorId?: number;
 }
+
+export type RepairStatType =
+    | "ALL"
+    | "AIRPLANE_TYPE"
+    | "AIRPLANE"
+    | "CHAPTER";
+
+export type RepairStatPeriod =
+    | "ALL"
+    | "MONTH_1"
+    | "MONTH_6"
+    | "YEAR_1";
+
+export type RepairStatUnit =
+    | "WEEK"
+    | "MONTH";
+
+export interface RepairStatSearchParams {
+    type: RepairStatType;
+    period: RepairStatPeriod;
+
+    airplaneTypeId?: number;
+    airplaneId?: number;
+    chapter?: string;
+}
+
+export interface RepairStatItem {
+    label: string;
+    count: number;
+}
+
+export interface RepairStatResponse {
+    type: RepairStatType;
+    period: RepairStatPeriod;
+    unit: RepairStatUnit;
+    data: RepairStatItem[];
+}
